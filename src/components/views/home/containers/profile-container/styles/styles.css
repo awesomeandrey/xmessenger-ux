@@ -1,0 +1,18 @@
+div.chat:hover {
+    background-color: var(--col-hover);
+    cursor: pointer;
+}
+
+div.chat.selected {
+    background-color: var(--col-bg);
+    color: var(--col-text);
+}
+
+div.chat.selected button {
+    border: 1px solid var(--col-text);
+}
+
+div.chat.selected:hover {
+    background-color: var(--col-bg);
+    color: var(--col-text);
+}
