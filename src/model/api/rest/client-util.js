@@ -2,7 +2,7 @@ const _parseJSON = response => response.text().then(rawText => rawText ? JSON.pa
 const _handleSuccess = response => _parseJSON(response).then(data => Promise.resolve(data));
 const _handleError = response => _parseJSON(response).then(error => Promise.reject(error));
 
-const API_SERVER_URL = "http://api.xmessenger.com:8080";
+const API_SERVER_URL = "https://api.xmessenger.local:8080";
 const DEFAULT_HEADERS = {"Content-Type": "application/json;charset=UTF-8"};
 
 module.exports = {

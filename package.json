@@ -1,11 +1,12 @@
 {
   "name": "xmessenger-ux",
   "version": "1.0.0",
-  "description": "UX server for xMessenger app",
+  "description": "UI/UX part of xMessenger application ecosystem",
   "scripts": {
     "start": "node server.js",
     "build": "npm install && webpack --config webpack.dev.js",
     "build-prod": "npm install && webpack --config webpack.prod.js",
+    "dev": "npm run build && npm run start",
     "heroku-postbuild": "echo 'Skipped build on Heroku.'"
   },
   "engines": {

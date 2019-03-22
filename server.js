@@ -34,5 +34,5 @@ https.createServer({
         console.log(err);
         return;
     }
-    console.log(`Listening at https://local.xmessenger.com:${PORT}`);
+    console.log(`Listening at https://xmessenger.local:${PORT}`);
 });
