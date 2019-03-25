@@ -28,7 +28,7 @@ class Register extends React.Component {
         this._password.type = "password";
         this._repeatedPassword.type = "password";
 
-        // Instantiate field entities;
+        // Instantiate fieldDef entities;
         let inputFields = Object.create(null);
         [
             new FieldDefinition("", {name: "name", pattern: InputPatterns.NAME}),

@@ -2,7 +2,6 @@ import React from "react";
 import ProfileCard from "./components/profile-card/ProfileCard";
 import ChatsTab from "./components/tabs/chats/ChatsTab";
 import RequestsTab from "./components/tabs/requests/RequestsTab";
-import Settings from "./components/profile-card/settings-modal/Settings";
 import SearchTab from "./components/tabs/search/SearchTab";
 import Events from "../../model/HomePageEvents";
 import MultiBackend from 'react-dnd-multi-backend';
@@ -56,7 +55,6 @@ class ProfilePanel extends React.Component {
             <div className="slds-card height-inherit theme-marker--border">
                 <div className="theme-marker slds-card__header slds-m-bottom_none slds-p-bottom_medium">
                     <ProfileCard/>
-                    <Settings/>
                 </div>
                 <div className="slds-card__body tabs-container">
                     <Tabs type="default" activeKey={activeTabKey}

@@ -16,15 +16,15 @@ class DeleteAccount extends React.Component {
         this.handleDeleteAccount = this.handleDeleteAccount.bind(this);
         this.state = {
             loading: false,
-            usernameInput: new FieldDefinition("", {fieldName: "username", pattern: InputPatterns.LOGIN})
+            usernameInput: new FieldDefinition("", {name: "username", pattern: InputPatterns.LOGIN})
         };
     }
 
     handleDeleteAccount() {
-        const {user} = this.props, {usernameInput} = this.state;
-        if (user.username !== usernameInput.inputValue) {
-            usernameInput.errorMessage = "Username is not confirmed";
-            this.setState({usernameInput: usernameInput});
+        const {user} = this.props, {usernameInput: fieldDef} = this.state;
+        if (user.username !== fieldDef.value) {
+            fieldDef.error = "Username is not confirmed";
+            this.setState({usernameInput: fieldDef});
         } else {
             CustomEvents.fire({eventName: Events.SETTINGS.LOCK, detail: {locked: true}})
                 .then(_ => this.setState({loading: true}))
@@ -39,7 +39,7 @@ class DeleteAccount extends React.Component {
 
     handleChangeInput(e) {
         const {usernameInput} = this.state;
-        usernameInput.inputValue = e.target.value;
+        usernameInput.value = e.target.value;
         this.setState({usernameInput: usernameInput});
     }
 
@@ -66,7 +66,7 @@ class DeleteAccount extends React.Component {
                                 <Spinner type="brand" container={false}/>
                             </div>)
                             : (<Input iconRight="fallback" placeholder="Confirm your login"
-                                      value={usernameInput.inputValue} error={usernameInput.errorMessage}
+                                      value={usernameInput.value} error={usernameInput.error}
                                       onChange={this.handleChangeInput} required/>)}
                     </div>
                     <div className="slds-float--right">

@@ -1,6 +1,7 @@
 import React from 'react';
 import Events from "../../../../model/HomePageEvents";
 import ScalableImage from "../../../../../../common/components/images/scalable/ScalableImage";
+import Settings from "./settings/Settings";
 
 import {UserService} from "../../../../../../../model/services/core/UserService";
 import {Button, DropdownButton, DropdownMenuItem, Spinner} from "react-lightning-design-system";
@@ -13,26 +14,22 @@ import {SessionStorage} from "../../../../../../../model/services/utility/Storag
 class ProfileCard extends React.Component {
     constructor(props) {
         super(props);
-        this.handleOpenSettings = this.handleOpenSettings.bind(this);
-        this.handleLogout = this.handleLogout.bind(this);
         this.state = {
-            user: null
+            user: {}
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
+        UserService.getCurrentUser()
+            .then(user => this.setState({user: user}));
+
         CustomEvents.register({
             eventName: Events.USER.RELOAD,
             callback: _ => {
-                this.setState({user: null});
                 UserService.getCurrentUser(true)
                     .then(user => this.setState({user: user}));
             }
         });
-    }
-
-    componentDidMount() {
-        CustomEvents.fire({eventName: Events.USER.RELOAD});
     }
 
     handleLogout() {
@@ -42,23 +39,13 @@ class ProfileCard extends React.Component {
     }
 
     handleOpenSettings() {
-        const {user} = this.state;
-        CustomEvents.fire({
-            eventName: Events.SETTINGS.OPEN,
-            detail: user
-        });
+        CustomEvents.fire({eventName: Events.SETTINGS.OPEN});
     }
 
     render() {
         const {user} = this.state;
-        if (!user) {
-            return (
-                <div className="slds-align--absolute-center">
-                    <Spinner type="brand" size="small" container={false}/>
-                </div>
-            );
-        } else {
-            return (
+        return (
+            <Settings user={user}>
                 <div className="slds-media slds-media_center slds-has-flexi-truncate">
                     <div className="slds-media__figure slds-avatar slds-avatar_large">
                         <ScalableImage title={user.name} src={UserService.composeUserPictureUrl(user, true)}/>
@@ -82,8 +69,8 @@ class ProfileCard extends React.Component {
                         </div>
                     </div>
                 </div>
-            );
-        }
+            </Settings>
+        );
     }
 }
 

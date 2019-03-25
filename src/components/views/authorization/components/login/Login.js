@@ -26,7 +26,7 @@ class Login extends React.Component {
     componentDidMount() {
         this._password.type = "password";
 
-        // Instantiate field entities;
+        // Instantiate fieldDef entities;
         let inputs = Object.create(null);
         [
             new FieldDefinition("", {name: "username", pattern: InputPatterns.LOGIN}),

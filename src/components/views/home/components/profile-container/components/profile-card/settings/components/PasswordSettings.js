@@ -37,12 +37,12 @@ class PasswordSettings extends React.Component {
     }
 
     handleClearForm() {
-        // Instantiate field entities;
+        // Instantiate fieldDef entities;
         const inputFields = Object.create(null);
         [
-            new FieldDefinition("", {fieldName: "p1", pattern: InputPatterns.PASSWORD}),
-            new FieldDefinition("", {fieldName: "p2", pattern: InputPatterns.PASSWORD}),
-            new FieldDefinition("", {fieldName: "p3", pattern: InputPatterns.PASSWORD})
+            new FieldDefinition("", {name: "p1", pattern: InputPatterns.PASSWORD}),
+            new FieldDefinition("", {name: "p2", pattern: InputPatterns.PASSWORD}),
+            new FieldDefinition("", {name: "p3", pattern: InputPatterns.PASSWORD})
         ].forEach(inputField => {
             Object.defineProperty(inputFields, inputField.name, {
                 value: inputField, writable: true
@@ -78,7 +78,7 @@ class PasswordSettings extends React.Component {
     handleChangeInput(event, inputField) {
         const {inputs} = this.state, propName = inputField.name;
         if (!!inputs[propName]) {
-            inputField.inputValue = event.target.value;
+            inputField.value = event.target.value;
             Object.defineProperty(inputs, propName, {
                 value: inputField
             });
@@ -89,8 +89,7 @@ class PasswordSettings extends React.Component {
     isFormFulfilled() {
         let allInputsMatchPattern = true, {inputs} = this.state;
         Object.getOwnPropertyNames(inputs).forEach(propName => {
-            let inputField = inputs[propName];
-            if (!inputField.matchesPattern()) {
+            if (!inputs[propName].matchesPattern()) {
                 allInputsMatchPattern = false;
             }
         });

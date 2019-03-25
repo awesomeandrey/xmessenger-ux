@@ -1794,7 +1794,7 @@ a.slds-button--inverse:focus {
 
 /**
  * The base variant is the fully featured color picker, with a direct text
- * input, and a button-triggered popover, which has tabs with both a list
+ * input, and a button-triggered popover, which has components with both a list
  * of predefined color options (swatches), as well as an interactive tool
  * for custom color configuration.
  *
@@ -1842,7 +1842,7 @@ a.slds-button--inverse:focus {
   margin-right: 0.25rem; }
 
 /**
- * @summary Input field for summary UI
+ * @summary Input fieldDef for summary UI
  *
  * @selector .slds-color-picker__summary-input
  * @restrict .slds-color-picker__summary > div
@@ -5134,7 +5134,7 @@ a.slds-button--inverse:focus {
   border-radius: 0.25rem; }
 
 /**
- * This class allows default tabs to appear to be in a card
+ * This class allows default components to appear to be in a card
  *
  * .slds-tabs_card
  * .slds-tabs_default
@@ -7906,7 +7906,7 @@ a.slds-button--inverse:focus {
  * `.slds-truncate` class. Two line truncation must be achieved
  * using JavaScript.
  *
- * The page header is located at the top of every record home. It includes the record title and compact layout for a record. Excluding the title, the page header displays 4 compact layout fields. Similar data types can be rolled up and be displayed as a single field.
+ * The page header is located at the top of every record home. It includes the record title and compact layout for a record. Excluding the title, the page header displays 4 compact layout fields. Similar data types can be rolled up and be displayed as a single fieldDef.
  *
  * **Record Title**
  *
@@ -7917,7 +7917,7 @@ a.slds-button--inverse:focus {
  *
  * As shown in Field 3, web addresses and email addresses should be parsed and displayed as hyperlinks linking to the appropriate mailto: or web url. Do not modify the user's input, display as intended.
  *
- * When text is truncated, display full field text in browser tooltip on hover.
+ * When text is truncated, display full fieldDef text in browser tooltip on hover.
  *
  * Display addresses in two lines. Street address on first line, City, State and Postal Code on line 2. For lengthy addresses, truncate each line individually based on the available width of the area using the `.slds-truncate` class. Display the full address via browser tooltip.
  *
@@ -9056,7 +9056,7 @@ a.slds-button--inverse:focus {
 /**
  * The tooltip should be positioned with JavaScript.
  *
- * You can include inline help tooltips for form elements and any focusable items, such as anchor links, buttons, etc. If your tooltips are available on hover, also make sure that they’re available on keyboard focus. To allow screen readers to access the tooltip, the HTML form field element must  have an `aria-describedby` attribute that points to the tooltip `ID` of the tooltip.
+ * You can include inline help tooltips for form elements and any focusable items, such as anchor links, buttons, etc. If your tooltips are available on hover, also make sure that they’re available on keyboard focus. To allow screen readers to access the tooltip, the HTML form fieldDef element must  have an `aria-describedby` attribute that points to the tooltip `ID` of the tooltip.
  *
  * @summary Initializes a tooltip
  *
@@ -9812,7 +9812,7 @@ a.slds-button--inverse:focus {
  * - The Textbox is an `input` with a role of `textbox`. The role is implicit on inputs, but in this case it doesn't hurt to be explicit
  * - The Textbox has `autocomplete="off"` to remove the browsers suggestions from the `input`
  * - The Textbox has `aria-controls=""` which points to the ID of the `listbox`. It informs Assistive Technology what DOM node the input controls, in display or content
- * - The Textbox has the `type` attribute set to be `text` as it's not a search field
+ * - The Textbox has the `type` attribute set to be `text` as it's not a search fieldDef
  * - The Textbox has `aria-activedescendant` attribute applied only when an option is in "dual focus" via keyboard navigation, otherwise it should be removed
  * - The Textbox gets a `value` set to reflect that that option has been selected by the user
  *
@@ -9862,7 +9862,7 @@ a.slds-button--inverse:focus {
  * - Enter key, with an option selected should also set `readonly` on the `input`
  * - Esc key with an option selected should remove `readonly` and clear the `value` of the `input`
  *
- * @summary A widget that provides a user with an input field that is either an autocomplete or readonly, accompanied with a listbox of pre-defined options.
+ * @summary A widget that provides a user with an input fieldDef that is either an autocomplete or readonly, accompanied with a listbox of pre-defined options.
  *
  * @base
  * @name combobox
@@ -10192,7 +10192,7 @@ a.slds-button--inverse:focus {
   border: 1px solid #dddbda;
   border-radius: 0.25rem;
   /**
-   * Input field within a combobox
+   * Input fieldDef within a combobox
    *
    * @selector .slds-combobox__input
    * @restrict .slds-combobox input
@@ -11601,8 +11601,8 @@ a.slds-button--inverse:focus {
   top: -0.375rem; }
 
 /**
- * @summary Modifier that notifies a parent component that it has sub tabs inside of it
- * @selector .slds-has-sub-tabs
+ * @summary Modifier that notifies a parent component that it has sub components inside of it
+ * @selector .slds-has-sub-components
  * @restrict .slds-context-bar__item_tab
  */
 .slds-context-bar__item_tab.slds-has-sub-tabs.slds-is-active,
@@ -13893,7 +13893,7 @@ a.slds-button--inverse:focus {
   padding: 0 0.5rem; }
 
 /**
- * @summary Key field section of expanded tabpanel
+ * @summary Key fieldDef section of expanded tabpanel
  *
  * @selector .slds-path__keys
  * @restrict .slds-path__content div
@@ -15680,7 +15680,7 @@ a.slds-button--inverse:focus {
  * without enclosing it visually. Initialize a default tab set by applying the
  * `.slds-tab_default` class to the containing `<div>` around the tab list and
  * tab panels. The `<ul>` element also requires the class `.slds-tab_default__nav`
- * to prevent styles from bleeding into nested tabs.
+ * to prevent styles from bleeding into nested components.
  *
  * The overflow tab style is provided as a tab item type that acts as a menu
  * component and appears as a tab item. It could contain those tab items that
@@ -15705,7 +15705,7 @@ a.slds-button--inverse:focus {
   width: 100%;
   background-color: white;
   /**
-   * @summary Creates the container for the default tabs
+   * @summary Creates the container for the default components
    * @selector .slds-tabs_default__nav
    * @restrict .slds-tabs_default ul
    */
@@ -15948,9 +15948,9 @@ a.slds-button--inverse:focus {
  * A scoped tabset style has a closed container with a defined border. Initialize
  * a scoped tab set by applying the `.slds-tab_scoped` class to the containing
  * `<div>` around the tab list and tab panels. The `<ul>` element also requires
- * the class `.slds-tab_scoped__nav` to prevent styles from bleeding into nested tabs.
+ * the class `.slds-tab_scoped__nav` to prevent styles from bleeding into nested components.
  *
- * @summary Initializes scoped tabs
+ * @summary Initializes scoped components
  *
  * @name base
  * @selector .slds-tabs_scoped
@@ -15963,7 +15963,7 @@ a.slds-button--inverse:focus {
   display: block;
   width: 100%;
   /**
-   * Creates the container for the default tabs
+   * Creates the container for the default components
    *
    * @selector .slds-tabs_scoped__nav
    * @restrict .slds-tabs_scoped ul
@@ -16205,14 +16205,14 @@ a.slds-button--inverse:focus {
 
 /**
  * Sub Tabs are used to provide an additional level of navigation below the
- * Global Navigation Tab Bar. Use these tabs when users need to work across
+ * Global Navigation Tab Bar. Use these components when users need to work across
  * multiple sub-pages within a single navigation item.
  *
  * ----
  *
  * The first tab within the Sub Tab Bar is always the default content for the
  * parent navigation item. To differentiate this tab from other sub-navigation
- * tabs, this tab cannot be closed.
+ * components, this tab cannot be closed.
  *
  * When opening a navigation item for the first time, the default sub-navigation
  * tab can be assumed; don’t show the Sub Tab Bar.
@@ -16220,14 +16220,14 @@ a.slds-button--inverse:focus {
  * When opening the first additional sub-navigation tab a new tab bar is inserted
  * containing both the default tab and the new sub-navigation tab.
  *
- * All sub tabs are closed when the parent navigation item is closed.
+ * All sub components are closed when the parent navigation item is closed.
  *
  * Sub Tabs can optionally include a tab menu for additional controls.
  *
- * @summary Sub tabs
+ * @summary Sub components
  *
- * @name sub-tabs
- * @selector .slds-sub-tabs
+ * @name sub-components
+ * @selector .slds-sub-components
  * @restrict .slds-tabs_default
  * @variant
  */
@@ -16237,7 +16237,7 @@ a.slds-button--inverse:focus {
 /**
  * @summary Sub tab item
  * @selector .slds-sub-tabs__item
- * @restrict .slds-sub-tabs li
+ * @restrict .slds-sub-components li
  */
 .slds-sub-tabs__item {
   text-transform: none;
@@ -18060,7 +18060,7 @@ a.slds-button--inverse:focus {
 /**
  * Responsive tables
  *
- * When a table exceeds the width of its container, one responsive option is to wrap the table in a `.slds-scrollable_x` class so that the user can scroll horizontally. View the example small and medium form factor tabs to see the effect.
+ * When a table exceeds the width of its container, one responsive option is to wrap the table in a `.slds-scrollable_x` class so that the user can scroll horizontally. View the example small and medium form factor components to see the effect.
  *
  * When `.slds-max-medium-table_stacked` is applied to the &ldquo;Grid&rdquo; table, we generate faux `<th>` labels using the `data-label` applied to each cell, and stack the cells instead of lining them up horizontally. This works up until the **medium form factor** breakpoint. After the breakpoint is triggered, the table will lay out horizontally as normal.
  *
@@ -19186,14 +19186,14 @@ a.slds-button--inverse:focus {
   border-right: 1px solid #dddbda; }
 
 /**
- * The default Vertical Tabs component renders a list of tabs and their
+ * The default Vertical Tabs component renders a list of components and their
  * related content. The tab list is not truncated by default, but truncation
  * can be added with a modifier class on the link elements.
  *
  * @summary Renders a vertical tablist.
  *
  * @name base
- * @selector .slds-vertical-tabs
+ * @selector .slds-vertical-components
  * @restrict div, section
  * @variant
  */
@@ -19208,7 +19208,7 @@ a.slds-button--inverse:focus {
  * @summary Tab navigation container element
  *
  * @selector .slds-vertical-tabs__nav
- * @restrict .slds-vertical-tabs > ul
+ * @restrict .slds-vertical-components > ul
  */
 .slds-vertical-tabs__nav {
   width: 12rem;
@@ -19249,7 +19249,7 @@ a.slds-button--inverse:focus {
  * @summary Tab Content Container
  *
  * @selector .slds-vertical-tabs__content
- * @restrict .slds-vertical-tabs div
+ * @restrict .slds-vertical-components div
  */
 .slds-vertical-tabs__content {
   -ms-flex: 1;
@@ -22394,7 +22394,7 @@ a.slds-button--inverse:focus {
  * @summary All caps 12px heading
  *
  * @selector .slds-text-title_caps
- * @notes Usually labels small content areas like tabs and page header titles.
+ * @notes Usually labels small content areas like components and page header titles.
  * @modifier
  */
 .slds-text-title_caps,

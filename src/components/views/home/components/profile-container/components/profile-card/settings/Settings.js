@@ -1,0 +1,85 @@
+import React from 'react';
+import Events from "../../../../../model/HomePageEvents";
+import ProfileSettings from "./components/ProfileSettings";
+import PasswordSettings from "./components/PasswordSettings";
+import DeleteAccount from "./components/DeleteAccount";
+import ThemePicker from "./components/ThemePicker";
+
+import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";
+import {Modal, ModalContent, ModalHeader, Spinner, Tab, Tabs} from "react-lightning-design-system";
+
+import "./styles/styles.css";
+import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
+
+const DEFAULT_TAB_KEY = "1";
+
+class Settings extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleSelectTab = this.handleSelectTab.bind(this);
+        this.state = {
+            opened: false,
+            loading: false,
+            activeTabKey: DEFAULT_TAB_KEY
+        }
+    }
+
+    componentDidMount() {
+        CustomEvents.register({
+            eventName: Events.SETTINGS.OPEN,
+            callback: _ => {
+                this.setState({
+                    opened: true,
+                    activeTabKey: DEFAULT_TAB_KEY
+                });
+            }
+        });
+        CustomEvents.register({
+            eventName: Events.SETTINGS.LOCK,
+            callback: event => {
+                const settings = event.detail;
+                this.setState({loading: settings.locked});
+            }
+        });
+    }
+
+    handleSelectTab(tabKey) {
+        const {loading} = this.state;
+        if (!loading) {
+            this.setState({activeTabKey: tabKey.toString()});
+        }
+    }
+
+    render() {
+        const {loading, opened, activeTabKey} = this.state, {user} = this.props;
+        if (Utility.isObjectEmpty(user)) return <Spinner/>;
+        return (
+            <div className="settings-container">
+                <Modal opened={opened} onHide={_ => {
+                    this.setState({opened: false});
+                }}>
+                    <ModalHeader title="Settings" closeButton={!loading}/>
+                    <ModalContent>
+                        <Tabs type="scoped" activeKey={activeTabKey} onSelect={this.handleSelectTab}>
+                            <Tab eventKey="1" title="Profile Info">
+                                <ProfileSettings user={user}/>
+                            </Tab>
+                            <Tab eventKey="2" title="Change Password">
+                                <PasswordSettings user={user}/>
+                            </Tab>
+                            <Tab eventKey="3" title="Choose Theme">
+                                <ThemePicker/>
+                            </Tab>
+                            <Tab eventKey="4" title="Delete Account">
+                                <DeleteAccount user={user}/>
+                            </Tab>
+                        </Tabs>
+                    </ModalContent>
+                </Modal>
+                {this.props.children}
+            </div>
+        );
+    }
+}
+
+export default Settings;

@@ -25,14 +25,14 @@ class ProfileSettings extends React.Component {
     }
 
     componentDidMount() {
-        // Instantiate field entities;
+        // Instantiate fieldDef entities;
         const {user} = this.props, inputFields = Object.create(null);
         [
-            new FieldDefinition(user.name, {fieldName: "name", pattern: InputPatterns.NAME}),
-            new FieldDefinition({}, {fieldName: "picture"})
-        ].forEach(inputField => {
-            Object.defineProperty(inputFields, inputField.name, {
-                value: inputField, writable: true
+            new FieldDefinition(user.name, {name: "name", pattern: InputPatterns.NAME}),
+            new FieldDefinition("", {name: "picture"})
+        ].forEach(fieldDef => {
+            Object.defineProperty(inputFields, fieldDef.name, {
+                value: fieldDef, writable: true
             });
         });
         this.setState({
@@ -59,12 +59,12 @@ class ProfileSettings extends React.Component {
         this.handleChangeInput(pictureField, mediaFile);
     }
 
-    handleChangeInput(inputField, value) {
-        const {inputs} = this.state, propName = inputField.name;
+    handleChangeInput(fieldDef, value) {
+        const {inputs} = this.state, propName = fieldDef.name;
         if (!!inputs[propName]) {
-            inputField.inputValue = value;
+            fieldDef.value = value;
             Object.defineProperty(inputs, propName, {
-                value: inputField
+                value: fieldDef
             });
             this.setState({inputs: inputs});
         }
@@ -76,15 +76,14 @@ class ProfileSettings extends React.Component {
             let {inputs} = this.state, promisesToExecute = [];
             [
                 {
-                    field: inputs.picture,
-                    promise: _ => {
+                    fieldDef: inputs.picture, promise: _ => {
                         let FD = new FormData();
                         FD.append('file', inputs.picture.value);
                         return Settings.changePicture(FD);
                     }
                 },
                 {
-                    field: inputs.name, promise: _ => {
+                    fieldDef: inputs.name, promise: _ => {
                         let {user} = this.props;
                         const userToUpdate = {
                             id: user.id,
@@ -94,7 +93,7 @@ class ProfileSettings extends React.Component {
                     }
                 }
             ].forEach(item => {
-                if (item.field.changed) {
+                if (item.fieldDef.changed) {
                     promisesToExecute.push(item.promise()); // return Promise to be executed;
                 }
             });
@@ -131,8 +130,8 @@ class ProfileSettings extends React.Component {
     isFormFulfilled() {
         let allInputsMatchPattern = true, {inputs} = this.state;
         Object.getOwnPropertyNames(inputs).forEach(propName => {
-            let inputField = inputs[propName];
-            if (inputField.changed && !inputField.matchesPattern()) {
+            let fieldDef = inputs[propName];
+            if (fieldDef.changed && !fieldDef.matchesPattern()) {
                 allInputsMatchPattern = false;
             }
         });
