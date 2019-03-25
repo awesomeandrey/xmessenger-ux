@@ -1415,7 +1415,7 @@ a.slds-button--inverse:focus {
   color: #706e6b; }
 
 /**
- * @summary Default width + height for button icon with containers
+ * @summary Default width + height for button icon with components
  * @selector .slds-button_icon-container
  * @restrict .slds-button_icon
  */
@@ -18621,7 +18621,7 @@ a.slds-button--inverse:focus {
  * - `aria-label` is applied to `treeitem` elements that have child tree nodes. Be sure to add any metatext to the label, if applicable
  * - `aria-selected="true"` is applied to `treeitem` elements that are selected
  * - `tabindex="0"` is applied to the `treeitem` that is in focus
- * - `role="group"` is applied to child tree node containers, `ul`
+ * - `role="group"` is applied to child tree node components, `ul`
  *
  * **Keyboard navigation**
  *
@@ -20043,7 +20043,7 @@ a.slds-button--inverse:focus {
       align-content: stretch; }
 
 /**
- * @summary Restrict width of containers to a maximum of 480px
+ * @summary Restrict width of components to a maximum of 480px
  *
  * @selector .slds-container_small
  * @modifier
@@ -20053,7 +20053,7 @@ a.slds-button--inverse:focus {
   max-width: 30rem; }
 
 /**
- * @summary Restrict width of containers to a maximum of 768px
+ * @summary Restrict width of components to a maximum of 768px
  *
  * @selector .slds-container_medium
  * @modifier
@@ -20063,7 +20063,7 @@ a.slds-button--inverse:focus {
   max-width: 48rem; }
 
 /**
- * @summary Restrict width of containers to a maximum of 1024px
+ * @summary Restrict width of components to a maximum of 1024px
  *
  * @selector .slds-container_large
  * @modifier
@@ -20073,7 +20073,7 @@ a.slds-button--inverse:focus {
   max-width: 64rem; }
 
 /**
- * @summary Restrict width of containers to a maximum of 1280px
+ * @summary Restrict width of components to a maximum of 1280px
  *
  * @selector .slds-container_x-large
  * @modifier
@@ -20093,7 +20093,7 @@ a.slds-button--inverse:focus {
   width: 100%; }
 
 /**
- * @summary Horizontally positions containers in the center of the viewport
+ * @summary Horizontally positions components in the center of the viewport
  *
  * @selector .slds-container_center
  * @modifier
@@ -20104,7 +20104,7 @@ a.slds-button--inverse:focus {
   margin-right: auto; }
 
 /**
- * @summary Horizontally positions containers to the left of the viewport
+ * @summary Horizontally positions components to the left of the viewport
  *
  * @selector .slds-container_left
  * @modifier
@@ -20114,7 +20114,7 @@ a.slds-button--inverse:focus {
   margin-right: auto; }
 
 /**
- * @summary Horizontally positions containers to the right of the viewport
+ * @summary Horizontally positions components to the right of the viewport
  *
  * @selector .slds-container_right
  * @modifier

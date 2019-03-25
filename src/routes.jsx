@@ -3,7 +3,7 @@ import {Route, IndexRoute} from "react-router";
 
 import About from "./components/views/about/About";
 import Authorization from "./components/views/authorization/Authorization";
-import ProxyPage from "./components/views/authorization/oauth.gmail/ProxyPage";
+import ProxyPage from "./components/views/authorization/components/oauth.gmail/ProxyPage";
 import Home from "./components/views/home/Home";
 import Error from "./components/views/error/Error";
 

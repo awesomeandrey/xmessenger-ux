@@ -1,7 +1,7 @@
 import React from 'react';
 import SessionValidator from "../../common/model/SessionValidator";
-import ChatContainer from "./containers/chatter-container/ChatContainer";
-import ProfilePanel from "./containers/profile-container/ProfilePanel";
+import ChatPanel from "./components/chatter-container/ChatPanel";
+import ProfilePanel from "./components/profile-container/ProfilePanel";
 import ToastContainer from "../../common/components/toasts/components/ToastContainer";
 import ModalsContainer from "../../common/components/modals/components/ModalsContainer";
 
@@ -9,7 +9,7 @@ import {Utility} from "../../../model/services/utility/UtilityService";
 import {getCurrentTheme, applyTheme} from "../../../model/services/utility/ThemingService";
 import {registerServerListeners} from "./model/WebSocketListener";
 
-import "./styles/home.css";
+import "./styles/styles.css";
 
 class Home extends React.Component {
     constructor(props) {
@@ -26,12 +26,12 @@ class Home extends React.Component {
         return (
             <ModalsContainer>
                 <ToastContainer>
-                    <div id="homeContainer" className="slds-grid slds-p-around_small slds-wrap">
+                    <div className="Home container slds-grid slds-p-around_small slds-wrap">
                         <div className={Utility.join(columnClassName, "slds-medium-size_5-of-12", "slds-large-size_4-of-12")}>
                             <ProfilePanel/>
                         </div>
                         <div className={Utility.join(columnClassName, "slds-medium-size_7-of-12", "slds-large-size_8-of-12")}>
-                            <ChatContainer/>
+                            <ChatPanel/>
                         </div>
                     </div>
                 </ToastContainer>

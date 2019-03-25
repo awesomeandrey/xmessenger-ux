@@ -1,0 +1,27 @@
+.message-input input, .message-input textarea {
+    color: black !important;
+}
+
+.message-input textarea {
+    line-height: 18px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.messages-container {
+    height: 72%;
+}
+
+/*For iPhone and smartphones*/
+@media only screen and (min-device-width: 480px) and (max-device-width: 820px) and (min-device-height: 300px) and (max-device-height: 420px) {
+    .messages-container {
+        height: 50%;
+    }
+}
+
+/*For Tablets*/
+@media only screen and (min-device-height: 1024px) and (max-device-width: 1400px) and (min-device-width: 760px) {
+    .messages-container {
+        height: 83%;
+    }
+}
