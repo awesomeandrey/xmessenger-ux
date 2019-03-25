@@ -1,6 +1,6 @@
 import React from "react";
 import Events from "../../../../../model/HomePageEvents";
-import InputField from "../../../../../../../common/wrappers/InputField";
+import FieldDefinition from "../../../../../../../common/model/FieldDefinition";
 
 import {Settings, UserService} from "../../../../../../../../model/services/core/UserService";
 import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";
@@ -28,10 +28,10 @@ class ProfileSettings extends React.Component {
         // Instantiate field entities;
         const {user} = this.props, inputFields = Object.create(null);
         [
-            new InputField(user.name, {fieldName: "name", pattern: InputPatterns.NAME}),
-            new InputField({}, {fieldName: "picture"})
+            new FieldDefinition(user.name, {fieldName: "name", pattern: InputPatterns.NAME}),
+            new FieldDefinition({}, {fieldName: "picture"})
         ].forEach(inputField => {
-            Object.defineProperty(inputFields, inputField.fieldName, {
+            Object.defineProperty(inputFields, inputField.name, {
                 value: inputField, writable: true
             });
         });
@@ -47,9 +47,9 @@ class ProfileSettings extends React.Component {
             fileSize = mediaFile.size / 1024 / 1024,
             fileSizeLimit = 5;
         if (fileSize > fileSizeLimit) {
-            pictureField.errorMessage = `Profile picture exceed file size limit: maximum ${fileSizeLimit}MB.`;
+            pictureField.error = `Profile picture exceed file size limit: maximum ${fileSizeLimit}MB.`;
         } else {
-            pictureField.errorMessage = "";
+            pictureField.error = "";
             let reader = new FileReader();
             reader.onload = _ => {
                 this._avatarImg.src = reader.result;
@@ -60,7 +60,7 @@ class ProfileSettings extends React.Component {
     }
 
     handleChangeInput(inputField, value) {
-        const {inputs} = this.state, propName = inputField.fieldName;
+        const {inputs} = this.state, propName = inputField.name;
         if (!!inputs[propName]) {
             inputField.inputValue = value;
             Object.defineProperty(inputs, propName, {
@@ -79,7 +79,7 @@ class ProfileSettings extends React.Component {
                     field: inputs.picture,
                     promise: _ => {
                         let FD = new FormData();
-                        FD.append('file', inputs.picture.inputValue);
+                        FD.append('file', inputs.picture.value);
                         return Settings.changePicture(FD);
                     }
                 },
@@ -88,7 +88,7 @@ class ProfileSettings extends React.Component {
                         let {user} = this.props;
                         const userToUpdate = {
                             id: user.id,
-                            name: inputs.name.inputValue,
+                            name: inputs.name.value,
                         };
                         return Settings.changeProfileInfo(userToUpdate);
                     }
@@ -170,16 +170,16 @@ class ProfileSettings extends React.Component {
                         </div>
                         <div className="slds-form-element__help">
                             <span className={`${loading ? 'slds-hide' : 'slds-show'}`}>
-                                {inputs.picture.errorMessage}</span>
+                                {inputs.picture.error}</span>
                         </div>
                     </div>
                 </div>
                 <div className="slds-col slds-size_1-of-1 slds-medium-size_7-of-12 slds-large-size_6-of-12">
                     <div className="slds-form--stacked">
                         <Input label="Name" iconRight="user" disabled={loading}
-                               value={inputs.name.inputValue}
+                               value={inputs.name.value}
                                onChange={e => this.handleChangeInput(inputs.name, e.target.value)}
-                               error={inputs.name.errorMessage}
+                               error={inputs.name.error}
                                placeholder="Enter your name" required/>
                         <Input label="Username" value={Utility.decorateUsername(user.username)}
                                iconRight="fallback" readOnly/>

@@ -1,6 +1,5 @@
 import React from 'react';
-import InputField from "../../../../common/wrappers/InputField";
-import UniqueInputField from "../../../../common/wrappers/UniqueInputField";
+import FieldDefinition from "../../../../common/model/FieldDefinition";
 import UsernameInput from "./UsernameInput";
 
 import {LoginService, RegistrationService} from "../../../../../model/services/core/AuthenticationService";
@@ -32,12 +31,12 @@ class Register extends React.Component {
         // Instantiate field entities;
         let inputFields = Object.create(null);
         [
-            new InputField("", {fieldName: "name", pattern: InputPatterns.NAME}),
-            new UniqueInputField("", {fieldName: "username", pattern: InputPatterns.LOGIN}),
-            new InputField("", {fieldName: "password", pattern: InputPatterns.PASSWORD}),
-            new InputField("", {fieldName: "repeatedPassword", pattern: InputPatterns.PASSWORD})
+            new FieldDefinition("", {name: "name", pattern: InputPatterns.NAME}),
+            new FieldDefinition("", {name: "username", pattern: InputPatterns.LOGIN}),
+            new FieldDefinition("", {name: "password", pattern: InputPatterns.PASSWORD}),
+            new FieldDefinition("", {name: "repeatedPassword", pattern: InputPatterns.PASSWORD})
         ].forEach(inputField => {
-            Object.defineProperty(inputFields, inputField.fieldName, {
+            Object.defineProperty(inputFields, inputField.name, {
                 value: inputField, writable: true
             });
         });
@@ -49,10 +48,10 @@ class Register extends React.Component {
         const {inputs} = this.state;
         if (this.isFormFulfilled()) {
             const rawCredentials = {
-                username: inputs.username.inputValue,
-                password: inputs.password.inputValue
+                username: inputs.username.value,
+                password: inputs.password.value
             }, userToRegister = {
-                name: inputs.name.inputValue, ...rawCredentials
+                name: inputs.name.value, ...rawCredentials
             };
             RegistrationService.register(userToRegister)
                 .then(_ => LoginService.login(rawCredentials))
@@ -60,18 +59,18 @@ class Register extends React.Component {
         } else {
             Object.getOwnPropertyNames(inputs).forEach(p => {
                 if (!inputs[p].matchesPattern()) {
-                    inputs[p].errorMessage = inputs[p].pattern.errorMessage;
+                    inputs[p].error = inputs[p].pattern.errorMessage;
                 }
             });
             this.setState({loading: false, inputs: inputs});
         }
     }
 
-    handleChangeInput(event, inputField) {
-        const {inputs} = this.state, propName = inputField.fieldName;
-        if (!!inputs[propName]) {
-            inputField.inputValue = event.target.value;
-            inputs[propName] = inputField;
+    handleChangeInput(event, fieldDef) {
+        const {inputs} = this.state, inputName = fieldDef.name;
+        if (!!inputs[inputName]) {
+            fieldDef.value = event.target.value;
+            inputs[inputName] = fieldDef;
             this.setState({inputs: inputs});
         }
     }
@@ -85,8 +84,8 @@ class Register extends React.Component {
             }
         });
         if (!allInputsMatchPattern) return false;
-        if (!inputs.username.unique) return false;
-        if (inputs.password.inputValue !== inputs.repeatedPassword.inputValue) return false;
+        if (!!inputs.username.error) return false;
+        if (inputs.password.value !== inputs.repeatedPassword.value) return false;
         return true;
     }
 
@@ -96,38 +95,41 @@ class Register extends React.Component {
             <div className="slds-form--horizontal">
                 <Input label="Your Name"
                        placeholder="Type here..."
-                       value={inputs.name.inputValue}
+                       value={inputs.name.value}
                        onChange={e => this.handleChangeInput(e, inputs.name)}
-                       error={inputs.name.errorMessage}
+                       error={inputs.name.error}
                        disabled={loading} required/>
                 <UsernameInput title="Choose username"
-                               inputField={inputs.username}
-                               onChange={updatedInputField => {
-                                   inputs[updatedInputField.fieldName] = updatedInputField;
+                               fieldDef={inputs.username}
+                               onChange={updatedFieldDef => {
+                                   inputs[updatedFieldDef.name] = updatedFieldDef;
                                    this.setState({inputs: inputs});
                                }}
                                disabled={loading}/>
                 <Input label="Password"
                        placeholder="Type here..."
                        inputRef={el => this._password = el}
-                       value={inputs.password.inputValue}
+                       value={inputs.password.value}
                        onChange={e => this.handleChangeInput(e, inputs.password)}
-                       error={inputs.password.errorMessage}
+                       error={inputs.password.error}
                        disabled={loading} required/>
                 <Input label="Confirm password"
                        placeholder="Type here..."
                        inputRef={el => this._repeatedPassword = el}
-                       value={inputs.repeatedPassword.inputValue}
+                       value={inputs.repeatedPassword.value}
                        onChange={event => {
-                           const inputField = inputs.repeatedPassword;
-                           inputField.inputValue = event.target.value;
-                           if (inputField.inputValue !== inputs.password.inputValue) {
-                               inputField.errorMessage = "Password is not confirmed";
+                           inputs.repeatedPassword.value = event.target.value;
+                           if (!inputs.password.matchesPattern()) {
+                               inputs.repeatedPassword.value = "";
+                               inputs.repeatedPassword.error = "Password is not confirmed";
+                           } else if (inputs.password.value !== inputs.repeatedPassword.value) {
+                               inputs.repeatedPassword.error = "Password is not confirmed";
+                           } else {
+                               inputs.repeatedPassword.error = "";
                            }
-                           inputs[inputField.fieldName] = inputField;
                            this.setState({inputs: inputs});
                        }}
-                       error={inputs.repeatedPassword.errorMessage}
+                       error={inputs.repeatedPassword.error}
                        disabled={loading} required/>
                 <div className="slds-form-element">
                     <div className="slds-form-element__control">

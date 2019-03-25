@@ -5,7 +5,7 @@ import {Settings} from "../../../../../../../../model/services/core/UserService"
 import {InputPatterns} from "../../../../../../../../model/services/utility/UtilityService";
 import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";
 import {Button, ButtonGroup, Form, Input, Spinner} from "react-lightning-design-system";
-import InputField from "../../../../../../../common/wrappers/InputField";
+import FieldDefinition from "../../../../../../../common/model/FieldDefinition";
 
 class PasswordSettings extends React.Component {
     constructor(props) {
@@ -40,11 +40,11 @@ class PasswordSettings extends React.Component {
         // Instantiate field entities;
         const inputFields = Object.create(null);
         [
-            new InputField("", {fieldName: "p1", pattern: InputPatterns.PASSWORD}),
-            new InputField("", {fieldName: "p2", pattern: InputPatterns.PASSWORD}),
-            new InputField("", {fieldName: "p3", pattern: InputPatterns.PASSWORD})
+            new FieldDefinition("", {fieldName: "p1", pattern: InputPatterns.PASSWORD}),
+            new FieldDefinition("", {fieldName: "p2", pattern: InputPatterns.PASSWORD}),
+            new FieldDefinition("", {fieldName: "p3", pattern: InputPatterns.PASSWORD})
         ].forEach(inputField => {
-            Object.defineProperty(inputFields, inputField.fieldName, {
+            Object.defineProperty(inputFields, inputField.name, {
                 value: inputField, writable: true
             });
         });
@@ -58,8 +58,8 @@ class PasswordSettings extends React.Component {
             CustomEvents.fire({eventName: Events.SETTINGS.LOCK, detail: {locked: true}})
                 .then(this.handleClearForm)
                 .then(_ => Settings.changePassword({
-                    password: inputs.p1.inputValue,
-                    newPassword: inputs.p2.inputValue
+                    password: inputs.p1.value,
+                    newPassword: inputs.p2.value
                 }))
                 .then(_ => ({type: "success", message: "Changed password!"}),
                     error => ({type: "error", message: error.message}))
@@ -76,7 +76,7 @@ class PasswordSettings extends React.Component {
     }
 
     handleChangeInput(event, inputField) {
-        const {inputs} = this.state, propName = inputField.fieldName;
+        const {inputs} = this.state, propName = inputField.name;
         if (!!inputs[propName]) {
             inputField.inputValue = event.target.value;
             Object.defineProperty(inputs, propName, {
@@ -94,7 +94,7 @@ class PasswordSettings extends React.Component {
                 allInputsMatchPattern = false;
             }
         });
-        if (inputs.p2.inputValue !== inputs.p3.inputValue) {
+        if (inputs.p2.value !== inputs.p3.value) {
             allInputsMatchPattern = false;
         }
         return allInputsMatchPattern;
@@ -117,8 +117,8 @@ class PasswordSettings extends React.Component {
                                placeholder="Type here..."
                                inputRef={el => this._p1 = el}
                                disabled={loading}
-                               value={inputs.p1.inputValue}
-                               error={inputs.p1.errorMessage}
+                               value={inputs.p1.value}
+                               error={inputs.p1.error}
                                onChange={e => this.handleChangeInput(e, inputs.p1)}
                                required/>
                         <Input label="New password"
@@ -126,8 +126,8 @@ class PasswordSettings extends React.Component {
                                placeholder="Type here..."
                                inputRef={el => this._p2 = el}
                                disabled={loading}
-                               value={inputs.p2.inputValue}
-                               error={inputs.p2.errorMessage}
+                               value={inputs.p2.value}
+                               error={inputs.p2.error}
                                onChange={e => this.handleChangeInput(e, inputs.p2)}
                                required/>
                         <Input label="Repeat password"
@@ -135,8 +135,8 @@ class PasswordSettings extends React.Component {
                                placeholder="Type here..."
                                inputRef={el => this._p3 = el}
                                disabled={loading}
-                               value={inputs.p3.inputValue}
-                               error={inputs.p3.errorMessage}
+                               value={inputs.p3.value}
+                               error={inputs.p3.error}
                                onChange={e => this.handleChangeInput(e, inputs.p3)}
                                required/>
                         <div className="slds-clearfix slds-m-top_small">

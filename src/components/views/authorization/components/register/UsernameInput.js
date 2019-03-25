@@ -15,32 +15,30 @@ class UsernameInput extends React.Component {
 
     handleChange(event) {
         this.setState({loading: true});
-
-        const {inputField, onChange} = this.props, inputValue = event.target.value;
-        inputField.inputValue = inputValue;
-        inputField.unique = false;
-
-        if (!inputField.matchesPattern()) {
-            onChange(inputField);
-            this.setState({loading: false});
+        const {fieldDef, onChange} = this.props;
+        fieldDef.value = event.target.value;
+        if (!fieldDef.matchesPattern()) {
+            fieldDef.error = fieldDef.pattern.errorMessage;
+            this.setState({loading: false}, _ => {
+                onChange(fieldDef);
+            });
             return;
         }
-
-        RegistrationService.checkUsernameForUniqueness(inputValue)
+        fieldDef.error = fieldDef.pattern.errorMessage;
+        RegistrationService.checkUsernameForUniqueness(fieldDef.value)
             .then(response => {
-                let {valid} = response;
-                inputField.unique = valid;
-                inputField.errorMessage = valid ? "" : "Already in use. Try another one.";
-                onChange(inputField);
-                this.setState({loading: false})
+                const {errorMessage} = response;
+                fieldDef.error = errorMessage;
+                this.setState({loading: false}, _ => {
+                    onChange(fieldDef);
+                });
             });
     }
 
     render() {
-        const {disabled, inputField, title} = this.props, {loading} = this.state;
-        const {errorMessage, unique} = inputField;
+        const {disabled, fieldDef, title} = this.props, {error} = fieldDef, {loading} = this.state;
         return (
-            <div className={Utility.join("slds-form-element", !!errorMessage ? "slds-has-error" : "")}>
+            <div className={Utility.join("slds-form-element", !!error ? "slds-has-error" : "")}>
                 <label className="slds-form-element__label">
                     {title}<abbr className="slds-required" title="required">*</abbr>
                 </label>
@@ -51,9 +49,10 @@ class UsernameInput extends React.Component {
                         {loading && <div className="slds-m-right--xx-large"><Spinner type="brand" size="small"/></div>}
                     </div>
                 </div>
-                <div className="slds-form-element__help">
-                    {!!errorMessage && <span className="slds-text-color_error">{errorMessage}</span>}
-                    {unique && <span className="slds-text-color_success">Correct!</span>}
+                <div className={`slds-form-element__help ${!fieldDef.changed && "slds-hide"}`}>
+                    {!!error
+                        ? <span className="slds-text-color_error">{error}</span>
+                        : <span className="slds-text-color_success">Correct!</span>}
                 </div>
             </div>
         );

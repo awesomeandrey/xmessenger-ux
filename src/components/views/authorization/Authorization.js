@@ -1,5 +1,5 @@
 import React from 'react';
-import SessionValidator from "../../common/wrappers/SessionValidator";
+import SessionValidator from "../../common/model/SessionValidator";
 import Register from "./components/register/Register";
 import Login from "./components/login/Login";
 

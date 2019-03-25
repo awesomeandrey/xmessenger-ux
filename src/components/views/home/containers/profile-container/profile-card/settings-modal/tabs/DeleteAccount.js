@@ -1,5 +1,5 @@
 import React from "react";
-import InputField from "../../../../../../../common/wrappers/InputField";
+import FieldDefinition from "../../../../../../../common/model/FieldDefinition";
 import Events from "../../../../../model/HomePageEvents";
 
 import {Button, Icon, Input, Spinner} from "react-lightning-design-system";
@@ -16,7 +16,7 @@ class DeleteAccount extends React.Component {
         this.handleDeleteAccount = this.handleDeleteAccount.bind(this);
         this.state = {
             loading: false,
-            usernameInput: new InputField("", {fieldName: "username", pattern: InputPatterns.LOGIN})
+            usernameInput: new FieldDefinition("", {fieldName: "username", pattern: InputPatterns.LOGIN})
         };
     }
 

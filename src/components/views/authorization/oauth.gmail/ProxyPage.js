@@ -48,8 +48,7 @@ class ProxyPage extends React.Component {
 
     render() {
         return (
-            <div>
-                <ToastContainer/>
+            <ToastContainer>
                 <Modal opened={true}>
                     <ModalHeader title="OAuth Proxy Page"/>
                     <ModalContent>
@@ -66,7 +65,7 @@ class ProxyPage extends React.Component {
                         <Countdown date={Date.now() + 7000} renderer={this.countdownRenderer}/>
                     </ModalFooter>
                 </Modal>
-            </div>
+            </ToastContainer>
         );
     }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import SessionValidator from "../../common/wrappers/SessionValidator";
+import SessionValidator from "../../common/model/SessionValidator";
 import ChatContainer from "./containers/chatter-container/ChatContainer";
 import ProfilePanel from "./containers/profile-container/ProfilePanel";
 import ToastContainer from "../../common/components/toasts/components/ToastContainer";
