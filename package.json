@@ -6,7 +6,7 @@
     "start": "node server.js",
     "build": "npm install && webpack --config webpack.dev.js",
     "build-prod": "npm install && webpack --config webpack.prod.js",
-    "dev": "npm run build && npm run start",
+    "development": "npm run build && npm run start",
     "heroku-postbuild": "echo 'Skipped build on Heroku.'"
   },
   "engines": {
