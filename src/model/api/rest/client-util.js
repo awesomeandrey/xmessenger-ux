@@ -2,10 +2,11 @@ const _parseJSON = response => response.text().then(rawText => rawText ? JSON.pa
 const _handleSuccess = response => _parseJSON(response).then(data => Promise.resolve(data));
 const _handleError = response => _parseJSON(response).then(error => Promise.reject(error));
 
-const API_SERVER_URL = process.env.XM_API_SERVER_URL;
-debugger;
 const DEFAULT_HEADERS = {"Content-Type": "application/json;charset=UTF-8"};
 
+/**
+ * 'API_SERVER_URL' variable is provided by Webpack configuration file.
+ */
 module.exports = {
     API_SERVER_URL, DEFAULT_HEADERS,
     performRequest: parameters => {

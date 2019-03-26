@@ -16,5 +16,5 @@ app.listen(PORT, function (err) {
         console.log(err);
         return;
     }
-    console.log(`Listening at http://localhost:${PORT}`);
+    console.log("Launched NodeJS application.");
 });

@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
     entry: {
@@ -22,5 +23,10 @@ module.exports = {
                 ]
             }
         ]
-    }
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+            API_SERVER_URL: JSON.stringify(process.env["XM_API_SERVER_URL"])
+        })
+    ]
 };
