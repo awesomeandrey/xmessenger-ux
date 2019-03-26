@@ -1,9 +1,13 @@
 language: node_js
 node_js:
   - "7"
+before_deploy:
+  - bash public/scripts/before_deploy.sh
 deploy:
   provider: heroku
   skip_cleanup: true
   api_key:
     secure: QmZW4oJZcqAYc2wTJQ9l3SEC1aI9Ml8RYgmAGJlJfvwd3EveJM2MfXuAx8BYRSMnAU/OFLC4igDlFibdfkmzUkaFYyhSVs0n6t4zqmDe5AZjcBJ7x5IzcsdTU0rvvp4w+YREzLh5cEoB3tot6rA2igr2aBODuS6Zgwax5ZpzcjDPBv+twxLju/Q47hYq/GQLWQXzKx0r4BYD4kx+NyIf2c3G52nzLWOYB6x57381mCbSblv3Jx1RpqdrDai8dUK9p/wejyeIYGyb3cRvLRLDlMBbngfaCIkyXRXLk7E0f5PkyfOkic0OMc1QRJaGaN0n+4pckGe5hNDA6ZeVMZcywl4Kz/qScz/ZZ3Y8enYfZ9egIjhdgF7hNq60KqWfuCyYb1gYPtlpGKxmQWNZGdIWveIbSuWErZV/JYzN4du6egJBvTIuGpxKZ4tmEpfrCe5lmHYzU3eydYACme0uaO9rd8Zc4/hm+ThZfc3Y0Bymaep0JUUtSw3QaKFXK08W7Uff7E4GHvZ7DPJkL18pRQfM7WL5jcooFFYemwslJ4fyQOp2h7lI+rc7Adoaa2jp7gZFp9wXXu4upsiX4UEfquy8oi0+MCfHozj9ZkJsJA/EGCy9hRMUffhOrYTDgLq14Jxa/tGWcOoAzOUp4X/oydL3ToJxQ2+Hvvxifx4rdTeayxw=
   app: xmessenger
+  on:
+    branch: master
