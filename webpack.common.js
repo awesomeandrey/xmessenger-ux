@@ -26,7 +26,7 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
-            API_SERVER_URL: JSON.stringify(process.env["XM_API_SERVER_URL"])
+            XM_API_SERVER_URL: JSON.stringify(process.env["XM_API_SERVER_URL"])
         })
     ]
 };
