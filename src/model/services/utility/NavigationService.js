@@ -24,6 +24,6 @@ module.exports = {
         }
     },
     ExternalResources: {
-        GITHUB_REPO_URL: "https://github.com/awesomeandrey/xMessenger"
+        GITHUB_REPO_URL: "https://github.com/awesomeandrey/xmessenger-ux"
     }
 };
