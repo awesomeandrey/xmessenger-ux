@@ -8,7 +8,7 @@ app.use("/public", express.static("public"));
 app.use("/assets", express.static("public/assets"));
 
 app.get("*", function (req, res) {
-    res.sendFile(path.resolve(__dirname, "index.html"));
+    res.sendFile(path.resolve(__dirname, "public/index.html"));
 });
 
 app.listen(PORT, function (err) {
