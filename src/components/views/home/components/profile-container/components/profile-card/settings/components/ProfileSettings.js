@@ -144,7 +144,7 @@ class ProfileSettings extends React.Component {
             <div className="slds-grid slds-wrap slds-gutters">
                 <div className="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-large-size_6-of-12">
                     <div className="slds-text-align_center">
-                        <span className="settings-profile-picture">
+                        <span className="slds-avatar slds-avatar_large settings-profile-picture">
                             <img src={selectedPicture} ref={el => this._avatarImg = el} alt={user.name}/>
                         </span>
                     </div>
