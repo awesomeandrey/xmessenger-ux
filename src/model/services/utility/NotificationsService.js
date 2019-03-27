@@ -1,4 +1,4 @@
-const NOTIFICATION_ICON = "pictures/xmessenger-logo.jpg";
+const NOTIFICATION_ICON = "public/pictures/xmessenger-logo.jpg";
 const NOTIFICATION_GRANTED_STATUS = "granted";
 const SUPPORTS_NOTIFICATIONS = "Notification" in window;
 
