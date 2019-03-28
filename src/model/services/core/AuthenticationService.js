@@ -10,7 +10,7 @@ module.exports = {
         }
     },
     RegistrationService: {
-        checkUsernameForUniqueness: usernameToCheck => performRequest({
+        checkUsername: usernameToCheck => performRequest({
             method: "POST",
             path: "/sign-up/username",
             entity: usernameToCheck

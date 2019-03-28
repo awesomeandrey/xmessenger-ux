@@ -1,8 +1,8 @@
 import React from "react";
 import Image from "../plain/Image";
 import ModalEvents from "../../modals/events";
-import {Utility} from "../../../../../model/services/utility/UtilityService";
 
+import {Utility} from "../../../../../model/services/utility/UtilityService";
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
 
 import "./styles.css";

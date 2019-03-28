@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "../../../../../../../common/components/images/plain/Image";
+import ScalableImage from "../../../../../../../common/components/images/scalable/ScalableImage";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
 import Events from "../../../../../model/HomePageEvents";
 import ToastEvents from "../../../../../../../common/components/toasts/events";
@@ -134,7 +134,7 @@ const RequestItem = ({request, processRequest}) => {
         <div className="slds-media slds-box slds-box_x-small slds-p-vertical--x-small slds-m-top_x-small">
             <div className="slds-media__figure">
                 <div className="slds-avatar slds-avatar_large">
-                    <Image title={name} src={UserService.composeUserPictureUrl(sender)}/>
+                    <ScalableImage title={name} src={UserService.composeUserPictureUrl(sender)}/>
                 </div>
             </div>
             <div className="slds-media__body">

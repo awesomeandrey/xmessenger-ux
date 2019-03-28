@@ -25,7 +25,7 @@ class UsernameInput extends React.Component {
             return;
         }
         fieldDef.error = fieldDef.pattern.errorMessage;
-        RegistrationService.checkUsernameForUniqueness(fieldDef.value)
+        RegistrationService.checkUsername(fieldDef.value)
             .then(response => {
                 const {errorMessage} = response;
                 fieldDef.error = errorMessage;

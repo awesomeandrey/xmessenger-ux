@@ -1,5 +1,5 @@
 import React from "react";
-import ScalableImage from "../../../../../../../common/components/images/scalable/ScalableImage";
+import Image from "../../../../../../../common/components/images/plain/Image";
 import Events from "../../../../../model/HomePageEvents";
 import ModalEvents from "../../../../../../../common/components/modals/events";
 import DnDEvents from "../../../../../../../common/components/dnd/events";
@@ -87,7 +87,7 @@ export default class ChatItem extends React.Component {
                 ${selected && 'selected'}`} onClick={this.handleSelectChat}>
                 <div className="slds-media__figure">
                     <div className="slds-avatar slds-avatar_large">
-                        <ScalableImage title={fellow.name} src={UserService.composeUserPictureUrl(fellow)}/>
+                        <Image title={fellow.name} src={UserService.composeUserPictureUrl(fellow)}/>
                     </div>
                 </div>
                 <div className="slds-media__body">
