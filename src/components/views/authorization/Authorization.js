@@ -4,6 +4,7 @@ import Register from "./components/register/Register";
 import Login from "./components/login/Login";
 
 import {Grid, Row, Col, PageHeader, PageHeaderHeading, Icon, Alert} from "react-lightning-design-system";
+import {Utility} from "../../../model/services/utility/UtilityService";
 
 class Authorization extends React.Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class Authorization extends React.Component {
     }
 
     componentDidMount() {
-        if (window.location.href.includes("expired")) {
+        if (Utility.getParamFromUrl({paramName: "expired"}) === "1") {
             this.setState({jwtExpired: true});
         }
     }

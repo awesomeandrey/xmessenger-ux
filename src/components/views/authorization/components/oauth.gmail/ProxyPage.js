@@ -3,10 +3,11 @@ import Countdown from "react-countdown-now";
 import ToastContainer from "../../../../common/components/toasts/components/ToastContainer";
 import Events from "../../../../common/components/toasts/events";
 
-import {Button, Modal, ModalContent, ModalFooter, ModalHeader} from "react-lightning-design-system";
+import {Button} from "react-lightning-design-system";
 import {OAuthService} from "../../../../../model/services/core/GmailService";
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
 import {Navigation} from "../../../../../model/services/utility/NavigationService";
+import {Utility} from "../../../../../model/services/utility/UtilityService";
 
 class ProxyPage extends React.Component {
     constructor(props) {
@@ -15,25 +16,18 @@ class ProxyPage extends React.Component {
     }
 
     componentWillMount() {
-        const payload = OAuthService.parseUrlFromAuthorizationServer(window.location.hash.substring(1));
-        if (payload == null) {
-            Navigation.toHome({replace: true});
-        } else {
-            OAuthService.login(payload.access_token)
-                .then(_ => Navigation.toHome({replace: true}),
-                    error => {
-                        const errorStackTrace = JSON.stringify(error);
-                        console.error(errorStackTrace);
-                        // Display message;
-                        CustomEvents.fire({
-                            eventName: Events.SHOW,
-                            detail: {
-                                icon: "error",
-                                message: "Internal error occurred, please address support."
-                            }
-                        });
-                    });
-        }
+        const accessToken = Utility.getParamFromUrl({paramName: "access_token"});
+        OAuthService.authenticate(accessToken)
+            .then(_ => Navigation.toHome({replace: true}), error => {
+                CustomEvents.fire({
+                    eventName: Events.SHOW,
+                    detail: {
+                        icon: "error",
+                        message: "Internal error occurred, please address support."
+                    },
+                    callback: _ => console.log(error)
+                });
+            });
     }
 
     countdownRenderer({hours, minutes, seconds, completed}) {
@@ -49,22 +43,23 @@ class ProxyPage extends React.Component {
     render() {
         return (
             <ToastContainer>
-                <Modal opened={true}>
-                    <ModalHeader title="OAuth Proxy Page"/>
-                    <ModalContent>
-                        <div className="slds-p-around--small">
-                            <p>
-                                Please, wait while this proxy page authorizes you.
-                            </p>
-                            <p>
-                                If nothing happens, click "Redirect" button.
-                            </p>
+                <div className="slds-modal slds-fade-in-open" aria-hidden="false" role="dialog">
+                    <div className="slds-modal__container">
+                        <div className="slds-modal__header">
+                            <h2 className="slds-text-heading--medium">OAuth Proxy Page</h2>
                         </div>
-                    </ModalContent>
-                    <ModalFooter directional={false}>
-                        <Countdown date={Date.now() + 7000} renderer={this.countdownRenderer}/>
-                    </ModalFooter>
-                </Modal>
+                        <div className="slds-modal__content">
+                            <div className="slds-p-around--small">
+                                <p>Please, wait while this proxy page authorizes you.</p>
+                                <p>If nothing happens, click "Redirect" button.</p>
+                            </div>
+                        </div>
+                        <div className="slds-modal__footer">
+                            <Countdown date={Date.now() + 7000} renderer={this.countdownRenderer}/>
+                        </div>
+                    </div>
+                </div>
+                <div className="slds-modal-backdrop slds-modal-backdrop--open"/>
             </ToastContainer>
         );
     }

@@ -1,7 +1,7 @@
 module.exports = {
     Navigation: {
         toLogin: ({jwtExpired = false}) => {
-            window.location.href = `/login${jwtExpired ? "?expired" : ""}`;
+            window.location.href = `/login${jwtExpired ? "?expired=1" : ""}`;
         },
         toHome: ({replace = false}) => {
             if (replace) {

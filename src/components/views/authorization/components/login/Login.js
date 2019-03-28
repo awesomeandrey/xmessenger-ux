@@ -66,7 +66,7 @@ class Login extends React.Component {
     handleLoginViaGmail() {
         // Initiate OAuth flow;
         this.setState({loading: true});
-        OAuthService.composeTokenUrl()
+        OAuthService.requestTokenUrl()
             .then(url => Navigation.toCustom({url: url, replace: true}))
             .catch(e => {
                 this.setState({loading: false});

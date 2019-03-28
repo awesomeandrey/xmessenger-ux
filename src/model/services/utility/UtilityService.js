@@ -56,6 +56,10 @@ module.exports = {
                 || navigator.userAgent.match(/iPhone/i)
                 || navigator.userAgent.match(/iPod/i)
                 || navigator.userAgent.match(/BlackBerry/i));
+        },
+        getParamFromUrl: ({paramName, rawUrl = window.location.href}) => {
+            const match = rawUrl.match("[?&#]" + paramName + "=([^&]+)");
+            return match ? decodeURIComponent(match[1]) : null;
         }
     },
     InputPatterns: {

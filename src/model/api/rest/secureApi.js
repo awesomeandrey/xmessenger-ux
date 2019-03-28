@@ -44,8 +44,7 @@ module.exports = {
             body: entity,
             headers: headers
         }).then(data => Promise.resolve(data), error => {
-            let statusCode = error.status;
-            if (statusCode >= 400 && statusCode < 500) {
+            if ([401, 403].includes(error.status)) {
                 revokeClient();
                 Navigation.toLogin({jwtExpired: true});
             }
