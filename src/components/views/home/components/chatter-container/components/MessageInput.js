@@ -70,9 +70,8 @@ class MessageInput extends React.Component {
                                       ref={component => this._dynamicInputComponent = component}/>
                     </div>
                     <div className="slds-is-relative">
-                        {!Utility.isMobileDevice()
-                        && <Button type="neutral" disabled={loading} onClick={this.handleSendMessage}
-                                   className="slds-m-left--x-small">SEND</Button>}
+                        <Button type="neutral" disabled={loading} onClick={this.handleSendMessage}
+                                className="slds-m-left--x-small mobile-hidden">SEND</Button>
                     </div>
                 </form>
             </footer>

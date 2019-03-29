@@ -25,7 +25,7 @@ class DynamicInput extends React.Component {
 
     handleKeyDown(event) {
         if (event.ctrlKey && event.keyCode === 13 && !Utility.isMobileDevice()) {
-            this.setState({multiModeEnabled: true}, _ => this.focus());
+            this.setState({multiModeEnabled: true}, this.focus);
         }
     }
 

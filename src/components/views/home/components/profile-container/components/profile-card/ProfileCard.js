@@ -56,16 +56,14 @@ class ProfileCard extends React.Component {
                             <span>{Utility.decorateUsername(user.username)}</span>
                         </p>
                         <div className="slds-float_right">
-                            {
-                                Utility.isMobileDevice()
-                                    ? <Button type="neutral" onClick={this.handleLogout}>Logout</Button>
-                                    : <DropdownButton type="icon-more" icon="setup">
-                                        <DropdownMenuItem iconRight="settings"
-                                                          onClick={this.handleOpenSettings}>Settings</DropdownMenuItem>
-                                        <DropdownMenuItem iconRight="power"
-                                                          onClick={this.handleLogout}>Logout </DropdownMenuItem>
-                                    </DropdownButton>
-                            }
+                            <Button type="neutral" className="mobile-visible-only"
+                                    onClick={this.handleLogout}>Logout</Button>
+                            <DropdownButton type="icon-more" icon="setup" className="mobile-hidden">
+                                <DropdownMenuItem iconRight="settings"
+                                                  onClick={this.handleOpenSettings}>Settings</DropdownMenuItem>
+                                <DropdownMenuItem iconRight="power"
+                                                  onClick={this.handleLogout}>Logout </DropdownMenuItem>
+                            </DropdownButton>
                         </div>
                     </div>
                 </div>

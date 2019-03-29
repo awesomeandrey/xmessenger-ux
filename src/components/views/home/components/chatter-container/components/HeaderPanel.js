@@ -29,11 +29,10 @@ class HeaderPanel extends React.Component {
                     </div>
                 </header>
                 <div className="slds-no-flex">
-                    {Utility.isMobileDevice()
-                    && <Button type="neutral" onClick={_ => {
+                    <Button type="neutral" onClick={_ => {
                         document.body.scrollTop = 0; // For Safari
                         document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-                    }} className="slds-m-top_x-small">Back</Button>}
+                    }} className="slds-m-top_x-small mobile-visible-only">Back</Button>
                 </div>
             </div>
         );
