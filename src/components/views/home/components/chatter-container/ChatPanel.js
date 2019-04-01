@@ -4,6 +4,7 @@ import MessagesPanel from "./components/MessagesPanel";
 import MessageInput from "./components/MessageInput";
 import EmptyArea from "../../../../common/components/utils/EmptyArea";
 import Events from "../../model/HomePageEvents";
+import AppContext from "../../../../../model/services/context/AppContext";
 
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
 
@@ -34,11 +35,15 @@ class ChatPanel extends React.Component {
                 <EmptyArea title="Select chat from the list" icon="utility:comments"
                            className={`height-inherit slds-theme_shade slds-box slds-theme_alert-texture
                             ${hasSelectedChat && "slds-hide"}`}/>
-                <div className={`height-inherit theme-marker--border slds-card ${!hasSelectedChat && "slds-hide"}`}>
-                    <HeaderPanel chat={selectedChat}/>
-                    <MessagesPanel/>
-                    <MessageInput chat={selectedChat}/>
-                </div>
+                <AppContext.Consumer>
+                    {context => (
+                        <div className={`height-inherit theme-marker--border slds-card ${!hasSelectedChat && "slds-hide"}`}>
+                            <HeaderPanel chat={selectedChat}/>
+                            <MessagesPanel user={context.user}/>
+                            <MessageInput chat={selectedChat}/>
+                        </div>
+                    )}
+                </AppContext.Consumer>
             </div>
         );
     }

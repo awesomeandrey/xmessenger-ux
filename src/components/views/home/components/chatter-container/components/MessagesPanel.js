@@ -1,7 +1,6 @@
 import React from "react";
 import Events from "../../../model/HomePageEvents";
 
-import {UserService} from "../../../../../../model/services/core/UserService";
 import {Icon, Spinner} from "react-lightning-design-system";
 import {CustomEvents} from "../../../../../../model/services/utility/EventsService";
 import {ChattingService} from "../../../../../../model/services/core/ChattingService";
@@ -10,10 +9,7 @@ import {Utility} from "../../../../../../model/services/utility/UtilityService";
 class MessagesPanel extends React.Component {
     constructor(props) {
         super(props);
-        this.handleLoadMessages = this.handleLoadMessages.bind(this);
-        this.parseMessageItem = this.parseMessageItem.bind(this);
         this.state = {
-            currentUser: null,
             chat: null,
             messagesMap: new Map(),
             loading: false
@@ -54,17 +50,13 @@ class MessagesPanel extends React.Component {
         });
     }
 
-    componentDidMount() {
-        UserService.getCurrentUser().then(u => this.setState({currentUser: u}));
-    }
-
     componentDidUpdate(prevProps, prevState) {
         if (!!this._container) {
             this._container.scrollTop = this._container.scrollHeight;
         }
     }
 
-    handleLoadMessages(chat) {
+    handleLoadMessages = (chat) => {
         this.setState({loading: true});
         Promise.resolve(chat)
             .then(chat => {
@@ -78,14 +70,14 @@ class MessagesPanel extends React.Component {
                 state.loading = false;
                 this.setState(state)
             });
-    }
+    };
 
-    parseMessageItem(message) {
-        const messageEntry = Object.assign({}, message);
+    parseMessageItem = (message) => {
+        const messageEntry = Object.assign({}, message), {user} = this.props;
         messageEntry.date = Utility.formatDate({dateNum: message.date});
-        messageEntry.isInbound = message.author.id !== this.state.currentUser.id;
+        messageEntry.isInbound = message.author.id !== user.id;
         return messageEntry;
-    }
+    };
 
     render() {
         const {chat, messagesMap, loading} = this.state,

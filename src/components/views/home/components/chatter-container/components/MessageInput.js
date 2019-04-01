@@ -8,8 +8,6 @@ import {Utility, InputPatterns} from "../../../../../../model/services/utility/U
 class MessageInput extends React.Component {
     constructor(props) {
         super(props);
-        this.handleTypeIn = this.handleTypeIn.bind(this);
-        this.handleSendMessage = this.handleSendMessage.bind(this);
         this.state = {
             messageBody: "",
             error: false,
@@ -26,17 +24,17 @@ class MessageInput extends React.Component {
             this._dynamicInputComponent.clear();
             this.setState({messageBody: "", loading: false, error: ""});
         }
-    }
+    };
 
-    handleTypeIn(message) {
+    handleTypeIn = (message) => {
         if (Utility.check(message, InputPatterns.MESSAGE_BODY)) {
             this.setState({messageBody: message, error: ""});
         } else {
             this.setState({messageBody: message, error: InputPatterns.MESSAGE_BODY.errorMessage});
         }
-    }
+    };
 
-    handleSendMessage(event) {
+    handleSendMessage = (event) => {
         event.preventDefault();
         Promise.resolve(this.state.messageBody)
             .then(message => {
@@ -58,7 +56,7 @@ class MessageInput extends React.Component {
             }, error => {
                 this.setState({loading: false, error: error});
             });
-    }
+    };
 
     render() {
         const {loading, error} = this.state;

@@ -12,7 +12,7 @@ class AppContextProvider extends Component {
     }
 
     reloadCurrentUser = _ => UserService.getCurrentUser(true)
-        .then(u => this.setState({currentUser: u}));
+        .then(user => this.setState({currentUser: user}));
 
     componentDidMount() {
         this.reloadCurrentUser();
