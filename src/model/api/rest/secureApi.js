@@ -44,7 +44,7 @@ module.exports = {
             body: entity,
             headers: headers
         }).then(data => Promise.resolve(data), error => {
-            if ([401, 403].includes(error.status)) {
+            if ([401, 403].includes(error.status) || error.message.includes("expired")) {
                 revokeClient();
                 Navigation.toLogin({jwtExpired: true});
             }

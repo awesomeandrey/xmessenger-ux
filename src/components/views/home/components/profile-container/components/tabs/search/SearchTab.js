@@ -1,7 +1,7 @@
 import React from "react";
 import ToastEvents from "../../../../../../../common/components/toasts/events";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
-import ScalableImage from "../../../../../../../common/components/images/scalable/ScalableImage";
+import UserPicture from "../../../../../../../common/components/images/user-picture/UserPicture";
 
 import {UserService} from "../../../../../../../../model/services/core/UserService";
 import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
@@ -107,7 +107,7 @@ const Card = ({user, sendRequest, isRequestSent}) => {
     return (
         <figure className="slds-image slds-image--card">
             <div className="slds-image__crop slds-image__crop--16-by-9 stretch">
-                <ScalableImage title={user.name} src={UserService.composeUserPictureUrl(user)}/>
+                <UserPicture user={user}/>
             </div>
             <figcaption className="slds-image__title slds-image__title--card">
                 <div className="slds-clearfix" style={{width: "100%"}}>

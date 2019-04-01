@@ -1,7 +1,7 @@
 import React from 'react';
 import Events from "../../../../model/HomePageEvents";
-import ScalableImage from "../../../../../../common/components/images/scalable/ScalableImage";
 import Settings from "./settings/Settings";
+import UserPicture from "../../../../../../common/components/images/user-picture/UserPicture";
 
 import {UserService} from "../../../../../../../model/services/core/UserService";
 import {Button, DropdownButton, DropdownMenuItem, Spinner} from "react-lightning-design-system";
@@ -32,15 +32,15 @@ class ProfileCard extends React.Component {
         });
     }
 
-    handleLogout() {
+    handleLogout = _ => {
         LoginService.logout()
             .then(SessionStorage.clear)
             .then(_ => Navigation.toLogin({}));
-    }
+    };
 
-    handleOpenSettings() {
+    handleOpenSettings = _ => {
         CustomEvents.fire({eventName: Events.SETTINGS.OPEN});
-    }
+    };
 
     render() {
         const {user} = this.state;
@@ -48,7 +48,7 @@ class ProfileCard extends React.Component {
             <Settings user={user}>
                 <div className="slds-media slds-media_center slds-has-flexi-truncate">
                     <div className="slds-media__figure slds-avatar slds-avatar_large">
-                        <ScalableImage title={user.name} src={UserService.composeUserPictureUrl(user, true)}/>
+                        <UserPicture user={user}/>
                     </div>
                     <div className="slds-media__body">
                         <p className="slds-float_left">

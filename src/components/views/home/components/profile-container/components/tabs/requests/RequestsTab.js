@@ -1,10 +1,9 @@
 import React from "react";
-import ScalableImage from "../../../../../../../common/components/images/scalable/ScalableImage";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
 import Events from "../../../../../model/HomePageEvents";
 import ToastEvents from "../../../../../../../common/components/toasts/events";
+import UserPicture from "../../../../../../../common/components/images/user-picture/UserPicture";
 
-import {UserService} from "../../../../../../../../model/services/core/UserService";
 import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
 import {RequestService} from "../../../../../../../../model/services/core/RequestService";
 import {Button, ButtonGroup} from "react-lightning-design-system";
@@ -132,7 +131,7 @@ const RequestItem = ({request, processRequest}) => {
         <div className="slds-media slds-box slds-box_x-small slds-p-vertical--x-small slds-m-top_x-small">
             <div className="slds-media__figure">
                 <div className="slds-avatar slds-avatar_large">
-                    <ScalableImage title={name} src={UserService.composeUserPictureUrl(sender)}/>
+                    <UserPicture user={sender}/>
                 </div>
             </div>
             <div className="slds-media__body">

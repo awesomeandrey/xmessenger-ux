@@ -1,9 +1,7 @@
 import React from "react";
-import ScalableImage from "../../../../../common/components/images/scalable/ScalableImage";
+import UserPicture from "../../../../../common/components/images/user-picture/UserPicture";
 
-import {Utility} from "../../../../../../model/services/utility/UtilityService";
 import {Button} from "react-lightning-design-system";
-import {UserService} from "../../../../../../model/services/core/UserService";
 
 class HeaderPanel extends React.Component {
     constructor(props) {
@@ -19,7 +17,7 @@ class HeaderPanel extends React.Component {
                 <header className="slds-media slds-media_center slds-has-flexi-truncate">
                     <div className="slds-media__figure">
                         <div className="slds-avatar slds-avatar_large">
-                            <ScalableImage title={fellow.name} src={UserService.composeUserPictureUrl(fellow)}/>
+                            <UserPicture user={fellow}/>
                         </div>
                     </div>
                     <div className="slds-media__body">

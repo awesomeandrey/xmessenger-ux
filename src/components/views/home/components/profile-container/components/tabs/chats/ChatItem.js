@@ -11,6 +11,7 @@ import {ItemTypes} from "../../../../../../../common/components/dnd/ItemTypes";
 import {DragSource} from "react-dnd";
 import {DropdownButton, DropdownMenuItem} from "react-lightning-design-system";
 import {UserService} from "../../../../../../../../model/services/core/UserService";
+import UserPicture from "../../../../../../../common/components/images/user-picture/UserPicture";
 
 const chatItemSource = {
     beginDrag(props) {
@@ -87,7 +88,7 @@ export default class ChatItem extends React.Component {
                 ${selected && 'selected'}`} onClick={this.handleSelectChat}>
                 <div className="slds-media__figure">
                     <div className="slds-avatar slds-avatar_large">
-                        <Image title={fellow.name} src={UserService.composeUserPictureUrl(fellow)}/>
+                        <UserPicture user={fellow} scalable={false}/>
                     </div>
                 </div>
                 <div className="slds-media__body">
