@@ -1,35 +1,20 @@
 import React from 'react';
 import Events from "../../../../model/HomePageEvents";
-import Settings from "./settings/Settings";
-import UserPicture from "../../../../../../common/components/images/user-picture/UserPicture";
+import SettingsModal from "./settings/SettingsModal";
+import ScalableImage from "../../../../../../common/components/images/scalable/ScalableImage";
+import PropsLoader from "../../../../../../common/components/loader/PropsLoader";
 
-import {UserService} from "../../../../../../../model/services/core/UserService";
-import {Button, DropdownButton, DropdownMenuItem, Spinner} from "react-lightning-design-system";
+import {Button, DropdownButton, DropdownMenuItem} from "react-lightning-design-system";
 import {LoginService} from "../../../../../../../model/services/core/AuthenticationService";
 import {Utility} from "../../../../../../../model/services/utility/UtilityService";
 import {Navigation} from "../../../../../../../model/services/utility/NavigationService";
 import {CustomEvents} from "../../../../../../../model/services/utility/EventsService";
 import {SessionStorage} from "../../../../../../../model/services/utility/StorageService";
+import {UserService} from "../../../../../../../model/services/core/UserService";
 
 class ProfileCard extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            user: {}
-        };
-    }
-
-    componentDidMount() {
-        UserService.getCurrentUser()
-            .then(user => this.setState({user: user}));
-
-        CustomEvents.register({
-            eventName: Events.USER.RELOAD,
-            callback: _ => {
-                UserService.getCurrentUser(true)
-                    .then(user => this.setState({user: user}));
-            }
-        });
     }
 
     handleLogout = _ => {
@@ -43,12 +28,12 @@ class ProfileCard extends React.Component {
     };
 
     render() {
-        const {user} = this.state;
+        const {user} = this.props;
         return (
-            <Settings user={user}>
+            <SettingsModal user={user}>
                 <div className="slds-media slds-media_center slds-has-flexi-truncate">
                     <div className="slds-media__figure slds-avatar slds-avatar_large">
-                        <UserPicture user={user}/>
+                        <ScalableImage title={user.name} src={UserService.composeUserPictureUrl(user, true)}/>
                     </div>
                     <div className="slds-media__body">
                         <p className="slds-float_left">
@@ -67,9 +52,9 @@ class ProfileCard extends React.Component {
                         </div>
                     </div>
                 </div>
-            </Settings>
+            </SettingsModal>
         );
     }
 }
 
-export default ProfileCard;
+export default PropsLoader("user")(ProfileCard);

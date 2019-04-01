@@ -6,17 +6,15 @@ import DeleteAccount from "./components/DeleteAccount";
 import ThemePicker from "./components/ThemePicker";
 
 import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";
-import {Modal, ModalContent, ModalHeader, Spinner, Tab, Tabs} from "react-lightning-design-system";
+import {Modal, ModalContent, ModalHeader, Tab, Tabs} from "react-lightning-design-system";
 
 import "./styles/styles.css";
-import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
 
 const DEFAULT_TAB_KEY = "1";
 
-class Settings extends React.Component {
+class SettingsModal extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSelectTab = this.handleSelectTab.bind(this);
         this.state = {
             opened: false,
             loading: false,
@@ -43,21 +41,18 @@ class Settings extends React.Component {
         });
     }
 
-    handleSelectTab(tabKey) {
+    handleSelectTab = (tabKey) => {
         const {loading} = this.state;
         if (!loading) {
             this.setState({activeTabKey: tabKey.toString()});
         }
-    }
+    };
 
     render() {
         const {loading, opened, activeTabKey} = this.state, {user} = this.props;
-        if (Utility.isObjectEmpty(user)) return <Spinner/>;
         return (
-            <div className="settings-container">
-                <Modal opened={opened} onHide={_ => {
-                    this.setState({opened: false});
-                }}>
+            <div className="settings-modal-container">
+                <Modal opened={opened} onHide={_ => this.setState({opened: false})}>
                     <ModalHeader title="Settings" closeButton={!loading}/>
                     <ModalContent>
                         <Tabs type="scoped" activeKey={activeTabKey} onSelect={this.handleSelectTab}>
@@ -82,4 +77,4 @@ class Settings extends React.Component {
     }
 }
 
-export default Settings;
+export default SettingsModal;

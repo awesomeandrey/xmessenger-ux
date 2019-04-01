@@ -57,7 +57,7 @@ class ProfilePanel extends React.Component {
                 {context => (
                     <div className="slds-card height-inherit theme-marker--border">
                         <div className="theme-marker slds-card__header slds-m-bottom_none slds-p-bottom_medium">
-                            <ProfileCard/>
+                            <ProfileCard user={context.user} reloadUser={context.reloadUser}/>
                         </div>
                         <div className="slds-card__body tabs-container">
                             <Tabs type="default" activeKey={activeTabKey}

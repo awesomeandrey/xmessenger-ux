@@ -1,14 +1,14 @@
 import React from "react";
 import UserPicture from "../../../../../common/components/images/user-picture/UserPicture";
+import PropsLoader from "../../../../../common/components/loader/PropsLoader";
 
 import {Button} from "react-lightning-design-system";
 
 const HeaderPanel = props => {
-    const {chat} = props;
-    if (chat === null) return <span/>;
-    const {fellow} = chat;
+    const {chat} = props, {fellow} = chat;
     return (
-        <div className="theme-marker slds-card__header slds-grid slds-theme_shade slds-p-bottom--medium slds-m-bottom--small">
+        <div
+            className="theme-marker slds-card__header slds-grid slds-theme_shade slds-p-bottom--medium slds-m-bottom--small">
             <header className="slds-media slds-media_center slds-has-flexi-truncate">
                 <div className="slds-media__figure">
                     <div className="slds-avatar slds-avatar_large"><UserPicture user={fellow}/></div>
@@ -31,4 +31,4 @@ const HeaderPanel = props => {
     );
 };
 
-export default HeaderPanel;
+export default PropsLoader("chat")(HeaderPanel);
