@@ -6,7 +6,6 @@ import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
 import ChatItem from "./ChatItem";
 
 import {ChattingService} from "../../../../../../../../model/services/core/ChattingService";
-import {UserService} from "../../../../../../../../model/services/core/UserService";
 import {CustomEvents, KeyEvents} from "../../../../../../../../model/services/utility/EventsService";
 import {SessionEntities, SessionStorage} from "../../../../../../../../model/services/utility/StorageService";
 import {DropTarget} from "react-dnd/lib/index";
@@ -18,8 +17,6 @@ import {Icon} from "react-lightning-design-system";
 class ChatsTab extends React.Component {
     constructor(props) {
         super(props);
-        this.handleLoadChats = this.handleLoadChats.bind(this);
-        this.isSelectedChat = this.isSelectedChat.bind(this);
         this.state = {
             chatsMap: new Map(),
             selectedChat: null
@@ -32,9 +29,10 @@ class ChatsTab extends React.Component {
         CustomEvents.register({
             eventName: Events.CHAT.DELETE,
             callback: event => {
-                const {chatsMap} = this.state, {removedChat} = event.detail, isRelated = chatsMap.has(removedChat.id);
+                const {user} = this.props, {chatsMap} = this.state,
+                    {removedChat} = event.detail, isRelated = chatsMap.has(removedChat.id);
                 if (isRelated) {
-                    UserService.getCurrentUser()
+                    Promise.resolve(user)
                         .then(user => {
                             const localChat = chatsMap.get(removedChat.id),
                                 showToast = user.id === removedChat.fellow.id;
@@ -65,9 +63,10 @@ class ChatsTab extends React.Component {
         CustomEvents.register({
             eventName: Events.CHAT.CLEAR,
             callback: event => {
-                const {chatsMap} = this.state, {clearedChat} = event.detail, isRelated = chatsMap.has(clearedChat.id);
+                const {user} = this.props, {chatsMap} = this.state,
+                    {clearedChat} = event.detail, isRelated = chatsMap.has(clearedChat.id);
                 if (isRelated) {
-                    UserService.getCurrentUser()
+                    Promise.resolve(user)
                         .then(user => {
                             const localChat = chatsMap.get(clearedChat.id),
                                 showToast = user.id === clearedChat.fellow.id;
@@ -161,26 +160,27 @@ class ChatsTab extends React.Component {
         }
     }
 
-    handleLoadChats() {
+    handleLoadChats = _ => {
         ChattingService.loadChatsMap()
-            .then(chatsMap => {
-                this.setState({chatsMap: chatsMap});
-                return chatsMap.size || 0;
-            })
-            .then(chatsAmount => CustomEvents.fire({
-                eventName: Events.CHAT.CALCULATE,
-                detail: chatsAmount
-            }));
-    }
+            .then(chatsMap => this.setState(
+                {chatsMap: chatsMap},
+                _ => {
+                    CustomEvents.fire({
+                        eventName: Events.CHAT.CALCULATE,
+                        detail: chatsMap.size || 0
+                    })
+                }));
+    };
 
-    isSelectedChat(chat) {
+    isSelectedChat = chat => {
         const {selectedChat} = this.state;
         return !!selectedChat && !!chat && selectedChat.id === chat.id;
-    }
+    };
 
     render() {
         let {chatsMap} = this.state, chatsArray = Array.from(chatsMap.values());
-        const chats = chatsArray.map(chat => <ChatItem key={chat.id} data={chat} selected={this.isSelectedChat(chat)}/>);
+        const chats = chatsArray.map(chat =>
+            <ChatItem key={chat.id} data={chat} selected={this.isSelectedChat(chat)}/>);
         return (
             <div className="slds-scrollable_y height-inherit">
                 {chats.length === 0

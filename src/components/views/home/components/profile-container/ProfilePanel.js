@@ -7,6 +7,7 @@ import Events from "../../model/HomePageEvents";
 import MultiBackend from 'react-dnd-multi-backend';
 import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch';
 import GitHubLink from "../../../../common/components/github-link/GitHubLink";
+import AppContext from "../../../../../model/services/context/AppContext";
 
 import {Tabs, Tab, Icon} from "react-lightning-design-system";
 import {SessionStorage, SessionEntities} from "../../../../../model/services/utility/StorageService";
@@ -52,30 +53,34 @@ class ProfilePanel extends React.Component {
         const {chatsAmount, requestsAmount, activeTabKey} = this.state,
             searchTab = (<div>SEARCH <Icon icon="standard:search" size="small"/></div>);
         return (
-            <div className="slds-card height-inherit theme-marker--border">
-                <div className="theme-marker slds-card__header slds-m-bottom_none slds-p-bottom_medium">
-                    <ProfileCard/>
-                </div>
-                <div className="slds-card__body tabs-container">
-                    <Tabs type="default" activeKey={activeTabKey}
-                          className="height-percent-100" onSelect={this.handleSelectTab}>
-                        <Tab eventKey="1" className="height-inherit slds-p-top_none"
-                             title={<TabItem title="chats" amount={chatsAmount}/>}>
-                            <ChatsTab/>
-                        </Tab>
-                        <Tab eventKey="2" className="height-inherit slds-p-top_none"
-                             title={<TabItem title="requests" amount={requestsAmount}/>}>
-                            <RequestsTab/>
-                        </Tab>
-                        <Tab eventKey="3" title={searchTab} className="height-inherit">
-                            <SearchTab/>
-                        </Tab>
-                    </Tabs>
-                </div>
-                <footer className="theme-marker slds-card__footer position-bottom slds-align_absolute-center">
-                    <GitHubLink/>
-                </footer>
-            </div>
+            <AppContext.Consumer>
+                {context => (
+                    <div className="slds-card height-inherit theme-marker--border">
+                        <div className="theme-marker slds-card__header slds-m-bottom_none slds-p-bottom_medium">
+                            <ProfileCard/>
+                        </div>
+                        <div className="slds-card__body tabs-container">
+                            <Tabs type="default" activeKey={activeTabKey}
+                                  className="height-percent-100" onSelect={this.handleSelectTab}>
+                                <Tab eventKey="1" className="height-inherit slds-p-top_none"
+                                     title={<TabItem title="chats" amount={chatsAmount}/>}>
+                                    <ChatsTab user={context.user}/>
+                                </Tab>
+                                <Tab eventKey="2" className="height-inherit slds-p-top_none"
+                                     title={<TabItem title="requests" amount={requestsAmount}/>}>
+                                    <RequestsTab user={context.user}/>
+                                </Tab>
+                                <Tab eventKey="3" title={searchTab} className="height-inherit">
+                                    <SearchTab/>
+                                </Tab>
+                            </Tabs>
+                        </div>
+                        <footer className="theme-marker slds-card__footer position-bottom slds-align_absolute-center">
+                            <GitHubLink/>
+                        </footer>
+                    </div>
+                )}
+            </AppContext.Consumer>
         );
     }
 }
