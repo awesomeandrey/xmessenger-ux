@@ -9,7 +9,6 @@ import {Utility} from "../../../model/services/utility/UtilityService";
 class Authorization extends React.Component {
     constructor(props) {
         super(props);
-        this.switchForm = this.switchForm.bind(this);
         this.state = {
             isRegistered: true,
             jwtExpired: false
@@ -22,11 +21,11 @@ class Authorization extends React.Component {
         }
     }
 
-    switchForm() {
+    switchForm = _ => {
         this.setState({
             isRegistered: !this.state.isRegistered
         });
-    }
+    };
 
     render() {
         const {isRegistered, jwtExpired} = this.state;

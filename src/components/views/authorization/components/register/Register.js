@@ -10,9 +10,6 @@ import {Navigation} from "../../../../../model/services/utility/NavigationServic
 class Register extends React.Component {
     constructor(props) {
         super(props);
-        this.handleRegister = this.handleRegister.bind(this);
-        this.handleChangeInput = this.handleChangeInput.bind(this);
-        this.isFormFulfilled = this.isFormFulfilled.bind(this);
         this.state = {
             loading: false,
             inputs: {
@@ -43,7 +40,7 @@ class Register extends React.Component {
         this.setState({inputs: inputFields});
     }
 
-    handleRegister() {
+    handleRegister = _ => {
         this.setState({loading: true});
         const {inputs} = this.state;
         if (this.isFormFulfilled()) {
@@ -64,18 +61,18 @@ class Register extends React.Component {
             });
             this.setState({loading: false, inputs: inputs});
         }
-    }
+    };
 
-    handleChangeInput(event, fieldDef) {
+    handleChangeInput = (event, fieldDef) => {
         const {inputs} = this.state, inputName = fieldDef.name;
         if (!!inputs[inputName]) {
             fieldDef.value = event.target.value;
             inputs[inputName] = fieldDef;
             this.setState({inputs: inputs});
         }
-    }
+    };
 
-    isFormFulfilled() {
+    isFormFulfilled = _ => {
         let allInputsMatchPattern = true;
         const {inputs} = this.state;
         Object.getOwnPropertyNames(inputs).forEach(propName => {
@@ -87,10 +84,10 @@ class Register extends React.Component {
         if (!!inputs.username.error) return false;
         if (inputs.password.value !== inputs.repeatedPassword.value) return false;
         return true;
-    }
+    };
 
     render() {
-        const {loading, inputs} = this.state;
+        const {loading, inputs} = this.state, {onSwitchForm} = this.props;
         return (
             <div className="slds-form--horizontal">
                 <Input label="Your Name"
@@ -131,22 +128,18 @@ class Register extends React.Component {
                        }}
                        error={inputs.repeatedPassword.error}
                        disabled={loading} required/>
-                <div className="slds-form-element">
-                    <div className="slds-form-element__control">
+                <div className="slds-form-element__control slds-m-top_small">
+                    <div className={`slds-clearfix ${loading && "slds-hide"}`}>
                         <div className="slds-float_left">
-                            <Button className={loading ? "slds-hide" : "slds-show"}
-                                    type="neutral" onClick={this.handleRegister}>Register</Button>
-                            <div className={!loading ? "slds-hide" : "slds-show"}>
-                                <div className="slds-is-relative slds-p-around_small slds-p-left_medium">
-                                    <Spinner type="brand" container={false}/>
-                                </div>
-                            </div>
+                            <Button type="neutral" onClick={this.handleRegister}>Register</Button>
                         </div>
                         <div className="slds-float_right">
-                            <Button className={loading ? "slds-hide" : "slds-show"}
-                                    onClick={this.props.onSwitchForm}>Back to Login</Button>
+                            <Button onClick={onSwitchForm}>Back to Login</Button>
                         </div>
                     </div>
+                    {loading && <div className="slds-float_left slds-is-relative slds-p-around_small slds-p-left_medium">
+                        <Spinner type="brand" container={false}/>
+                    </div>}
                 </div>
             </div>
         );

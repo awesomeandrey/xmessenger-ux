@@ -7,13 +7,12 @@ import {RegistrationService} from "../../../../../model/services/core/Authentica
 class UsernameInput extends React.Component {
     constructor(props) {
         super(props);
-        this.handleChange = this.handleChange.bind(this);
         this.state = {
             loading: false
         };
     }
 
-    handleChange(event) {
+    handleChange = (event) => {
         this.setState({loading: true});
         const {fieldDef, onChange} = this.props;
         fieldDef.value = event.target.value;
@@ -33,7 +32,7 @@ class UsernameInput extends React.Component {
                     onChange(fieldDef);
                 });
             });
-    }
+    };
 
     render() {
         const {disabled, fieldDef, title} = this.props, {error} = fieldDef, {loading} = this.state;

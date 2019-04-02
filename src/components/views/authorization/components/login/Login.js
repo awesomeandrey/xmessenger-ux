@@ -10,10 +10,6 @@ import {Navigation} from "../../../../../model/services/utility/NavigationServic
 class Login extends React.Component {
     constructor(props) {
         super(props);
-        this.handleLogin = this.handleLogin.bind(this);
-        this.handleLoginViaGmail = this.handleLoginViaGmail.bind(this);
-        this.handleChangeInput = this.handleChangeInput.bind(this);
-        this.isFormFulfilled = this.isFormFulfilled.bind(this);
         this.state = {
             loading: false,
             inputs: {
@@ -39,7 +35,7 @@ class Login extends React.Component {
         this.setState({inputs: inputs});
     }
 
-    handleLogin() {
+    handleLogin = _ => {
         this.setState({loading: true});
         const {inputs} = this.state;
         if (this.isFormFulfilled()) {
@@ -61,9 +57,9 @@ class Login extends React.Component {
             });
             this.setState({loading: false, inputs: inputs});
         }
-    }
+    };
 
-    handleLoginViaGmail() {
+    handleLoginViaGmail = _ => {
         // Initiate OAuth flow;
         this.setState({loading: true});
         OAuthService.requestTokenUrl()
@@ -72,9 +68,9 @@ class Login extends React.Component {
                 this.setState({loading: false});
                 console.error(JSON.stringify(e));
             });
-    }
+    };
 
-    handleChangeInput(event, fieldDef) {
+    handleChangeInput = (event, fieldDef) => {
         const {inputs} = this.state, inputName = fieldDef.name;
         if (!!inputs[inputName]) {
             fieldDef.value = event.target.value;
@@ -83,9 +79,9 @@ class Login extends React.Component {
             });
             this.setState({inputs: inputs});
         }
-    }
+    };
 
-    isFormFulfilled() {
+    isFormFulfilled = _ => {
         let allInputsMatchPattern = true, {inputs} = this.state;
         Object.getOwnPropertyNames(inputs).forEach(propName => {
             if (!inputs[propName].matchesPattern()) {
@@ -96,7 +92,7 @@ class Login extends React.Component {
     }
 
     render() {
-        const {loading, inputs} = this.state;
+        const {loading, inputs} = this.state, {onSwitchForm} = this.props;
         return (
             <Form onSubmit={this.handleLogin}>
                 <Input label="Login"
@@ -114,21 +110,18 @@ class Login extends React.Component {
                        onChange={e => this.handleChangeInput(e, inputs.password)}
                        inputRef={el => this._password = el}
                        error={inputs.password.error}/>
-                <div className="slds-clearfix">
-                    <div className="slds-float_left" style={{display: "flex"}}>
-                        <Button className={loading ? "slds-hide" : "slds-show"}
-                                type="brand" onClick={this.handleLogin}>Login</Button>
-                        <Button className={loading ? "slds-hide" : "slds-show"} type="destructive"
-                                onClick={this.handleLoginViaGmail}>Login via Gmail</Button>
-                        {loading && <div className="slds-is-relative slds-p-around_small slds-p-left_medium">
-                            <Spinner type="brand" container={false}/>
-                        </div>}
+                <div className={`slds-clearfix ${loading && "slds-hide"}`}>
+                    <div className="slds-float_left flex-container">
+                        <Button type="brand" onClick={this.handleLogin}>Login</Button>
+                        <Button type="destructive" onClick={this.handleLoginViaGmail}>Login via Gmail</Button>
                     </div>
                     <div className="slds-float_right">
-                        <Button className={loading ? "slds-hide" : "slds-show"}
-                                onClick={this.props.onSwitchForm}>Register</Button>
+                        <Button onClick={onSwitchForm}>Register</Button>
                     </div>
                 </div>
+                {loading && <div className="slds-float_left slds-is-relative slds-p-around_small slds-p-left_medium">
+                    <Spinner type="brand" container={false}/>
+                </div>}
             </Form>
         );
     }
