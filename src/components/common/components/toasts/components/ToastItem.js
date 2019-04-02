@@ -9,7 +9,6 @@ import "../styles/styles.css";
 class ToastItem extends React.Component {
     constructor(props) {
         super(props);
-        this.handleClose = this.handleClose.bind(this);
         this.state = {
             delay: 3500
         };
@@ -19,17 +18,15 @@ class ToastItem extends React.Component {
         setTimeout(this.handleClose, this.state.delay);
     }
 
-    handleClose() {
-        CustomEvents.fire({eventName: ToastEvents.CLOSE, detail: this.props.data.id});
-    }
+    handleClose = _ => {
+        const {data} = this.props;
+        CustomEvents.fire({eventName: ToastEvents.CLOSE, detail: data.key});
+    };
 
     render() {
-        const data = this.props.data;
+        const {data} = this.props;
         return (
-            <Toast icon={data.icon}
-                   className="toast-item"
-                   level={data.level}
-                   onClose={this.handleClose}>
+            <Toast icon={data.icon} className="toast-item" level={data.level} onClose={this.handleClose}>
                 {data.message}
             </Toast>
         );

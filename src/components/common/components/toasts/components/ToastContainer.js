@@ -11,7 +11,7 @@ class ToastContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            toasts: new Map()
+            toasts: []
         };
     }
 
@@ -19,29 +19,23 @@ class ToastContainer extends React.Component {
         CustomEvents.register({
             eventName: ToastEvents.SHOW,
             callback: event => {
-                const toastData = event.detail;
-                toastData.id = Utility.generateHashValue(toastData);
-                this.setState({toasts: this.state.toasts.set(toastData.id, toastData)});
+                const toastData = event.detail, {toasts} = this.state;
+                toastData.key = Utility.generateUniqueId();
+                toasts.push(toastData);
+                this.setState({toasts: toasts});
             }
         });
         CustomEvents.register({
             eventName: ToastEvents.CLOSE,
             callback: event => {
-                const toastId = event.detail;
-                const toastsMap = this.state.toasts;
-                if (toastsMap.has(toastId)) {
-                    toastsMap.delete(toastId);
-                    this.setState({toasts: toastsMap});
-                }
+                const toastKeyToDismiss = event.detail, {toasts} = this.state;
+                this.setState({toasts: toasts.filter(toastItem => toastItem.key !== toastKeyToDismiss)})
             }
         });
     }
 
     render() {
-        const toastItems = [];
-        this.state.toasts.forEach((toastItem, key) => {
-            toastItems.push(<ToastItem key={key} data={toastItem}/>);
-        });
+        const toastItems = this.state.toasts.map(toastItem => <ToastItem key={toastItem.key} data={toastItem}/>);
         return (
             <div className="toasts-container">
                 <div className="slds-is-fixed slds-notify_container">{toastItems}</div>

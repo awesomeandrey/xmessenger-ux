@@ -24,22 +24,7 @@ module.exports = {
         join: (...classNames) => {
             return classNames.join(" ");
         },
-        generateHashValue: (...parameters) => {
-            let hash = 0, timestamp = new Date().getTime();
-            parameters.forEach(param => {
-                if (param === undefined || param === null) {
-                    throw "Parameter shouldn't be null or undefined when generating hash value."
-                } else {
-                    param = typeof param === 'string' ? param : JSON.stringify(param);
-                    for (let i = 0; i < param.length; i++) {
-                        let character = param.charCodeAt(i);
-                        hash = ((hash << 5) - hash) + character;
-                        hash = hash & hash; // Convert to 32bit integer;
-                    }
-                }
-            });
-            return timestamp + (hash < 0 ? hash * (-1) : hash);
-        },
+        generateUniqueId: _ => Math.random().toString(36).substr(2, 9),
         check: (value, patternObj) => {
             if (patternObj === undefined || value === undefined) {
                 throw "'Value' and 'pattern' parameters shouldn't be empty.";
