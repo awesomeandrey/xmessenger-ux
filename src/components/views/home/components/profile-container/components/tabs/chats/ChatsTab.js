@@ -18,8 +18,8 @@ class ChatsTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            chatsMap: new Map(),
-            selectedChat: null
+            selectedChat: null,
+            chatsMap: new Map()
         };
     }
 
@@ -125,7 +125,7 @@ class ChatsTab extends React.Component {
                         .then(relatedChat => {
                             relatedChat.latestMessageDate = date;
                             chatsMap.set(relatedChat.id, relatedChat);
-                            return ChattingService.sortChats(chatsMap);
+                            return ChattingService.sortChatsMap(chatsMap);
                         })
                         .then(chatsMap => this.setState({
                             chatsMap: chatsMap
@@ -154,22 +154,21 @@ class ChatsTab extends React.Component {
 
         Notifier.requestPermission();
 
-        const activeChat = SessionStorage.getItem(SessionEntities.ACTIVE_CHAT);
-        if (!!activeChat) {
-            CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: activeChat}});
-        }
+        // TODO - refactor (make sure that messages are also fetched);
+        // const activeChat = SessionStorage.getItem(SessionEntities.ACTIVE_CHAT);
+        // if (!!activeChat) {
+        //     CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: activeChat}});
+        // }
     }
 
     handleLoadChats = _ => {
         ChattingService.loadChatsMap()
-            .then(chatsMap => this.setState(
-                {chatsMap: chatsMap},
-                _ => {
-                    CustomEvents.fire({
-                        eventName: Events.CHAT.CALCULATE,
-                        detail: chatsMap.size || 0
-                    })
-                }));
+            .then(chatsMap => this.setState({chatsMap: chatsMap}, _ => {
+                CustomEvents.fire({
+                    eventName: Events.CHAT.CALCULATE,
+                    detail: chatsMap.size || 0
+                });
+            }));
     };
 
     isSelectedChat = chat => {

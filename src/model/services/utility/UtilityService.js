@@ -18,12 +18,8 @@ module.exports = {
                 return date.toLocaleString();
             }
         },
-        decorateUsername: (username) => {
-            return "@".concat(username);
-        },
-        join: (...classNames) => {
-            return classNames.join(" ");
-        },
+        decorateUsername: p => "@".concat(p),
+        join: (...classNames) => classNames.join(" "),
         generateUniqueId: _ => Math.random().toString(36).substr(2, 9),
         check: (value, patternObj) => {
             if (patternObj === undefined || value === undefined) {
@@ -32,16 +28,8 @@ module.exports = {
             let regExp = new RegExp(patternObj.exp);
             return regExp.test(value);
         },
-        isObjectEmpty: prop =>
-            prop === null || prop === undefined ||
-            (prop.hasOwnProperty("length") && prop.length === 0) ||
-            (prop.constructor === Object && Object.keys(prop).length === 0),
-        isMobileDevice: _ => {
-            return !!(navigator.userAgent.match(/Android/i)
-                || navigator.userAgent.match(/iPhone/i)
-                || navigator.userAgent.match(/iPod/i)
-                || navigator.userAgent.match(/BlackBerry/i));
-        },
+        isObjectEmpty: prop => prop === null || prop === undefined || (prop.hasOwnProperty("length") && prop.length === 0) || (prop.constructor === Object && Object.keys(prop).length === 0),
+        isMobileDevice: _ => !!(navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i)),
         getParamFromUrl: ({paramName, rawUrl = window.location.href}) => {
             const match = rawUrl.match("[?&#]" + paramName + "=([^&]+)");
             return match ? decodeURIComponent(match[1]) : null;
