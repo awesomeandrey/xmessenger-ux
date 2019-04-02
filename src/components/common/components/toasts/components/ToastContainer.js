@@ -44,9 +44,7 @@ class ToastContainer extends React.Component {
         });
         return (
             <div className="toasts-container">
-                <div className="slds-is-fixed slds-notify_container">
-                    {toastItems}
-                </div>
+                <div className="slds-is-fixed slds-notify_container">{toastItems}</div>
                 {this.props.children}
             </div>
         );

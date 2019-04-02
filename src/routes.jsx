@@ -1,15 +1,22 @@
 import React from "react";
-import {Route, IndexRoute} from "react-router";
-
 import About from "./components/views/about/About";
 import Authorization from "./components/views/authorization/Authorization";
 import ProxyPage from "./components/views/authorization/components/oauth.gmail/ProxyPage";
 import Home from "./components/views/home/Home";
 import Error from "./components/views/error/Error";
+import ModalsContainer from "./components/common/components/modals/components/ModalsContainer";
+import ToastContainer from "./components/common/components/toasts/components/ToastContainer";
 
+import {Route, IndexRoute} from "react-router";
+
+// If needed, some global custom wrappers may be injected here;
 const App = props => {
     return (
-        <div>{props.children}</div>
+        <ModalsContainer>
+            <ToastContainer>
+                {props.children}
+            </ToastContainer>
+        </ModalsContainer>
     );
 };
 
