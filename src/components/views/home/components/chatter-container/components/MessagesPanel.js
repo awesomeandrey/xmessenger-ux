@@ -10,7 +10,7 @@ class MessagesPanel extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            chat: null,
+            selectedChat: null,
             messagesMap: new Map(),
             loading: false
         }
@@ -20,16 +20,21 @@ class MessagesPanel extends React.Component {
         CustomEvents.register({
             eventName: Events.CHAT.SELECT,
             callback: event => {
-                const {selectedChat} = event.detail;
-                if (!!selectedChat) this.handleLoadMessages(selectedChat);
+                const {selectedChat} = event.detail, {selectedChat: localChat} = this.state;
+                if ((!!selectedChat && !localChat) || (!!selectedChat && !!localChat && selectedChat.id !== localChat.id)) {
+                    this.setState({selectedChat: selectedChat, loading: true}, _ => {
+                        ChattingService.loadMessagesMap(selectedChat)
+                            .then(messagesMap => this.setState({messagesMap: messagesMap, loading: false}));
+                    });
+                }
             }
         });
 
         CustomEvents.register({
             eventName: Events.CHAT.CLEAR,
             callback: event => {
-                let {clearedChat} = event.detail, {chat} = this.state;
-                if (!!clearedChat && !!chat && clearedChat.id === chat.id) {
+                let {clearedChat} = event.detail, {selectedChat} = this.state;
+                if (!!clearedChat && !!selectedChat && clearedChat.id === selectedChat.id) {
                     this.setState({messagesMap: new Map()});
                 }
             }
@@ -38,13 +43,10 @@ class MessagesPanel extends React.Component {
         CustomEvents.register({
             eventName: Events.MESSAGE.ADD,
             callback: event => {
-                const {chat} = this.state, {message} = event.detail;
-                if (!!chat && chat.id === message.relation.id) {
-                    const entry = this.parseMessageItem(message), {messagesMap} = this.state;
-                    if (!messagesMap.has(entry.id)) {
-                        messagesMap.set(entry.id, entry);
-                        this.setState({messagesMap: messagesMap});
-                    }
+                const {message} = event.detail, {selectedChat, messagesMap} = this.state;
+                if (!!selectedChat && selectedChat.id === message.relation.id && !messagesMap.has(message.id)) {
+                    messagesMap.set(message.id, message);
+                    this.setState({messagesMap: messagesMap});
                 }
             }
         });
@@ -56,33 +58,11 @@ class MessagesPanel extends React.Component {
         }
     }
 
-    handleLoadMessages = (chat) => {
-        this.setState({loading: true});
-        Promise.resolve(chat)
-            .then(chat => {
-                return !!chat
-                    ? ChattingService.loadMessagesMap({chat: chat, itemCallback: this.parseMessageItem})
-                    : Promise.reject("Empty chat selected.");
-            })
-            .then(messagesMap => ({chat: chat, messagesMap: messagesMap}),
-                _ => ({chat: null, messagesMap: new Map()}))
-            .then(state => {
-                state.loading = false;
-                this.setState(state)
-            });
-    };
-
-    parseMessageItem = (message) => {
-        const messageEntry = Object.assign({}, message), {user} = this.props;
-        messageEntry.date = Utility.formatDate({dateNum: message.date});
-        messageEntry.isInbound = message.author.id !== user.id;
-        return messageEntry;
-    };
-
     render() {
-        const {chat, messagesMap, loading} = this.state,
+        const {chat, messagesMap, loading} = this.state, {user} = this.props,
             messageItems = Array.from(messagesMap.values()).map(message => {
-                return message.isInbound
+                message.formattedDate = Utility.formatDate({dateNum: message.date});
+                return message.author.id !== user.id
                     ? <InboundMessage key={message.id} message={message}/>
                     : <OutboundMessage key={message.id} message={message}/>;
             });
@@ -122,7 +102,7 @@ const OutboundMessage = ({message}) => {
                         <span>{message.body}</span>
                     </div>
                     <div className="slds-chat-message__meta slds-float_right"
-                         aria-label={message.date}>{message.date}</div>
+                         aria-label={message.formattedDate}>{message.formattedDate}</div>
                 </div>
             </div>
         </li>
@@ -138,7 +118,7 @@ const InboundMessage = ({message}) => {
                         <span>{message.body}</span>
                     </div>
                     <div className="slds-chat-message__meta slds-float_left"
-                         aria-label={message.date}>{message.date}</div>
+                         aria-label={message.formattedDate}>{message.formattedDate}</div>
                 </div>
             </div>
         </li>

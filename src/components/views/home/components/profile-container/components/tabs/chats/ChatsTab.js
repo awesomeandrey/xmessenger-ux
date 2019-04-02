@@ -49,10 +49,7 @@ class ChatsTab extends React.Component {
                         })
                         .then(_ => {
                             if (this.isSelectedChat(removedChat)) {
-                                CustomEvents.fire({
-                                    eventName: Events.CHAT.SELECT,
-                                    detail: {selectedChat: null}
-                                });
+                                CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: null}});
                             }
                         })
                         .then(this.handleLoadChats);
@@ -140,10 +137,7 @@ class ChatsTab extends React.Component {
             handler: event => {
                 event = event || window.event;
                 if (event.keyCode === 27) {
-                    CustomEvents.fire({
-                        eventName: Events.CHAT.SELECT,
-                        detail: {selectedChat: null}
-                    });
+                    CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: null}});
                 }
             }
         });
@@ -164,10 +158,7 @@ class ChatsTab extends React.Component {
     handleLoadChats = _ => {
         ChattingService.loadChatsMap()
             .then(chatsMap => this.setState({chatsMap: chatsMap}, _ => {
-                CustomEvents.fire({
-                    eventName: Events.CHAT.CALCULATE,
-                    detail: chatsMap.size || 0
-                });
+                CustomEvents.fire({eventName: Events.CHAT.CALCULATE, detail: chatsMap.size || 0});
             }));
     };
 
@@ -177,15 +168,14 @@ class ChatsTab extends React.Component {
     };
 
     render() {
-        let {chatsMap} = this.state, chatsArray = Array.from(chatsMap.values());
-        const chats = chatsArray.map(chat =>
-            <ChatItem key={chat.id} data={chat} selected={this.isSelectedChat(chat)}/>);
+        const {chatsMap} = this.state, chatItems = [...chatsMap.values()].map(chat => {
+            return <ChatItem key={chat["id"]} data={chat} selected={this.isSelectedChat(chat)}/>
+        });
         return (
             <div className="slds-scrollable_y height-inherit">
-                {chats.length === 0
-                    ? <EmptyArea title="There are no chats for now"
-                                 className="height-inherit" icon="utility:comments"/>
-                    : <div className="slds-text-longform">{chats}</div>}
+                {chatItems.length === 0
+                    ? <EmptyArea title="There are no chats for now" className="height-inherit" icon="utility:comments"/>
+                    : <div className="slds-text-longform">{chatItems}</div>}
                 <div className="slds-align_absolute-center position-bottom">
                     <TrashContainer/>
                 </div>

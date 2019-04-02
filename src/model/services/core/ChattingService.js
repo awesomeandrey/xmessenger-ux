@@ -36,19 +36,13 @@ module.exports = {
             path: `/chats/${chat.id}/clear`,
             entity: chat
         }),
-        loadMessagesMap: ({chat, itemCallback}) => {
-            return performRequest({
-                method: "GET",
-                path: `/chats/${chat.id}/messages`
-            }).then(messages => {
-                let messagesMap = new Map();
-                messages.reverse().forEach(msg => {
-                    let entry = itemCallback(msg);
-                    messagesMap.set(entry.id, entry);
-                });
-                return Promise.resolve(messagesMap);
-            });
-        },
+        loadMessagesMap: (chat) => performRequest({
+            method: "GET",
+            path: `/chats/${chat.id}/messages`
+        }).then(messages => {
+            const messagesMap = new Map(messages.reverse().map(message => [message.id, message]));
+            return Promise.resolve(messagesMap);
+        }),
         sendMessage: ({chat, messageBody}) => performRequest({
             method: "POST",
             path: `/chats/${chat.id}/messages`,

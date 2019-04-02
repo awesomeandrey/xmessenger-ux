@@ -1,7 +1,7 @@
 const ERROR_MSG = "'Key' parameter should be of 'string' type when operating with storage!";
 
 const Storage = storageObj => ({
-    setItem: ({key, value}) => {
+    setItem: ({key, value = null}) => {
         if (typeof key !== "string") {
             throw ERROR_MSG;
         } else if (value == null) {

@@ -34,12 +34,10 @@ const chatItemSource = {
 export default class ChatItem extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSelectChat = this.handleSelectChat.bind(this);
-        this.handleClearHistory = this.handleClearHistory.bind(this);
         this.state = {};
     }
 
-    handleSelectChat(event) {
+    handleSelectChat = (event) => {
         if (event.target.nodeName !== 'BUTTON') {
             CustomEvents.fire({
                 eventName: Events.CHAT.SELECT,
@@ -48,7 +46,7 @@ export default class ChatItem extends React.Component {
                 }
             });
         }
-    }
+    };
 
     /*
      * This method is 'static' as it's used in DnD process;
@@ -66,7 +64,7 @@ export default class ChatItem extends React.Component {
         CustomEvents.fire({eventName: ModalEvents.SHOW, detail: modalDetails});
     }
 
-    handleClearHistory() {
+    handleClearHistory = _ => {
         const {data} = this.props, chatEntity = data;
         let modalDetails = {
             title: "Clear chat history",
@@ -78,7 +76,7 @@ export default class ChatItem extends React.Component {
             }
         };
         CustomEvents.fire({eventName: ModalEvents.SHOW, detail: modalDetails});
-    }
+    };
 
     render() {
         const {connectDragSource, data, selected} = this.props, {fellow} = data,
