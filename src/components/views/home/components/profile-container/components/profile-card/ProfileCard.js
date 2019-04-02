@@ -1,5 +1,5 @@
 import React from 'react';
-import Events from "../../../../model/HomePageEvents";
+import Events from "../../../../../../../model/events/application-events";
 import SettingsModal from "./settings/SettingsModal";
 import ScalableImage from "../../../../../../common/components/images/scalable/ScalableImage";
 import PropsLoader from "../../../../../../common/components/loader/PropsLoader";

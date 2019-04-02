@@ -3,7 +3,7 @@ import ProfileCard from "./components/profile-card/ProfileCard";
 import ChatsTab from "./components/tabs/chats/ChatsTab";
 import RequestsTab from "./components/tabs/requests/RequestsTab";
 import SearchTab from "./components/tabs/search/SearchTab";
-import Events from "../../model/HomePageEvents";
+import Events from "../../../../../model/events/application-events";
 import MultiBackend from 'react-dnd-multi-backend';
 import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch';
 import GitHubLink from "../../../../common/components/github-link/GitHubLink";

@@ -1,5 +1,5 @@
 import React from "react";
-import Events from "../../../../../model/HomePageEvents";
+import Events from "../../../../../../../../model/events/application-events";
 import ToastEvents from "../../../../../../../common/components/toasts/events";
 import DnDEvents from "../../../../../../../common/components/dnd/events";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";

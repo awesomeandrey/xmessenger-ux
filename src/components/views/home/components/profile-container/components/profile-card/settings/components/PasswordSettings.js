@@ -1,5 +1,5 @@
 import React from "react";
-import Events from "../../../../../../model/HomePageEvents";
+import Events from "../../../../../../../../../model/events/application-events";
 
 import {Settings} from "../../../../../../../../../model/services/core/UserService";
 import {InputPatterns} from "../../../../../../../../../model/services/utility/UtilityService";

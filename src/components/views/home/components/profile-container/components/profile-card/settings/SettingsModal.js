@@ -1,5 +1,5 @@
 import React from 'react';
-import Events from "../../../../../model/HomePageEvents";
+import Events from "../../../../../../../../model/events/application-events";
 import ProfileSettings from "./components/ProfileSettings";
 import PasswordSettings from "./components/PasswordSettings";
 import DeleteAccount from "./components/DeleteAccount";

@@ -5,10 +5,10 @@ import ProfilePanel from "./components/profile-container/ProfilePanel";
 import ToastContainer from "../../common/components/toasts/components/ToastContainer";
 import ModalsContainer from "../../common/components/modals/components/ModalsContainer";
 import AppContextProvider from "../../../model/services/context/AppContextProvider";
+import subscribeToTopics from "../../../model/api/streaming/TopicsSubscriber";
 
 import {Utility} from "../../../model/services/utility/UtilityService";
 import {getCurrentTheme, applyTheme} from "../../../model/services/utility/ThemingService";
-import {registerServerListeners} from "./model/WebSocketListener";
 
 import "./styles/styles.css";
 
@@ -18,7 +18,7 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        registerServerListeners();
+        subscribeToTopics();
         applyTheme(getCurrentTheme());
     }
 

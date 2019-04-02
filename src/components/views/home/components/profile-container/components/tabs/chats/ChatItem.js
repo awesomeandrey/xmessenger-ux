@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "../../../../../../../common/components/images/plain/Image";
-import Events from "../../../../../model/HomePageEvents";
+import Events from "../../../../../../../../model/events/application-events";
 import ModalEvents from "../../../../../../../common/components/modals/events";
 import DnDEvents from "../../../../../../../common/components/dnd/events";
 

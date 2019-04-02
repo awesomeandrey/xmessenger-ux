@@ -1,5 +1,5 @@
 import React from "react";
-import Events from "../../../../../../model/HomePageEvents";
+import Events from "../../../../../../../../../model/events/application-events";
 import FieldDefinition from "../../../../../../../../common/model/FieldDefinition";
 
 import {Settings, UserService} from "../../../../../../../../../model/services/core/UserService";

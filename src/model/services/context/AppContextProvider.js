@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import AppContext from './AppContext';
-import Events from "../../../components/views/home/model/HomePageEvents";
+import Events from "../../events/application-events";
 
 import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";

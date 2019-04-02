@@ -1,5 +1,5 @@
 import React from "react";
-import Events from "../../../model/HomePageEvents";
+import Events from "../../../../../../model/events/application-events";
 
 import {Icon, Spinner} from "react-lightning-design-system";
 import {CustomEvents} from "../../../../../../model/services/utility/EventsService";

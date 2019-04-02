@@ -4,29 +4,12 @@ import {API_BASE_PATH as OPEN_API_PATH} from "../../api/rest/openApi";
 
 const ALT_USER_PICTURE = "public/pictures/default-profile-picture.png";
 
-/**
- * In order to cache running user info parametrized closure is utilized;
- */
-const cacheRunningUser = _ => {
-    let cachedUser = null;
-    return toReload => {
-        if (toReload || cachedUser == null) {
-            return performRequest({
-                method: "GET",
-                path: "/user/info"
-            }).then(user => {
-                cachedUser = user;
-                return Promise.resolve(cachedUser);
-            });
-        } else {
-            return Promise.resolve(cachedUser);
-        }
-    };
-}, cachingFun = cacheRunningUser(); // Function Execution Context is created;
-
 module.exports = {
     UserService: {
-        getCurrentUser: reload => cachingFun(reload),
+        getCurrentUser: _ => performRequest({
+            method: "GET",
+            path: "/user/info"
+        }),
         composeUserPictureUrl: (user, refresh = false) => {
             if (!!user && user.hasPicture) {
                 let pictureUrl = `${OPEN_API_PATH}/user/${user.id}/picture`;

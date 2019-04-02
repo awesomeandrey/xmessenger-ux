@@ -12,7 +12,6 @@ import {Utility} from "../../../../../model/services/utility/UtilityService";
 class ProxyPage extends React.Component {
     constructor(props) {
         super(props);
-        this.countdownRenderer = this.countdownRenderer.bind(this);
     }
 
     componentWillMount() {
@@ -30,7 +29,7 @@ class ProxyPage extends React.Component {
             });
     }
 
-    countdownRenderer({hours, minutes, seconds, completed}) {
+    countdownRenderer = ({hours, minutes, seconds, completed}) => {
         if (completed) {
             // Render a complete state;
             return <Button type="brand" label="Redirect" onClick={_ => Navigation.toHome({replace: true})}/>;

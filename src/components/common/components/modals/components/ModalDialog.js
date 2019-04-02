@@ -18,8 +18,6 @@ const DEFAULT_STATE = {
 class ModalDialog extends React.Component {
     constructor(props) {
         super(props);
-        this.hideModal = this.hideModal.bind(this);
-        this.handleActionBtn = this.handleActionBtn.bind(this);
         this.state = DEFAULT_STATE;
     }
 
@@ -32,17 +30,17 @@ class ModalDialog extends React.Component {
         });
     }
 
-    hideModal() {
+    hideModal = _ => {
         this.setState(DEFAULT_STATE);
-    }
+    };
 
-    handleActionBtn() {
+    handleActionBtn = _ => {
         const {actionButton} = this.state;
         if (!!actionButton && typeof actionButton.callback === "function") {
             actionButton.callback(); // execute callback;
         }
         this.hideModal();
-    }
+    };
 
     render() {
         const {opened, title, body, actionButton} = this.state;

@@ -1,6 +1,6 @@
 import React from "react";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
-import Events from "../../../../../model/HomePageEvents";
+import Events from "../../../../../../../../model/events/application-events";
 import ToastEvents from "../../../../../../../common/components/toasts/events";
 import UserPicture from "../../../../../../../common/components/images/user-picture/UserPicture";
 

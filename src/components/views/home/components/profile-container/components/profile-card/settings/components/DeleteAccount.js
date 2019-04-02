@@ -1,6 +1,6 @@
 import React from "react";
 import FieldDefinition from "../../../../../../../../common/model/FieldDefinition";
-import Events from "../../../../../../model/HomePageEvents";
+import Events from "../../../../../../../../../model/events/application-events";
 
 import {Button, Icon, Input, Spinner} from "react-lightning-design-system";
 import {InputPatterns} from "../../../../../../../../../model/services/utility/UtilityService";
