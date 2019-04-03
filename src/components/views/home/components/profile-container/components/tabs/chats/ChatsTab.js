@@ -14,7 +14,7 @@ import {Utility} from "../../../../../../../../model/services/utility/UtilitySer
 import {Notifier} from "../../../../../../../../model/services/utility/NotificationsService";
 import {Icon} from "react-lightning-design-system";
 
-const TOASTS_BLUEPRINTS = {
+const NOTIFICATION_BLUEPRINTS = {
     onChatCleared: userName => {
         CustomEvents.fire({
             eventName: ToastEvents.SHOW,
@@ -30,6 +30,16 @@ const TOASTS_BLUEPRINTS = {
                 icon: "notification", level: "error",
                 message: <span><b>{userName}</b> removed chat with you.</span>
             }
+        });
+    },
+    onIncomingMessage: (chat, message) => {
+        Notifier.notify({
+            title: `New message from ${chat.fellow.name}`,
+            text: message.body,
+            onclick: _ => CustomEvents.fire({
+                eventName: Events.CHAT.SELECT,
+                detail: {selectedChat: chat}
+            })
         });
     }
 };
@@ -53,10 +63,9 @@ class ChatsTab extends React.Component {
                 if (chatsMap.has(clearedChat.id)) {
                     const localChat = chatsMap.get(clearedChat.id), {updatedBy} = clearedChat;
                     if (user.id !== updatedBy.id) {
-                        TOASTS_BLUEPRINTS.onChatCleared(updatedBy.name);
+                        NOTIFICATION_BLUEPRINTS.onChatCleared(updatedBy.name);
                     }
-                    localChat.latestMessageDate = null;
-                    chatsMap.set(localChat.id, localChat);
+                    chatsMap.set(localChat.id, Object.assign(localChat, {latestMessageDate: null}));
                     this.setState({chatsMap: chatsMap});
                 }
             }
@@ -69,7 +78,7 @@ class ChatsTab extends React.Component {
                 if (chatsMap.has(removedChat.id)) {
                     const {updatedBy} = removedChat;
                     if (user.id !== updatedBy.id) {
-                        TOASTS_BLUEPRINTS.onChatDeleted(updatedBy.name);
+                        NOTIFICATION_BLUEPRINTS.onChatDeleted(updatedBy.name);
                     }
                     if (chatsMap.delete(removedChat.id)) {
                         this.setState({chatsMap: chatsMap}, _ => {
@@ -95,32 +104,14 @@ class ChatsTab extends React.Component {
         CustomEvents.register({
             eventName: Events.MESSAGE.ADD,
             callback: event => {
-                const {chatsMap} = this.state, {message} = event.detail, {relation, date} = message,
-                    isRelated = chatsMap.has(relation.id);
-                if (isRelated) {
-                    const relatedChat = chatsMap.get(relation.id);
-                    Promise.resolve(relatedChat)
-                        .then(relatedChat => {
-                            if (!this.isSelectedChat(relatedChat)) {
-                                Notifier.notify({
-                                    title: `New message from ${relatedChat.fellow.name}`,
-                                    text: message.body,
-                                    onclick: _ => CustomEvents.fire({
-                                        eventName: Events.CHAT.SELECT,
-                                        detail: {selectedChat: relatedChat}
-                                    })
-                                });
-                            }
-                            return relatedChat;
-                        })
-                        .then(relatedChat => {
-                            relatedChat.latestMessageDate = date;
-                            chatsMap.set(relatedChat.id, relatedChat);
-                            return ChattingService.sortChatsMap(chatsMap);
-                        })
-                        .then(chatsMap => this.setState({
-                            chatsMap: chatsMap
-                        }));
+                const {chatsMap} = this.state, {message} = event.detail, {relation, date} = message;
+                if (chatsMap.has(relation.id)) {
+                    const chat = chatsMap.get(relation.id);
+                    if (!this.isSelectedChat(chat)) {
+                        NOTIFICATION_BLUEPRINTS.onIncomingMessage(chat, message);
+                    }
+                    chatsMap.set(chat.id, Object.assign(chat, {latestMessageDate: date}));
+                    this.setState({chatsMap: ChattingService.sortChatsMap(chatsMap)});
                 }
             }
         });
@@ -141,11 +132,10 @@ class ChatsTab extends React.Component {
 
         Notifier.requestPermission();
 
-        // TODO - refactor (make sure that messages are also fetched);
-        // const activeChat = SessionStorage.getItem(SessionEntities.ACTIVE_CHAT);
-        // if (!!activeChat) {
-        //     CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: activeChat}});
-        // }
+        const activeChat = SessionStorage.getItem(SessionEntities.ACTIVE_CHAT);
+        if (!!activeChat) {
+            CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: activeChat}});
+        }
     }
 
     handleLoadChats = _ => {

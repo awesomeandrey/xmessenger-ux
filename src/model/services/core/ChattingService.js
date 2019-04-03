@@ -22,9 +22,9 @@ module.exports = {
         }),
         sortChatsMap: chatsMap => {
             if (chatsMap instanceof Map && chatsMap.size > 0) {
-                chatsMap = _parseChatItems([...chatsMap.values()]);
+                return _parseChatItems([...chatsMap.values()]);
             }
-            return Promise.resolve(chatsMap);
+            return new Map();
         },
         removeChat: chat => performRequest({
             method: "DELETE",
@@ -50,6 +50,6 @@ module.exports = {
                 relation: {id: chat.id},
                 body: messageBody
             }
-        }),
+        })
     }
 };
