@@ -14,6 +14,26 @@ import {Utility} from "../../../../../../../../model/services/utility/UtilitySer
 import {Notifier} from "../../../../../../../../model/services/utility/NotificationsService";
 import {Icon} from "react-lightning-design-system";
 
+const TOASTS_BLUEPRINTS = {
+    onChatCleared: userName => {
+        CustomEvents.fire({
+            eventName: ToastEvents.SHOW,
+            detail: {
+                message: <span><b>{userName}</b> has just cleared chat history.</span>
+            }
+        });
+    },
+    onChatDeleted: userName => {
+        CustomEvents.fire({
+            eventName: ToastEvents.SHOW,
+            detail: {
+                icon: "notification", level: "error",
+                message: <span><b>{userName}</b> removed chat with you.</span>
+            }
+        });
+    }
+};
+
 class ChatsTab extends React.Component {
     constructor(props) {
         super(props);
@@ -27,64 +47,38 @@ class ChatsTab extends React.Component {
         CustomEvents.register({eventName: Events.CHAT.LOAD_ALL, callback: this.handleLoadChats});
 
         CustomEvents.register({
-            eventName: Events.CHAT.DELETE,
+            eventName: Events.CHAT.CLEAR,
             callback: event => {
-                const {user} = this.props, {chatsMap} = this.state,
-                    {removedChat} = event.detail, isRelated = chatsMap.has(removedChat.id);
-                if (isRelated) {
-                    Promise.resolve(user)
-                        .then(user => {
-                            const localChat = chatsMap.get(removedChat.id),
-                                showToast = user.id === removedChat.fellow.id;
-                            if (showToast) {
-                                CustomEvents.fire({
-                                    eventName: ToastEvents.SHOW,
-                                    detail: {
-                                        icon: "notification",
-                                        level: "error",
-                                        message: <span><b>{localChat.fellow.name}</b> removed chat with you</span>
-                                    }
-                                });
-                            }
-                        })
-                        .then(_ => {
-                            if (this.isSelectedChat(removedChat)) {
-                                CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: null}});
-                            }
-                        })
-                        .then(this.handleLoadChats);
+                const {user} = this.props, {chatsMap} = this.state, {clearedChat} = event.detail;
+                if (chatsMap.has(clearedChat.id)) {
+                    const localChat = chatsMap.get(clearedChat.id), {updatedBy} = clearedChat;
+                    if (user.id !== updatedBy.id) {
+                        TOASTS_BLUEPRINTS.onChatCleared(updatedBy.name);
+                    }
+                    localChat.latestMessageDate = null;
+                    chatsMap.set(localChat.id, localChat);
+                    this.setState({chatsMap: chatsMap});
                 }
             }
         });
 
         CustomEvents.register({
-            eventName: Events.CHAT.CLEAR,
+            eventName: Events.CHAT.DELETE,
             callback: event => {
-                const {user} = this.props, {chatsMap} = this.state,
-                    {clearedChat} = event.detail, isRelated = chatsMap.has(clearedChat.id);
-                if (isRelated) {
-                    Promise.resolve(user)
-                        .then(user => {
-                            const localChat = chatsMap.get(clearedChat.id),
-                                showToast = user.id === clearedChat.fellow.id;
-                            if (showToast) {
-                                CustomEvents.fire({
-                                    eventName: ToastEvents.SHOW,
-                                    detail: {
-                                        message:
-                                            <span><b>{localChat.fellow.name}</b> has just cleared chat history</span>
-                                    }
-                                });
+                const {user} = this.props, {chatsMap} = this.state, {removedChat} = event.detail;
+                if (chatsMap.has(removedChat.id)) {
+                    const {updatedBy} = removedChat;
+                    if (user.id !== updatedBy.id) {
+                        TOASTS_BLUEPRINTS.onChatDeleted(updatedBy.name);
+                    }
+                    if (chatsMap.delete(removedChat.id)) {
+                        this.setState({chatsMap: chatsMap}, _ => {
+                            CustomEvents.fire({eventName: Events.CHAT.CALCULATE, detail: chatsMap.size || 0});
+                            if (this.isSelectedChat(removedChat)) {
+                                CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: null}});
                             }
-                        })
-                        .then(_ => {
-                            const localChat = chatsMap.get(clearedChat.id);
-                            localChat.latestMessageDate = null;
-                            chatsMap.set(localChat.id, localChat);
-                            this.setState({
-                                chatsMap: chatsMap
-                            })
                         });
+                    }
                 }
             }
         });
@@ -133,8 +127,7 @@ class ChatsTab extends React.Component {
 
         // 'Escape' button;
         KeyEvents.register({
-            eventName: 'keydown',
-            handler: event => {
+            eventName: 'keydown', handler: event => {
                 event = event || window.event;
                 if (event.keyCode === 27) {
                     CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: null}});
