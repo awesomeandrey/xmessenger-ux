@@ -6,7 +6,7 @@ module.exports = {
             method: "GET",
             path: "/requests/"
         }),
-        processRequest: request => performRequest({
+        respondToRequest: request => performRequest({
             method: "PUT",
             path: "/requests/process",
             entity: request

@@ -9,6 +9,43 @@ import {RequestService} from "../../../../../../../../model/services/core/Reques
 import {Button, ButtonGroup} from "react-lightning-design-system";
 import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";
 
+const NOTIFICATION_BLUEPRINTS = {
+    onRespondToRequest: request => {
+        CustomEvents.fire({
+            eventName: ToastEvents.SHOW,
+            detail: {
+                icon: "notification", level: "success", message: (
+                    <span>Friendship request from <b>{request.sender.name} </b>
+                        was <b>{request.approved ? "accepted" : "declined"}</b></span>
+                )
+            }
+        })
+    },
+    onRespondToRequestError: error => {
+        CustomEvents.fire({
+            eventName: ToastEvents.SHOW,
+            detail: {icon: "warning", level: "warning", message: error.message}
+        })
+    },
+    onProcessRequest: request => {
+        CustomEvents.fire({
+            eventName: ToastEvents.SHOW,
+            detail: {
+                icon: "notification",
+                message: (<span><b>{request.recipient.name} </b>
+                    {request.approved ? "accepted" : "declined"} your friendship request.</span>)
+            }
+        });
+    },
+    onSendRequest: callback => {
+        CustomEvents.fire({
+            eventName: ToastEvents.SHOW,
+            detail: {icon: "notification", message: "There is a new friendship request. Check it out!"},
+            callback: callback
+        });
+    }
+};
+
 class RequestsTab extends React.Component {
     constructor(props) {
         super(props);
@@ -22,23 +59,9 @@ class RequestsTab extends React.Component {
             eventName: Events.REQUEST.SEND,
             callback: event => {
                 const {user} = this.props, {request} = event.detail;
-                Promise.resolve(user)
-                    .then(user => {
-                        return user.id === request.recipient.id
-                            ? Promise.resolve(request)
-                            : Promise.reject("No relation to current user.");
-                    })
-                    .then(_ => {
-                        CustomEvents.fire({
-                            eventName: ToastEvents.SHOW,
-                            detail: {
-                                icon: "notification",
-                                message: "There is a new friendship request. Check it out!"
-                            },
-                            callback: this.loadRequests
-                        });
-                    }, reason => {
-                    });
+                if (user.id === request.recipient.id) {
+                    NOTIFICATION_BLUEPRINTS.onSendRequest(this.loadRequests);
+                }
             }
         });
 
@@ -46,31 +69,16 @@ class RequestsTab extends React.Component {
             eventName: Events.REQUEST.PROCESS,
             callback: event => {
                 const {user} = this.props, {request} = event.detail;
-                Promise.resolve(user)
-                    .then(user => {
-                        if (user.id === request.recipient.id) {
-                            this.loadRequests();
-                            return Promise.resolve(request);
-                        } else if (user.id === request.sender.id) {
-                            CustomEvents.fire({
-                                eventName: ToastEvents.SHOW,
-                                detail: {
-                                    icon: "notification",
-                                    message:
-                                        <span><b>{request.recipient.name}</b> {request.approved ? "accepted" : "declined"} your friendship request.</span>
-                                }
-                            });
-                            return Promise.resolve(request);
-                        } else {
-                            return Promise.reject("No relation to current user.");
-                        }
-                    })
-                    .then(request => {
-                        if (request.approved) {
-                            CustomEvents.fire({eventName: Events.CHAT.LOAD_ALL});
-                        }
-                    }, reason => {
-                    });
+                if (user.id === request.recipient.id) {
+                    if (request.approved) {
+                        CustomEvents.fire({eventName: Events.CHAT.LOAD_ALL, callback: this.loadRequests});
+                    }
+                } else if (user.id === request.sender.id) {
+                    NOTIFICATION_BLUEPRINTS.onProcessRequest(request);
+                    if (request.approved) {
+                        CustomEvents.fire({eventName: Events.CHAT.LOAD_ALL});
+                    }
+                }
             }
         });
     }
@@ -81,39 +89,21 @@ class RequestsTab extends React.Component {
 
     loadRequests = _ => {
         RequestService.getRequests()
-            .then(requests => this.setState(
-                {requests: requests || []}, _ => {
-                    CustomEvents.fire({
-                        eventName: Events.REQUEST.CALCULATE,
-                        detail: this.state.requests.length || 0
-                    });
-                }));
+            .then(requests => this.setState({requests: requests || []}, _ => {
+                CustomEvents.fire({eventName: Events.REQUEST.CALCULATE, detail: this.state.requests.length || 0});
+            }));
     };
 
-    processRequest = (request, isAccepted) => {
+    respondToRequest = (request, isAccepted) => {
         request.approved = isAccepted;
-        RequestService.processRequest(request)
-            .then(request => CustomEvents.fire({
-                eventName: ToastEvents.SHOW,
-                detail: {
-                    icon: "notification",
-                    level: "success",
-                    message:
-                        <span>Friendship request from <b>{request.sender.name}</b> was <b>{request.approved ? "accepted" : "declined"}</b></span>
-                }
-            }), error => CustomEvents.fire({
-                eventName: ToastEvents.SHOW,
-                detail: {
-                    icon: "warning",
-                    level: "warning",
-                    message: error.message
-                }
-            }));
+        RequestService.respondToRequest(request)
+            .then(request => NOTIFICATION_BLUEPRINTS.onRespondToRequest(request),
+                error => NOTIFICATION_BLUEPRINTS.onRespondToRequestError(error));
     };
 
     render() {
         const {requests} = this.state, requestItems = requests.map(request =>
-            <RequestItem key={request.id} request={request} processRequest={this.processRequest}/>);
+            <RequestItem key={request.id} request={request} processRequest={this.respondToRequest}/>);
         return (
             <div className="slds-scrollable_y height-inherit">
                 {requestItems.length === 0
