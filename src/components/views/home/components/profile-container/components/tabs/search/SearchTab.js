@@ -12,10 +12,6 @@ import {CustomEvents} from "../../../../../../../../model/services/utility/Event
 class SearchTab extends React.Component {
     constructor(props) {
         super(props);
-        this.handleSearch = this.handleSearch.bind(this);
-        this.handleSelect = this.handleSelect.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
-        this.sendFriendshipRequest = this.sendFriendshipRequest.bind(this);
         this.state = {
             loading: false,
             opened: false,
@@ -25,39 +21,31 @@ class SearchTab extends React.Component {
         };
     }
 
-    handleSearch(query) {
+    handleSearch = (query) => {
         if (!!query) {
-            this.setState({loading: true, opened: false});
-            UserService.findUsers(query)
-                .then(options => {
-                    options = options.map(user => {
-                        return {
-                            icon: "standard:avatar_loading",
-                            label: user.name.concat(" - ").concat(Utility.decorateUsername(user.username)),
-                            value: user.username,
-                            userEntity: user
-                        };
-                    });
-                    return Promise.resolve(options);
-                })
-                .then(options => this.setState({loading: false, opened: true, options: options}));
+            this.setState({loading: true, opened: false}, _ => {
+                UserService.findUsers(query).then(options => {
+                    options = options.map(user => ({
+                        icon: "standard:avatar_loading",
+                        label: user.name.concat(" - ").concat(Utility.decorateUsername(user.username)),
+                        value: user.username,
+                        userEntity: user
+                    }));
+                    this.setState({loading: false, opened: true, options: options})
+                });
+            });
         }
-    }
+    };
 
-    handleSelect(option) {
-        this.handleBlur();
-        let user = null;
-        if (!!option) {
-            user = option.userEntity;
-        }
-        this.setState({selectedUser: user});
-    }
+    handleSelect = (option) => {
+        this.handleBlur(_ => this.setState({selectedUser: !!option ? option.userEntity : null}));
+    };
 
-    handleBlur() {
-        this.setState({opened: false, loading: false});
-    }
+    handleBlur = callback => {
+        this.setState({opened: false, loading: false}, callback);
+    };
 
-    sendFriendshipRequest(targetUser) {
+    sendFriendshipRequest = (targetUser) => {
         RequestService.sendRequest(targetUser)
             .then(_ => CustomEvents.fire({
                 eventName: ToastEvents.SHOW,
@@ -74,7 +62,7 @@ class SearchTab extends React.Component {
                 eventName: ToastEvents.SHOW,
                 detail: {icon: "warning", level: "warning", message: error.message}
             }));
-    }
+    };
 
     render() {
         const {selectedUser, requestedUsers, options, opened, loading} = this.state,
@@ -92,11 +80,9 @@ class SearchTab extends React.Component {
                 </div>
                 <div className="slds-m-around--medium">
                     {!!selectedUser
-                        ? <Card user={selectedUser}
-                                sendRequest={_ => this.sendFriendshipRequest(selectedUser)}
-                                isRequestSent={isRequestSent}/>
-                        : <EmptyArea title="Search for people by typing their names"
-                                     icon="utility:groups"/>}
+                        ? <Card user={selectedUser} isRequestSent={isRequestSent}
+                                sendRequest={_ => this.sendFriendshipRequest(selectedUser)}/>
+                        : <EmptyArea title="Search for people by typing their names" icon="utility:groups"/>}
                 </div>
             </div>
         );
