@@ -50,8 +50,7 @@ class ProfilePanel extends React.Component {
     }
 
     render() {
-        const {chatsAmount, requestsAmount, activeTabKey} = this.state,
-            searchTab = (<div>SEARCH <Icon icon="standard:search" size="small"/></div>);
+        const {chatsAmount, requestsAmount, activeTabKey} = this.state;
         return (
             <AppContext.Consumer>
                 {context => (
@@ -60,17 +59,20 @@ class ProfilePanel extends React.Component {
                             <ProfileCard user={context.user} reloadUser={context.reloadUser}/>
                         </div>
                         <div className="slds-card__body tabs-container">
-                            <Tabs type="default" activeKey={activeTabKey}
-                                  className="height-percent-100" onSelect={this.handleSelectTab}>
+                            <Tabs type="default" activeKey={activeTabKey} className="height-percent-100">
                                 <Tab eventKey="1" className="height-inherit slds-p-top_none"
-                                     title={<TabItem title="chats" amount={chatsAmount}/>}>
+                                     tabItemRenderer={_ => <TabItem title="chats" amount={chatsAmount}
+                                                                    onClick={_ => this.handleSelectTab(1)}/>}>
                                     <ChatsTab user={context.user}/>
                                 </Tab>
                                 <Tab eventKey="2" className="height-inherit slds-p-top_none"
-                                     title={<TabItem title="requests" amount={requestsAmount}/>}>
+                                     tabItemRenderer={_ => <TabItem title="requests" amount={requestsAmount}
+                                                                    onClick={_ => this.handleSelectTab(2)}/>}>
                                     <RequestsTab user={context.user}/>
                                 </Tab>
-                                <Tab eventKey="3" title={searchTab} className="height-inherit">
+                                <Tab eventKey="3" className="height-inherit"
+                                     tabItemRenderer={_ => <TabItem title="search" iconName="standard:search"
+                                                                    onClick={_ => this.handleSelectTab(3)}/>}>
                                     <SearchTab/>
                                 </Tab>
                             </Tabs>
@@ -85,11 +87,12 @@ class ProfilePanel extends React.Component {
     }
 }
 
-const TabItem = ({title, amount}) => {
+const TabItem = ({title, amount, iconName, onClick}) => {
     return (
-        <div>
+        <div className="slds-p-vertical--x-small hoverable" onClick={onClick}>
             <span>{title}</span>&nbsp;
             {amount !== 0 && <span className="slds-badge" style={{verticalAlign: "middle"}}>{amount}</span>}
+            {!!iconName && <Icon icon={iconName} size="x-small"/>}
         </div>
     );
 };

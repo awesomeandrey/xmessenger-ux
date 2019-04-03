@@ -90,7 +90,7 @@
     letter-spacing: 0.0625rem;
 }
 
-.hover:hover {
+.hoverable:hover {
     cursor: pointer;
     opacity: 0.5;
 }
