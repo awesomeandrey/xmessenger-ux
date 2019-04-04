@@ -45,7 +45,7 @@ class Login extends React.Component {
         } else {
             CustomEvents.fire({
                 eventName: ToastEvents.SHOW,
-                detail: {icon: "warning", level: "warning", "Credentials required."}
+                detail: {icon: "warning", level: "warning", message: "Credentials required."}
             });
         }
     };
