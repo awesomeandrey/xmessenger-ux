@@ -1,115 +1,92 @@
-import React from 'react';
-import FieldDefinition from "../../../../common/model/FieldDefinition";
+import React from "react";
+import MaskedInput from "../../../../common/components/inputs/MaskedInput";
+import PasswordInput from "../../../../common/components/inputs/PasswordInput";
+import ToastEvents from "../../../../common/components/toasts/events";
 
-import {Button, Form, Input, Spinner} from "react-lightning-design-system";
+import {Button, Form, Spinner} from "react-lightning-design-system";
 import {LoginService} from "../../../../../model/services/core/AuthenticationService";
 import {OAuthService} from "../../../../../model/services/core/GmailService";
-import {InputPatterns} from "../../../../../model/services/utility/UtilityService";
+import {InputPatterns, Utility} from "../../../../../model/services/utility/UtilityService";
 import {Navigation} from "../../../../../model/services/utility/NavigationService";
+import {CustomEvents} from "../../../../../model/services/utility/EventsService";
 
 class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: false,
+            error: "",
             inputs: {
-                username: Object.create(null),
-                password: Object.create(null)
+                username: "",
+                password: ""
             }
         };
     }
 
-    componentDidMount() {
-        this._password.type = "password";
-
-        // Instantiate fieldDef entities;
-        let inputs = Object.create(null);
-        [
-            new FieldDefinition("", {name: "username", pattern: InputPatterns.LOGIN}),
-            new FieldDefinition("", {name: "password", pattern: InputPatterns.PASSWORD})
-        ].forEach(fieldDef => {
-            Object.defineProperty(inputs, fieldDef.name, {
-                value: fieldDef, writable: true
-            });
-        });
-        this.setState({inputs: inputs});
-    }
-
     handleLogin = _ => {
-        this.setState({loading: true});
-        const {inputs} = this.state;
         if (this.isFormFulfilled()) {
-            LoginService.login({
-                username: inputs.username.value,
-                password: inputs.password.value
-            }).then(_ => {
-                Navigation.toHome({});
-            }, errorMessage => {
-                inputs.username.error = errorMessage;
-                inputs.password.value = "";
-                this.setState({loading: false, inputs: inputs});
+            this.setState({loading: true, error: ""}, _ => {
+                const {inputs} = this.state;
+                LoginService.login({
+                    username: inputs.username,
+                    password: inputs.password
+                }).then(_ => {
+                    Navigation.toHome({});
+                }, errorMessage => {
+                    inputs.password = "";
+                    this.setState({loading: false, inputs: inputs, error: errorMessage}, _ => {
+                        CustomEvents.fire({
+                            eventName: ToastEvents.SHOW,
+                            detail: {icon: "notification", level: "error", message: errorMessage}
+                        });
+                    });
+                });
             });
         } else {
-            Object.getOwnPropertyNames(inputs).forEach(p => {
-                if (!inputs[p].matchesPattern()) {
-                    inputs[p].error = inputs[p].pattern.errorMessage;
-                }
+            CustomEvents.fire({
+                eventName: ToastEvents.SHOW,
+                detail: {icon: "warning", level: "warning", "Credentials required."}
             });
-            this.setState({loading: false, inputs: inputs});
         }
     };
 
     handleLoginViaGmail = _ => {
         // Initiate OAuth flow;
-        this.setState({loading: true});
-        OAuthService.requestTokenUrl()
-            .then(url => Navigation.toCustom({url: url, replace: true}))
-            .catch(e => {
-                this.setState({loading: false});
-                console.error(JSON.stringify(e));
-            });
-    };
-
-    handleChangeInput = (event, fieldDef) => {
-        const {inputs} = this.state, inputName = fieldDef.name;
-        if (!!inputs[inputName]) {
-            fieldDef.value = event.target.value;
-            Object.defineProperty(inputs, inputName, {
-                value: fieldDef
-            });
-            this.setState({inputs: inputs});
-        }
+        this.setState({loading: true, error: ""}, _ => {
+            OAuthService.requestTokenUrl()
+                .then(url => Navigation.toCustom({url: url, replace: true}))
+                .catch(e => {
+                    this.setState({loading: false});
+                    console.error(JSON.stringify(e));
+                });
+        });
     };
 
     isFormFulfilled = _ => {
-        let allInputsMatchPattern = true, {inputs} = this.state;
-        Object.getOwnPropertyNames(inputs).forEach(propName => {
-            if (!inputs[propName].matchesPattern()) {
-                allInputsMatchPattern = false;
-            }
-        });
-        return allInputsMatchPattern;
-    }
+        const {inputs} = this.state;
+        if (!Utility.check(inputs.username, InputPatterns.LOGIN)) return false;
+        return Utility.check(inputs.password, InputPatterns.PASSWORD);
+    };
 
     render() {
-        const {loading, inputs} = this.state, {onSwitchForm} = this.props;
+        const {loading, inputs, error} = this.state, {onSwitchForm} = this.props;
         return (
-            <Form onSubmit={this.handleLogin}>
-                <Input label="Login"
-                       placeholder="Type here..."
-                       disabled={loading}
-                       iconRight="user" required
-                       value={inputs.username.value}
-                       onChange={e => this.handleChangeInput(e, inputs.username)}
-                       error={inputs.username.error}/>
-                <Input label="Password"
-                       placeholder="Type here..."
-                       disabled={loading}
-                       iconRight="activity" required
-                       value={inputs.password.value}
-                       onChange={e => this.handleChangeInput(e, inputs.password)}
-                       inputRef={el => this._password = el}
-                       error={inputs.password.error}/>
+            <Form onSubmit={this.handleLogin} className={`${!!error && "slds-has-error"}`}>
+                <MaskedInput label="Login"
+                             iconRight="user" required
+                             pattern={InputPatterns.LOGIN}
+                             disabled={loading}
+                             value={inputs.username}
+                             onChange={val => {
+                                 inputs.username = val;
+                                 this.setState({inputs})
+                             }}/>
+                <PasswordInput disabled={loading}
+                               value={inputs.password}
+                               onChange={val => {
+                                   inputs.password = val;
+                                   this.setState({inputs})
+                               }}/>
                 <div className={`slds-clearfix ${loading && "slds-hide"}`}>
                     <div className="slds-float_left flex-container">
                         <Button type="brand" onClick={this.handleLogin}>Login</Button>
