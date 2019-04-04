@@ -30,29 +30,28 @@ class ProfileCard extends React.Component {
     render() {
         const {user} = this.props;
         return (
-            <SettingsModal user={user}>
-                <div className="slds-media slds-media_center slds-has-flexi-truncate">
-                    <div className="slds-media__figure slds-avatar slds-avatar_large">
-                        <ScalableImage title={user.name} src={UserService.composeUserPictureUrl(user, true)}/>
-                    </div>
-                    <div className="slds-media__body">
-                        <p className="slds-float_left">
-                            <span className="title-caps">{user.name}</span><br/>
-                            <span>{Utility.decorateUsername(user.username)}</span>
-                        </p>
-                        <div className="slds-float_right">
-                            <Button type="neutral" className="mobile-visible-only"
-                                    onClick={this.handleLogout}>Logout</Button>
-                            <DropdownButton type="icon-more" icon="setup" className="mobile-hidden">
-                                <DropdownMenuItem iconRight="settings"
-                                                  onClick={this.handleOpenSettings}>Settings</DropdownMenuItem>
-                                <DropdownMenuItem iconRight="power"
-                                                  onClick={this.handleLogout}>Logout </DropdownMenuItem>
-                            </DropdownButton>
-                        </div>
+            <div className="slds-media slds-media_center slds-has-flexi-truncate">
+                <SettingsModal user={user}/>
+                <div className="slds-media__figure slds-avatar slds-avatar_large">
+                    <ScalableImage title={user.name} src={UserService.composeUserPictureUrl(user, true)}/>
+                </div>
+                <div className="slds-media__body">
+                    <p className="slds-float_left">
+                        <span className="title-caps">{user.name}</span><br/>
+                        <span>{Utility.decorateUsername(user.username)}</span>
+                    </p>
+                    <div className="slds-float_right">
+                        <Button type="neutral" className="mobile-visible-only"
+                                onClick={this.handleLogout}>Logout</Button>
+                        <DropdownButton type="icon-more" icon="setup" className="mobile-hidden">
+                            <DropdownMenuItem iconRight="settings"
+                                              onClick={this.handleOpenSettings}>Settings</DropdownMenuItem>
+                            <DropdownMenuItem iconRight="power"
+                                              onClick={this.handleLogout}>Logout </DropdownMenuItem>
+                        </DropdownButton>
                     </div>
                 </div>
-            </SettingsModal>
+            </div>
         );
     }
 }

@@ -51,28 +51,28 @@ class SettingsModal extends React.Component {
     render() {
         const {loading, opened, activeTabKey} = this.state, {user} = this.props;
         return (
-            <div className="settings-modal-container">
-                <Modal opened={opened} onHide={_ => this.setState({opened: false})}>
-                    <ModalHeader title="Settings" closeButton={!loading}/>
-                    <ModalContent>
-                        <Tabs type="scoped" activeKey={activeTabKey} onSelect={this.handleSelectTab}>
-                            <Tab eventKey="1" title="Profile Info">
-                                <ProfileSettings user={user}/>
-                            </Tab>
-                            <Tab eventKey="2" title="Change Password">
-                                <PasswordSettings user={user}/>
-                            </Tab>
-                            <Tab eventKey="3" title="Choose Theme">
-                                <ThemePicker/>
-                            </Tab>
-                            <Tab eventKey="4" title="Delete Account">
-                                <DeleteAccount user={user}/>
-                            </Tab>
-                        </Tabs>
-                    </ModalContent>
-                </Modal>
-                {this.props.children}
-            </div>
+            <Modal opened={opened} onHide={_ => this.setState({opened: false})} className="settings-modal-container">
+                <ModalHeader title="Settings" closeButton={!loading}/>
+                <ModalContent>
+                    <Tabs type="scoped" activeKey={activeTabKey} onSelect={this.handleSelectTab}>
+                        <Tab eventKey="1" title="Profile Info">
+                            <ProfileSettings user={user}/>
+                        </Tab>
+                        <Tab eventKey="2" title="Change Password">
+                            {user["loggedExternally"]
+                                ? (<div className="slds-align--absolute-center">
+                                    <h1 className="slds-p-around_large">No password change</h1>
+                                </div>) : <PasswordSettings user={user}/>}
+                        </Tab>
+                        <Tab eventKey="3" title="Choose Theme">
+                            <ThemePicker/>
+                        </Tab>
+                        <Tab eventKey="4" title="Delete Account">
+                            <DeleteAccount user={user}/>
+                        </Tab>
+                    </Tabs>
+                </ModalContent>
+            </Modal>
         );
     }
 }
