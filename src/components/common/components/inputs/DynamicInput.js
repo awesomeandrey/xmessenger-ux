@@ -15,7 +15,7 @@ class DynamicInput extends React.Component {
 
     handleChange(event) {
         if (!(event.ctrlKey && event.keyCode === 13)) {
-            const inputValue = event.target.value.trim(), customHandler = this.props.onChange;
+            const inputValue = event.target.value, customHandler = this.props.onChange;
             if (!!customHandler && typeof customHandler === "function") {
                 customHandler(inputValue);
             }

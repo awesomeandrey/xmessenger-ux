@@ -41,7 +41,7 @@ class MessageInput extends React.Component {
             .then(message => {
                 this.setState({loading: true});
                 if (Utility.matches(message, InputPatterns.MESSAGE_BODY)) {
-                    return Promise.resolve(message);
+                    return Promise.resolve(message.trim());
                 } else {
                     return Promise.reject(InputPatterns.MESSAGE_BODY.errorMessage);
                 }
