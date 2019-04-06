@@ -25,9 +25,10 @@ class Authorization extends React.Component {
             <Grid className="slds-brand-band slds-brand-band_medium">
                 <Row>
                     <Col>
-                        {jwtExpired && <Alert icon="ban" level="error" onClose={_ => {
-                            this.setState({jwtExpired: false})
-                        }}>Your session has expired, please login again.</Alert>}
+                        <Alert icon="ban" level="error" className={`${!jwtExpired && "slds-hide"}`}
+                               onClose={_ => this.setState({jwtExpired: false})}>
+                            Your session has expired, please login again.
+                        </Alert>
                         <div className="slds-align_absolute-center slds-m-top_large">
                             <div className="slds-box slds-theme_shade slds-theme_alert-texture">
                                 <PageHeader>

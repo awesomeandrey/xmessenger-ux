@@ -2,6 +2,7 @@ import React from 'react';
 import ToastEvents from "../events";
 import ToastItem from "./ToastItem";
 
+import {Alert} from "react-lightning-design-system";
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
 import {Utility} from "../../../../../model/services/utility/UtilityService";
 
@@ -11,6 +12,7 @@ class ToastContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            mobileAlert: null,
             toasts: []
         };
     }
@@ -21,7 +23,7 @@ class ToastContainer extends React.Component {
             callback: event => {
                 const toastData = event.detail, {toasts} = this.state;
                 toastData.key = Utility.generateUniqueId();
-                this.setState({toasts: [...toasts, toastData]});
+                this.setState({toasts: [...toasts, toastData], mobileAlert: toastData});
             }
         });
         CustomEvents.register({
@@ -34,10 +36,14 @@ class ToastContainer extends React.Component {
     }
 
     render() {
-        const toastItems = this.state.toasts.map(toastItem => <ToastItem key={toastItem.key} data={toastItem}/>);
+        const {toasts, mobileAlert} = this.state,
+            toastItems = toasts.map(toastItem => <ToastItem key={toastItem.key} data={toastItem}/>);
         return (
             <div className="toasts-container">
-                <div className="slds-is-fixed slds-notify_container">{toastItems}</div>
+                <div className="slds-is-fixed slds-notify_container mobile-hidden">{toastItems}</div>
+                {!!mobileAlert && <Alert {...mobileAlert} className="mobile-visible-only"
+                                         onClose={_ => this.setState({mobileAlert: null})}>
+                    {mobileAlert.message}</Alert>}
                 {this.props.children}
             </div>
         );
