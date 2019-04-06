@@ -25,7 +25,7 @@ export const Utility = {
             throw "'Value' and 'pattern' parameters shouldn't be empty.";
         }
         let regExp = new RegExp(patternObj.exp);
-        return regExp.test(value);
+        return regExp.test(value.trim());
     },
     isObjectEmpty: prop => prop === null || prop === undefined || (prop.hasOwnProperty("length") && prop.length === 0) || (prop.constructor === Object && Object.keys(prop).length === 0),
     isMobileDevice: _ => !!(navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i)),
@@ -36,8 +36,8 @@ export const Utility = {
 };
 
 export const InputPatterns = {
-    NAME: {exp: "^[a-zA-Z ]{2,30}$", errorMessage: "Invalid Name"},
-    LOGIN: {exp: "^[a-zA-Z0-9]{4,}", errorMessage: "Invalid Login"},
-    PASSWORD: {exp: "[^ ]{4,}", errorMessage: "Invalid Password"},
-    MESSAGE_BODY: {exp: "^[a-zA-Z0-9А-Яа-яєі]{1,}", errorMessage: "Invalid message body"}
+    NAME: {exp: "^[a-zA-Z ]{2,20}$", errorMessage: "Invalid Name"},
+    LOGIN: {exp: "^[a-zA-Z0-9]{4,10}", errorMessage: "Invalid Login"},
+    PASSWORD: {exp: "[^ ]{4,30}", errorMessage: "Invalid Password"},
+    MESSAGE_BODY: {exp: "^[a-zA-Z0-9А-Яа-яєі]{1,400}", errorMessage: "Invalid message body"}
 };

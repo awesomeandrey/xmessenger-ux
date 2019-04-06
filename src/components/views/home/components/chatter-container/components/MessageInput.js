@@ -27,6 +27,7 @@ class MessageInput extends React.Component {
     };
 
     handleTypeIn = (message) => {
+        message = message.trim();
         if (Utility.matches(message, InputPatterns.MESSAGE_BODY)) {
             this.setState({messageBody: message, error: ""});
         } else {
