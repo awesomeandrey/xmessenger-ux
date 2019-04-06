@@ -1,4 +1,6 @@
-const TOPICS_PREFIX = "/topic", TOPICS = {
+const TOPICS_PREFIX = "/topic";
+
+export default {
     CHAT: {
         DELETE: `${TOPICS_PREFIX}/chat/delete`,
         CLEAR: `${TOPICS_PREFIX}/chat/clear`
@@ -11,5 +13,3 @@ const TOPICS_PREFIX = "/topic", TOPICS = {
         PROCESS: `${TOPICS_PREFIX}/request/process`
     }
 };
-
-module.exports = TOPICS;

@@ -38,15 +38,16 @@ const Storage = storageObj => ({
     }
 });
 
-module.exports = {
-    SessionStorage: Storage(sessionStorage),
-    SessionEntities: {
-        JWT_TOKEN: "jwtToken",
-        ACTIVE_CHAT: "activeChat",
-        ACTIVE_TAB_KEY: "activeTabKey"
-    },
-    LocalStorage: Storage(localStorage),
-    LocalEntities: {
-        ACTIVE_THEME: "activeTheme"
-    }
+export const SessionStorage = Storage(sessionStorage);
+
+export const SessionEntities = {
+    JWT_TOKEN: "jwtToken",
+    ACTIVE_CHAT: "activeChat",
+    ACTIVE_TAB_KEY: "activeTabKey"
+};
+
+export const LocalStorage = Storage(localStorage);
+
+export const LocalEntities = {
+    ACTIVE_THEME: "activeTheme"
 };

@@ -1,10 +1,6 @@
 import React from 'react';
 
-import {
-    applyTheme,
-    getAvailableThemes,
-    getCurrentTheme
-} from "../../../../../../../../../model/services/utility/ThemingService";
+import {applyTheme, THEMES, getCurrentTheme} from "../../../../../../../../../model/services/utility/ThemingService";
 import {Icon} from "react-lightning-design-system";
 
 class ThemePicker extends React.Component {
@@ -19,7 +15,7 @@ class ThemePicker extends React.Component {
     componentDidMount() {
         this.setState({
             selectedTheme: getCurrentTheme(),
-            themes: getAvailableThemes()
+            themes: THEMES
         });
     }
 

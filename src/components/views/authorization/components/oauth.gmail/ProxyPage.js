@@ -2,9 +2,9 @@ import React from "react";
 import Countdown from "react-countdown-now";
 import ToastContainer from "../../../../common/components/toasts/components/ToastContainer";
 import Events from "../../../../common/components/toasts/events";
+import GmailService from "../../../../../model/services/core/GmailService";
 
 import {Button} from "react-lightning-design-system";
-import {OAuthService} from "../../../../../model/services/core/GmailService";
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
 import {Navigation} from "../../../../../model/services/utility/NavigationService";
 import {Utility} from "../../../../../model/services/utility/UtilityService";
@@ -16,14 +16,11 @@ class ProxyPage extends React.Component {
 
     componentWillMount() {
         const accessToken = Utility.getParamFromUrl({paramName: "access_token"});
-        OAuthService.authenticate(accessToken)
+        GmailService.authenticate(accessToken)
             .then(_ => Navigation.toHome({replace: true}), error => {
                 CustomEvents.fire({
                     eventName: Events.SHOW,
-                    detail: {
-                        icon: "error",
-                        message: "Internal error occurred, please address support."
-                    },
+                    detail: {icon: "error", message: "Internal error occurred, please address support."},
                     callback: _ => console.log(error)
                 });
             });

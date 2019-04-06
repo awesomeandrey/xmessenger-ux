@@ -1,6 +1,6 @@
 import {LocalStorage, LocalEntities} from "./StorageService";
 
-const THEMES = [
+export const THEMES = [
     {
         title: "Default",
         bgColor: "#dddbda",
@@ -39,17 +39,15 @@ const THEMES = [
     }
 ];
 
-module.exports = {
-    getAvailableThemes: _ => THEMES,
-    getCurrentTheme: _ => {
-        let selectedTheme = LocalStorage.getItem(LocalEntities.ACTIVE_THEME);
-        return !!selectedTheme ? selectedTheme : THEMES[0];
-    },
-    applyTheme: theme => {
-        LocalStorage.setItem({key: LocalEntities.ACTIVE_THEME, value: theme});
-        let root = document.documentElement;
-        Object.keys(theme.cssVariables).forEach(propName => {
-            root.style.setProperty(propName, theme.cssVariables[propName]);
-        });
-    }
+export const getCurrentTheme = _ => {
+    let selectedTheme = LocalStorage.getItem(LocalEntities.ACTIVE_THEME);
+    return !!selectedTheme ? selectedTheme : THEMES[0];
+};
+
+export const applyTheme = theme => {
+    LocalStorage.setItem({key: LocalEntities.ACTIVE_THEME, value: theme});
+    let root = document.documentElement;
+    Object.keys(theme.cssVariables).forEach(propName => {
+        root.style.setProperty(propName, theme.cssVariables[propName]);
+    });
 };

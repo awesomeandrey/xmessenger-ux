@@ -2,10 +2,10 @@ import React from "react";
 import ToastEvents from "../../../../../../../common/components/toasts/events";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
 import UserPicture from "../../../../../../../common/components/images/user-picture/UserPicture";
+import RequestService from "../../../../../../../../model/services/core/RequestService";
 
 import {UserService} from "../../../../../../../../model/services/core/UserService";
 import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
-import {RequestService} from "../../../../../../../../model/services/core/RequestService";
 import {Button, Icon, Lookup} from "react-lightning-design-system";
 import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";
 

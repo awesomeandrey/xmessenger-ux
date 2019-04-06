@@ -5,24 +5,22 @@ const _handleError = response => _parseJSON(response).then(error => Promise.reje
 /**
  * 'XM_API_SERVER_URL' variable is provided by Webpack configuration file.
  */
-const API_SERVER_URL = XM_API_SERVER_URL;
-const DEFAULT_HEADERS = {"Content-Type": "application/json;charset=UTF-8"};
+export const API_SERVER_URL = XM_API_SERVER_URL;
 
-module.exports = {
-    API_SERVER_URL, DEFAULT_HEADERS,
-    performRequest: parameters => {
-        const {url, method = "GET", body = "", headers = DEFAULT_HEADERS} = parameters,
-            isBinaryData = body instanceof FormData, requestBody = {
-                method: method,
-                body: method === "GET" ? undefined : isBinaryData ? body : JSON.stringify(body),
-                headers: headers
-            };
-        return fetch(API_SERVER_URL.concat(url), requestBody).then(response => {
-            if (response.ok) {
-                return _handleSuccess(response);
-            } else {
-                return _handleError(response);
-            }
-        });
-    }
+export const DEFAULT_HEADERS = {"Content-Type": "application/json;charset=UTF-8"};
+
+export const performRequest = parameters => {
+    const {url, method = "GET", body = "", headers = DEFAULT_HEADERS} = parameters,
+        isBinaryData = body instanceof FormData, requestBody = {
+            method: method,
+            body: method === "GET" ? undefined : isBinaryData ? body : JSON.stringify(body),
+            headers: headers
+        };
+    return fetch(API_SERVER_URL.concat(url), requestBody).then(response => {
+        if (response.ok) {
+            return _handleSuccess(response);
+        } else {
+            return _handleError(response);
+        }
+    });
 };

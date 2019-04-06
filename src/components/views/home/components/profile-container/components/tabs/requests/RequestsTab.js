@@ -3,9 +3,9 @@ import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
 import Events from "../../../../../../../../model/events/application-events";
 import ToastEvents from "../../../../../../../common/components/toasts/events";
 import UserPicture from "../../../../../../../common/components/images/user-picture/UserPicture";
+import RequestService from "../../../../../../../../model/services/core/RequestService";
 
 import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
-import {RequestService} from "../../../../../../../../model/services/core/RequestService";
 import {Button, ButtonGroup} from "react-lightning-design-system";
 import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";
 

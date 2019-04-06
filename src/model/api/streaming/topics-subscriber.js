@@ -3,7 +3,7 @@ import SockJS from "sockjs-client";
 import {API_SERVER_URL} from "../rest/client-util";
 import {Stomp} from "stompjs/lib/stomp.js";
 
-const subscribeToTopics = registrations => {
+export default registrations => {
     let socket = SockJS(API_SERVER_URL.concat("/ws-configurator")), stompClient = Stomp.over(socket);
     stompClient.debug = null; // disable logging;
     stompClient.connect({}, frame => {
@@ -12,5 +12,3 @@ const subscribeToTopics = registrations => {
         });
     });
 };
-
-module.exports = subscribeToTopics;

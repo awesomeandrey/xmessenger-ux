@@ -6,7 +6,7 @@ import {CustomEvents} from "../../services/utility/EventsService";
 
 const parsePayload = payload => JSON.parse(payload.body);
 
-module.exports = _ => CustomEvents.register({
+export default _ => CustomEvents.register({
     eventName: "load", callback: _ => {
         subscribeToTopics([
             {

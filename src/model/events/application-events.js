@@ -1,5 +1,5 @@
 // Constant names on custom events;
-module.exports = {
+export default {
     USER: {
         RELOAD: "onReloadUserInfo"
     },

@@ -1,9 +1,9 @@
 import React from "react";
-import {ExternalResources} from "../../../../model/services/utility/NavigationService";
+import {GITHUB_REPO_URL} from "../../../../model/services/utility/NavigationService";
 
 const GitHubLink = _ => {
     const openInNewTab = _ => {
-        let win = window.open(ExternalResources.GITHUB_REPO_URL, '_blank');
+        let win = window.open(GITHUB_REPO_URL, '_blank');
         win.focus();
     };
     return (

@@ -2,10 +2,10 @@ import React from "react";
 import MaskedInput from "../../../../common/components/inputs/MaskedInput";
 import PasswordInput from "../../../../common/components/inputs/PasswordInput";
 import ToastEvents from "../../../../common/components/toasts/events";
+import GmailService from "../../../../../model/services/core/GmailService";
 
 import {Button, Form, Spinner} from "react-lightning-design-system";
 import {LoginService} from "../../../../../model/services/core/AuthenticationService";
-import {OAuthService} from "../../../../../model/services/core/GmailService";
 import {InputPatterns, Utility} from "../../../../../model/services/utility/UtilityService";
 import {Navigation} from "../../../../../model/services/utility/NavigationService";
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
@@ -51,7 +51,7 @@ class Login extends React.Component {
     handleLoginViaGmail = _ => {
         // Initiate OAuth flow;
         this.setState({loading: true, error: ""}, _ => {
-            OAuthService.requestTokenUrl()
+            GmailService.requestTokenUrl()
                 .then(url => Navigation.toCustom({url: url, replace: true}))
                 .catch(e => {
                     this.setState({loading: false});

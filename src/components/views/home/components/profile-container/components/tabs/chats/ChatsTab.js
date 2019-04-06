@@ -11,7 +11,7 @@ import {SessionEntities, SessionStorage} from "../../../../../../../../model/ser
 import {DropTarget} from "react-dnd/lib/index";
 import {ItemTypes} from "../../../../../../../common/components/dnd/ItemTypes";
 import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
-import {Notifier} from "../../../../../../../../model/services/utility/NotificationsService";
+import {requestPermission, notify} from "../../../../../../../../model/services/utility/NotificationsService";
 import {Icon} from "react-lightning-design-system";
 
 const NOTIFICATION_BLUEPRINTS = {
@@ -30,13 +30,11 @@ const NOTIFICATION_BLUEPRINTS = {
             }
         });
     },
-    onIncomingMessage: (chat, message) => {
-        Notifier.notify({
-            title: `New message from ${chat.fellow.name}`,
-            text: message.body,
-            onclick: _ => CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: chat}})
-        });
-    }
+    onIncomingMessage: (chat, message) => notify({
+        title: `New message from ${chat.fellow.name}`,
+        text: message.body,
+        onclick: _ => CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: chat}})
+    })
 };
 
 class ChatsTab extends React.Component {
@@ -125,7 +123,7 @@ class ChatsTab extends React.Component {
     componentDidMount() {
         CustomEvents.fire({eventName: Events.CHAT.LOAD_ALL});
 
-        Notifier.requestPermission();
+        requestPermission();
 
         const activeChat = SessionStorage.getItem(SessionEntities.ACTIVE_CHAT);
         if (!!activeChat) {
