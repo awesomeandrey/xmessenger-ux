@@ -7,7 +7,7 @@ import {CustomEvents} from "../../../../../../../../../model/services/utility/Ev
 import {InputPatterns, Utility} from "../../../../../../../../../model/services/utility/UtilityService";
 import {Button, Icon, Input, Spinner} from "react-lightning-design-system";
 
-class ProfileSettings extends React.Component {
+class ProfileInfo extends React.Component {
     constructor(props) {
         super(props);
         this.handleChangeInput = this.handleChangeInput.bind(this);
@@ -202,4 +202,4 @@ class ProfileSettings extends React.Component {
     }
 }
 
-export default ProfileSettings;
+export default ProfileInfo;

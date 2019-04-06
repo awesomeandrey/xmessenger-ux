@@ -7,7 +7,7 @@ import {LoginService} from "../../../../../../../../../model/services/core/Authe
 import {Settings} from "../../../../../../../../../model/services/core/UserService";
 import {CustomEvents} from "../../../../../../../../../model/services/utility/EventsService";
 
-class DeleteAccount extends React.Component {
+class AccountDeactivation extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -66,4 +66,4 @@ class DeleteAccount extends React.Component {
     }
 }
 
-export default DeleteAccount;
+export default AccountDeactivation;

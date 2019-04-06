@@ -50,7 +50,7 @@ const ThemeItem = ({theme, selected, onClick}) => {
         minWidth: "5rem"
     };
     return (
-        <div className={`slds-col slds-p-vertical--large slds-m-horizontal_x-small ${!selected && 'hover'}`}
+        <div className={`slds-col slds-p-vertical--large slds-m-horizontal_x-small ${!selected && 'hoverable'}`}
              style={style} onClick={selected ? null : onClick}>
             {selected ? <Icon icon="utility:check" size="small"/> : <span>{title}</span>}
         </div>

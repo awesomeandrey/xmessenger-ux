@@ -1,8 +1,9 @@
 import React from 'react';
 import Events from "../../../../../../../../model/events/application-events";
-import ProfileSettings from "./components/ProfileSettings";
-import PasswordSettings from "./components/PasswordSettings";
-import DeleteAccount from "./components/DeleteAccount";
+import ProfileInfo from "./components/ProfileInfo";
+import ProfileImage from "./components/ProfileImage";
+import PasswordChange from "./components/PasswordChange";
+import AccountDeactivation from "./components/AccountDeactivation";
 import ThemePicker from "./components/ThemePicker";
 
 import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";
@@ -16,7 +17,7 @@ class SettingsModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            opened: false,
+            opened: true,
             loading: false,
             activeTabKey: DEFAULT_TAB_KEY
         }
@@ -25,12 +26,7 @@ class SettingsModal extends React.Component {
     componentDidMount() {
         CustomEvents.register({
             eventName: Events.SETTINGS.OPEN,
-            callback: _ => {
-                this.setState({
-                    opened: true,
-                    activeTabKey: DEFAULT_TAB_KEY
-                });
-            }
+            callback: _ => this.setState({opened: true, activeTabKey: DEFAULT_TAB_KEY})
         });
         CustomEvents.register({
             eventName: Events.SETTINGS.LOCK,
@@ -56,19 +52,26 @@ class SettingsModal extends React.Component {
                 <ModalContent>
                     <Tabs type="scoped" activeKey={activeTabKey} onSelect={this.handleSelectTab}>
                         <Tab eventKey="1" title="Profile Info">
-                            <ProfileSettings user={user}/>
+                            <div className="slds-grid slds-wrap slds-gutters">
+                                <div className="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-large-size_6-of-12">
+                                    <ProfileImage user={user}/>
+                                </div>
+                                <div className="slds-col slds-size_1-of-1 slds-medium-size_7-of-12 slds-large-size_6-of-12">
+                                    {/*<ProfileInfo user={user}/>*/}
+                                </div>
+                            </div>
                         </Tab>
                         <Tab eventKey="2" title="Change Password">
                             {user["loggedExternally"]
                                 ? (<div className="slds-align--absolute-center">
                                     <h1 className="slds-p-around_large">No password change</h1>
-                                </div>) : <PasswordSettings user={user}/>}
+                                </div>) : <PasswordChange user={user}/>}
                         </Tab>
                         <Tab eventKey="3" title="Choose Theme">
                             <ThemePicker/>
                         </Tab>
                         <Tab eventKey="4" title="Delete Account">
-                            <DeleteAccount user={user}/>
+                            <AccountDeactivation user={user}/>
                         </Tab>
                     </Tabs>
                 </ModalContent>

@@ -7,7 +7,7 @@ import {InputPatterns, Utility} from "../../../../../../../../../model/services/
 import {CustomEvents} from "../../../../../../../../../model/services/utility/EventsService";
 import {Button, ButtonGroup, Form, Spinner} from "react-lightning-design-system";
 
-class PasswordSettings extends React.Component {
+class PasswordChange extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -103,4 +103,4 @@ class PasswordSettings extends React.Component {
     }
 }
 
-export default PasswordSettings;
+export default PasswordChange;
