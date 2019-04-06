@@ -53,9 +53,7 @@ class PasswordSettings extends React.Component {
     isFormFulfilled = _ => {
         const {inputs} = this.state;
         for (let key in inputs) {
-            if (inputs.hasOwnProperty(key) && !Utility.check(inputs[key], InputPatterns.PASSWORD)) {
-                return false;
-            }
+            if (inputs.hasOwnProperty(key) && !Utility.check(inputs[key], InputPatterns.PASSWORD)) return false;
         }
         return inputs.p2 === inputs.p3;
     };

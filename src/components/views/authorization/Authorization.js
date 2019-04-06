@@ -6,29 +6,21 @@ import Login from "./components/login/Login";
 import {Grid, Row, Col, PageHeader, PageHeaderHeading, Icon, Alert} from "react-lightning-design-system";
 import {Utility} from "../../../model/services/utility/UtilityService";
 
+const register = Utility.getParamFromUrl({paramName: "register"}) === "true";
+const jwtExpired = !register && Utility.getParamFromUrl({paramName: "expired"}) === "1";
+
 class Authorization extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            isRegistered: true,
-            jwtExpired: false
-        };
+        this.state = {register, jwtExpired};
     }
 
-    componentDidMount() {
-        if (Utility.getParamFromUrl({paramName: "expired"}) === "1") {
-            this.setState({jwtExpired: true});
-        }
-    }
-
-    switchForm = _ => {
-        this.setState({
-            isRegistered: !this.state.isRegistered
-        });
-    };
+    switchForm = _ => this.setState({
+        register: !this.state.register
+    });
 
     render() {
-        const {isRegistered, jwtExpired} = this.state;
+        const {register, jwtExpired} = this.state;
         return (
             <Grid className="slds-brand-band slds-brand-band_medium">
                 <Row>
@@ -45,9 +37,9 @@ class Authorization extends React.Component {
                                                                      icon="connected_apps"/>}/>
                                 </PageHeader>
                                 <div className="slds-m-top_medium">
-                                    {isRegistered
-                                        ? <Login onSwitchForm={this.switchForm}/>
-                                        : <Register onSwitchForm={this.switchForm}/>}
+                                    {register
+                                        ? <Register onSwitchForm={this.switchForm}/>
+                                        : <Login onSwitchForm={this.switchForm}/>}
                                 </div>
                             </div>
                         </div>

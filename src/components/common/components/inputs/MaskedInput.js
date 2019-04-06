@@ -17,10 +17,8 @@ class MaskedInput extends React.Component {
             errorMessage = Utility.check(inputValue, pattern) ? "" : pattern.errorMessage;
         this.setState({value: inputValue, error: errorMessage}, _ => {
             const {onChange} = this.props;
-            if (typeof onChange === "function") {
-                onChange(inputValue);
-            }
-        })
+            if (typeof onChange === "function") onChange(inputValue);
+        });
     };
 
     render() {
@@ -30,8 +28,8 @@ class MaskedInput extends React.Component {
                    iconRight="fallback"
                    placeholder="Type here..."
                    value={value}
-                   {...this.props}
                    error={error}
+                   {...this.props}
                    onChange={this.handleChange}/>
         );
     }

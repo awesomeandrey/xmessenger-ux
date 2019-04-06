@@ -30,9 +30,7 @@ class Login extends React.Component {
                 LoginService.login({
                     username: inputs.username,
                     password: inputs.password
-                }).then(_ => {
-                    Navigation.toHome({});
-                }, errorMessage => {
+                }).then(_ => Navigation.toHome({}), errorMessage => {
                     inputs.password = "";
                     this.setState({loading: false, inputs: inputs, error: errorMessage}, _ => {
                         CustomEvents.fire({
@@ -87,18 +85,18 @@ class Login extends React.Component {
                                    inputs.password = val;
                                    this.setState({inputs})
                                }}/>
-                <div className={`slds-clearfix ${loading && "slds-hide"}`}>
-                    <div className="slds-float_left flex-container">
+                <div className="slds-clearfix">
+                    <div className={`slds-float_left ${loading && "slds-hide"}`}>
                         <Button type="brand" onClick={this.handleLogin}>Login</Button>
                         <Button type="destructive" onClick={this.handleLoginViaGmail}>Login via Gmail</Button>
                     </div>
                     <div className="slds-float_right">
-                        <Button onClick={onSwitchForm}>Register</Button>
+                        <Button onClick={onSwitchForm} className={`${loading && "slds-hide"}`}>Register</Button>
+                    </div>
+                    <div className="slds-float_left slds-is-relative slds-p-vertical--medium slds-p-left_medium">
+                        {loading && <Spinner type="brand" container={false}/>}
                     </div>
                 </div>
-                {loading && <div className="slds-float_left slds-is-relative slds-p-around_small slds-p-left_medium">
-                    <Spinner type="brand" container={false}/>
-                </div>}
             </Form>
         );
     }

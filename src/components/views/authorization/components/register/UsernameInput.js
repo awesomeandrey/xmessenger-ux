@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Utility} from "../../../../../model/services/utility/UtilityService";
+import {InputPatterns, Utility} from "../../../../../model/services/utility/UtilityService";
 import {Spinner} from "react-lightning-design-system";
 import {RegistrationService} from "../../../../../model/services/core/AuthenticationService";
 
@@ -8,50 +8,44 @@ class UsernameInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false
+            loading: false,
+            error: "",
+            changed: false
         };
     }
 
     handleChange = (event) => {
-        this.setState({loading: true});
-        const {fieldDef, onChange} = this.props;
-        fieldDef.value = event.target.value;
-        if (!fieldDef.matchesPattern()) {
-            fieldDef.error = fieldDef.pattern.errorMessage;
-            this.setState({loading: false}, _ => {
-                onChange(fieldDef);
-            });
-            return;
-        }
-        fieldDef.error = fieldDef.pattern.errorMessage;
-        RegistrationService.checkUsername(fieldDef.value)
-            .then(response => {
-                const {errorMessage} = response;
-                fieldDef.error = errorMessage;
-                this.setState({loading: false}, _ => {
-                    onChange(fieldDef);
+        const inputValue = event.target.value, pattern = InputPatterns.LOGIN, {onChange} = this.props;
+        if (!Utility.check(inputValue, pattern)) {
+            this.setState({changed: true, error: pattern.errorMessage}, onChange);
+        } else {
+            this.setState({changed: true, error: "", loading: true});
+            RegistrationService.checkUsername(inputValue)
+                .then(response => {
+                    const {valid, errorMessage} = response;
+                    this.setState({loading: false, error: errorMessage}, _ => {
+                        onChange(valid ? inputValue : "")
+                    });
                 });
-            });
+        }
     };
 
     render() {
-        const {disabled, fieldDef, title} = this.props, {error} = fieldDef, {loading} = this.state;
+        const {disabled, label} = this.props, {loading, error, changed} = this.state;
         return (
             <div className={Utility.join("slds-form-element", !!error ? "slds-has-error" : "")}>
                 <label className="slds-form-element__label">
-                    {title}<abbr className="slds-required" title="required">*</abbr>
+                    {label}<abbr className="slds-required" title="required">*</abbr>
                 </label>
-                <div className="slds-form-element__control slds-input-has-icon slds-input-has-icon_group-right">
+                <div className="input__username slds-form-element__control slds-input-has-icon_group-right">
                     <input className="slds-input" placeholder="Type here..."
                            onChange={this.handleChange} disabled={disabled}/>
-                    <div className="slds-input__icon-group slds-input__icon-group_right">
-                        {loading && <div className="slds-m-right--xx-large"><Spinner type="brand" size="small"/></div>}
+                    <div className="spinner slds-input__icon-group slds-input__icon-group_right slds-p-right--xx-large">
+                        {loading && <Spinner type="brand" size="small" container={false}/>}
                     </div>
                 </div>
-                <div className={`slds-form-element__help ${!fieldDef.changed && "slds-hide"}`}>
-                    {!!error
-                        ? <span className="slds-text-color_error">{error}</span>
-                        : <span className="slds-text-color_success">Correct!</span>}
+                <div className={`slds-form-element__help ${(disabled || !changed) && "slds-hide"}`}>
+                    {!!error && <span className="slds-text-color_error">{error}</span>}
                 </div>
             </div>
         );
