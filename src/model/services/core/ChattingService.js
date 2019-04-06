@@ -47,7 +47,7 @@ export const ChattingService = {
         path: `/chats/${chat.id}/messages`,
         entity: {
             relation: {id: chat.id},
-            body: messageBody
+            body: messageBody.trim()
         }
     })
 };

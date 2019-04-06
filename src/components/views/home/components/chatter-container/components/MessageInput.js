@@ -5,6 +5,8 @@ import {Button} from "react-lightning-design-system";
 import {ChattingService} from "../../../../../../model/services/core/ChattingService";
 import {Utility, InputPatterns} from "../../../../../../model/services/utility/UtilityService";
 
+const pattern = InputPatterns.MESSAGE_BODY;
+
 class MessageInput extends React.Component {
     constructor(props) {
         super(props);
@@ -19,44 +21,31 @@ class MessageInput extends React.Component {
         if (!!this._dynamicInputComponent) {
             this._dynamicInputComponent.focus();
         }
-        const prevChat = prevProps.chat, chat = this.props.chat;
+        const {chat: prevChat} = prevProps, {chat} = this.props;
         if (prevChat !== chat) {
             this._dynamicInputComponent.clear();
             this.setState({messageBody: "", loading: false, error: ""});
         }
     };
 
-    handleTypeIn = (message) => {
-        message = message.trim();
-        if (Utility.matches(message, InputPatterns.MESSAGE_BODY)) {
-            this.setState({messageBody: message, error: ""});
-        } else {
-            this.setState({messageBody: message, error: InputPatterns.MESSAGE_BODY.errorMessage});
-        }
-    };
+    handleTypeIn = (message) => this.setState({
+        messageBody: message,
+        error: Utility.matches(message, pattern) ? "" : pattern.errorMessage
+    });
 
     handleSendMessage = (event) => {
         event.preventDefault();
-        Promise.resolve(this.state.messageBody)
-            .then(message => {
-                this.setState({loading: true});
-                if (Utility.matches(message, InputPatterns.MESSAGE_BODY)) {
-                    return Promise.resolve(message.trim());
-                } else {
-                    return Promise.reject(InputPatterns.MESSAGE_BODY.errorMessage);
-                }
-            })
-            .then(messageBody => {
-                return ChattingService.sendMessage({
-                    chat: this.props.chat,
-                    messageBody: messageBody
-                }).then(_ => {
+        const {messageBody} = this.state, {chat} = this.props;
+        if (Utility.matches(messageBody, pattern)) {
+            this.setState({loading: true}, _ => {
+                ChattingService.sendMessage({chat, messageBody}).then(_ => {
                     this._dynamicInputComponent.clear();
                     this.setState({messageBody: "", loading: false, error: ""});
-                })
-            }, error => {
-                this.setState({loading: false, error: error});
+                });
             });
+        } else {
+            this.setState({error: pattern.errorMessage});
+        }
     };
 
     render() {
