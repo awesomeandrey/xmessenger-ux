@@ -61,46 +61,44 @@ class PasswordSettings extends React.Component {
     render() {
         const {loading, notification, inputs} = this.state;
         return (
-            <div className="slds-form">
-                <Form onSubmit={e => e.preventDefault()}>
-                    <PasswordInput label="Current password"
-                                   disabled={loading}
-                                   value={inputs.p1}
-                                   onChange={val => {
-                                       inputs.p1 = val;
-                                       this.setState({inputs})
-                                   }}/>
-                    <PasswordInput label="New password"
-                                   disabled={loading}
-                                   value={inputs.p2}
-                                   onChange={val => {
-                                       inputs.p2 = val;
-                                       this.setState({inputs})
-                                   }}/>
-                    <PasswordInput label="Repeat password"
-                                   disabled={loading}
-                                   value={inputs.p3}
-                                   onChange={val => {
-                                       inputs.p3 = val;
-                                       this.setState({inputs})
-                                   }}/>
-                    <div className="slds-clearfix slds-m-top_small">
-                        <div className="slds-float--left">
-                            {loading
-                                ? (<div className="slds-is-relative slds-p-around_medium">
-                                    <Spinner type="brand" container={false}/></div>)
-                                : (!!notification && <div className={`slds-text-color_${notification.type}`}>
-                                    {notification.message}</div>)}
-                        </div>
-                        <div className="slds-float--right">
-                            <ButtonGroup className={loading ? "slds-hide" : "slds-show"}>
-                                <Button type="neutral" onClick={this.handleClearForm}>Reset</Button>
-                                <Button type="brand" onClick={this.handleChangePassword}>Change Password</Button>
-                            </ButtonGroup>
-                        </div>
+            <Form onSubmit={e => e.preventDefault()}>
+                <PasswordInput label="Current password"
+                               disabled={loading}
+                               value={inputs.p1}
+                               onChange={val => {
+                                   inputs.p1 = val;
+                                   this.setState({inputs})
+                               }}/>
+                <PasswordInput label="New password"
+                               disabled={loading}
+                               value={inputs.p2}
+                               onChange={val => {
+                                   inputs.p2 = val;
+                                   this.setState({inputs})
+                               }}/>
+                <PasswordInput label="Repeat password"
+                               disabled={loading}
+                               value={inputs.p3}
+                               onChange={val => {
+                                   inputs.p3 = val;
+                                   this.setState({inputs})
+                               }}/>
+                <div className="slds-clearfix slds-m-top_small">
+                    <div className="slds-float--left">
+                        {loading
+                            ? (<div className="slds-is-relative slds-p-around_medium">
+                                <Spinner type="brand" container={false}/></div>)
+                            : (!!notification && <div className={`slds-text-color_${notification.type}`}>
+                                {notification.message}</div>)}
                     </div>
-                </Form>
-            </div>
+                    <div className="slds-float--right">
+                        <ButtonGroup className={loading ? "slds-hide" : "slds-show"}>
+                            <Button type="neutral" onClick={this.handleClearForm}>Reset</Button>
+                            <Button type="brand" onClick={this.handleChangePassword}>Change Password</Button>
+                        </ButtonGroup>
+                    </div>
+                </div>
+            </Form>
         );
     }
 }
