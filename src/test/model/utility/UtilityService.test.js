@@ -1,14 +1,21 @@
-import {Utility, InputPatterns} from "./UtilityService";
+import {Utility, InputPatterns} from "../../../model/services/utility/UtilityService";
 
 describe("Common utility methods.", () => {
     test("Format date.", () => {
+        // Same day;
+        const testDate = new Date();
+        expect(Utility.formatDate({dateNum: testDate.getTime()})).toMatch(/[0-9]{2}:[0-9]{2}/);
 
+        // Date string
+        testDate.setDate(testDate.getDate() - 1); // yesterday's date;
+        const output2 = Utility.formatDate({dateNum: testDate.getTime(), showTimestamp: false});
+        // console.log("Output #2: " + output2);
+        expect(output2).toMatch(/^(\d{1,4})[/-](\d{1,2})[/-](\d{1,4})$/);
 
-
-
-
-
-        // expect(Utility.decorateUsername(username)).toBe("@".concat(username));
+        // With timestamp;
+        const output3 = Utility.formatDate({dateNum: testDate.getTime(), showTimestamp: true});
+        // console.log("Output #3: " + output3);
+        expect(output3).toMatch(/\d{4}/);
     });
     test("Decorate username.", () => {
         const username = "test";
