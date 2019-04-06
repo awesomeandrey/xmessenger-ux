@@ -1,9 +1,7 @@
 import React from "react";
-import FieldDefinition from "../../../../../../../../common/model/FieldDefinition";
 import Events from "../../../../../../../../../model/events/application-events";
 
 import {Button, Icon, Input, Spinner} from "react-lightning-design-system";
-import {InputPatterns} from "../../../../../../../../../model/services/utility/UtilityService";
 import {Navigation} from "../../../../../../../../../model/services/utility/NavigationService";
 import {LoginService} from "../../../../../../../../../model/services/core/AuthenticationService";
 import {Settings} from "../../../../../../../../../model/services/core/UserService";
@@ -12,39 +10,28 @@ import {CustomEvents} from "../../../../../../../../../model/services/utility/Ev
 class DeleteAccount extends React.Component {
     constructor(props) {
         super(props);
-        this.handleChangeInput = this.handleChangeInput.bind(this);
-        this.handleDeleteAccount = this.handleDeleteAccount.bind(this);
         this.state = {
             loading: false,
-            usernameInput: new FieldDefinition("", {name: "username", pattern: InputPatterns.LOGIN})
+            username: "",
+            error: ""
         };
     }
 
-    handleDeleteAccount() {
-        const {user} = this.props, {usernameInput: fieldDef} = this.state;
-        if (user.username !== fieldDef.value) {
-            fieldDef.error = "Username is not confirmed";
-            this.setState({usernameInput: fieldDef});
+    handleDeleteAccount = _ => {
+        const {user} = this.props, {username} = this.state;
+        if (user.username !== username) {
+            this.setState({error: "Username is not confirmed"});
         } else {
             CustomEvents.fire({eventName: Events.SETTINGS.LOCK, detail: {locked: true}})
-                .then(_ => this.setState({loading: true}))
-                .then(_ => Settings.changeProfileInfo({
-                    id: user.id,
-                    active: false
-                }))
+                .then(_ => this.setState({loading: true, error: ""}))
+                .then(_ => Settings.changeProfileInfo({id: user.id, active: false}))
                 .then(LoginService.logout)
                 .then(_ => Navigation.toLogin({}));
         }
-    }
-
-    handleChangeInput(e) {
-        const {usernameInput} = this.state;
-        usernameInput.value = e.target.value;
-        this.setState({usernameInput: usernameInput});
-    }
+    };
 
     render() {
-        const {loading, usernameInput} = this.state;
+        const {loading, username, error} = this.state;
         return (
             <div className="slds-grid slds-wrap slds-gutters">
                 <div className="slds-col slds-size_1-of-1">
@@ -61,16 +48,16 @@ class DeleteAccount extends React.Component {
                 </div>
                 <div className="slds-col slds-size_1-of-1 slds-m-top_small">
                     <div className="slds-float--left">
-                        {loading
-                            ? (<div className="slds-is-relative slds-p-around_medium">
-                                <Spinner type="brand" container={false}/>
-                            </div>)
-                            : (<Input iconRight="fallback" placeholder="Confirm your login"
-                                      value={usernameInput.value} error={usernameInput.error}
-                                      onChange={this.handleChangeInput} required/>)}
+                        {loading && <div className="slds-is-relative slds-p-around_medium">
+                            <Spinner type="brand" container={false}/>
+                        </div>}
+                        {!loading && <Input iconRight="fallback" required
+                                            placeholder="Confirm your login"
+                                            value={username} error={error}
+                                            onChange={event => this.setState({username: event.target.value})}/>}
                     </div>
                     <div className="slds-float--right">
-                        <Button className={loading ? "slds-hide" : "slds-show"} type="destructive"
+                        <Button className={`${loading && "slds-hide"}`} type="destructive"
                                 onClick={this.handleDeleteAccount}>Delete account</Button>
                     </div>
                 </div>
