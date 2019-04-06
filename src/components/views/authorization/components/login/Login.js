@@ -93,7 +93,7 @@ class Login extends React.Component {
                     <div className="slds-float_right">
                         <Button onClick={onSwitchForm} className={`${loading && "slds-hide"}`}>Register</Button>
                     </div>
-                    <div className="slds-float_left slds-is-relative slds-p-vertical--medium slds-p-left_medium">
+                    <div className="slds-float_left slds-is-relative slds-p-vertical--medium slds-p-left_large">
                         {loading && <Spinner type="brand" container={false}/>}
                     </div>
                 </div>

@@ -21,8 +21,7 @@ class ToastContainer extends React.Component {
             callback: event => {
                 const toastData = event.detail, {toasts} = this.state;
                 toastData.key = Utility.generateUniqueId();
-                toasts.push(toastData);
-                this.setState({toasts: toasts});
+                this.setState({toasts: [...toasts, toastData]});
             }
         });
         CustomEvents.register({

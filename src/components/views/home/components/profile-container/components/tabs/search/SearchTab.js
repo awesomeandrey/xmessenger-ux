@@ -50,8 +50,7 @@ class SearchTab extends React.Component {
             .then(_ => CustomEvents.fire({
                 eventName: ToastEvents.SHOW,
                 detail: {
-                    icon: "notification",
-                    level: "success",
+                    icon: "notification", level: "success",
                     message: <span>Sent request to <strong>{targetUser.name}</strong></span>
                 }
             }))

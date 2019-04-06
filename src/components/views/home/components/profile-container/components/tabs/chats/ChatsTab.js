@@ -18,9 +18,7 @@ const NOTIFICATION_BLUEPRINTS = {
     onChatCleared: userName => {
         CustomEvents.fire({
             eventName: ToastEvents.SHOW,
-            detail: {
-                message: <span><b>{userName}</b> has just cleared chat history.</span>
-            }
+            detail: {message: <span><b>{userName}</b> has just cleared chat history.</span>}
         });
     },
     onChatDeleted: userName => {
@@ -36,10 +34,7 @@ const NOTIFICATION_BLUEPRINTS = {
         Notifier.notify({
             title: `New message from ${chat.fellow.name}`,
             text: message.body,
-            onclick: _ => CustomEvents.fire({
-                eventName: Events.CHAT.SELECT,
-                detail: {selectedChat: chat}
-            })
+            onclick: _ => CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: chat}})
         });
     }
 };

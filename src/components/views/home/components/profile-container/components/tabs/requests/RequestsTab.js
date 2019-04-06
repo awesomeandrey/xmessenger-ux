@@ -14,26 +14,25 @@ const NOTIFICATION_BLUEPRINTS = {
         CustomEvents.fire({
             eventName: ToastEvents.SHOW,
             detail: {
-                icon: "notification", level: "success", message: (
+                icon: "notification", level: "success", message:
                     <span>Friendship request from <b>{request.sender.name} </b>
                         was <b>{request.approved ? "accepted" : "declined"}</b></span>
-                )
             }
-        })
+        });
     },
     onRespondToRequestError: error => {
         CustomEvents.fire({
             eventName: ToastEvents.SHOW,
             detail: {icon: "warning", level: "warning", message: error.message}
-        })
+        });
     },
     onProcessRequest: request => {
         CustomEvents.fire({
             eventName: ToastEvents.SHOW,
             detail: {
                 icon: "notification",
-                message: (<span><b>{request.recipient.name} </b>
-                    {request.approved ? "accepted" : "declined"} your friendship request.</span>)
+                message: <span><b>{request.recipient.name} </b>
+                    {request.approved ? "accepted" : "declined"} your friendship request.</span>
             }
         });
     },

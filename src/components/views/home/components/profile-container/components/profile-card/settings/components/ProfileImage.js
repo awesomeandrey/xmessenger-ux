@@ -34,8 +34,8 @@ class ProfileImage extends React.Component {
                         return Settings.changePicture(FD);
                     })
                     .then(_ => this.setState({loading: false}))
-                    .then(CustomEvents.fire({eventName: Events.USER.RELOAD}))
-                    .then(CustomEvents.fire({eventName: Events.SETTINGS.LOCK, detail: {locked: false}}));
+                    .then(_ => CustomEvents.fire({eventName: Events.USER.RELOAD}))
+                    .then(_ => CustomEvents.fire({eventName: Events.SETTINGS.LOCK, detail: {locked: false}}));
             });
         }
     };
@@ -75,7 +75,8 @@ class ProfileImage extends React.Component {
                     </div>
                     <div className="slds-form-element__help">
                         {!loading && !!error && <span className="slds-text-color_error">{error}</span>}
-                        {loading && <div className="slds-float_left slds-is-relative slds-p-vertical--medium slds-p-left_large">
+                        {loading &&
+                        <div className="slds-float_left slds-is-relative slds-p-vertical--medium slds-p-left_large">
                             <Spinner type="brand" container={false}/>
                         </div>}
                     </div>

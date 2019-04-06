@@ -36,7 +36,7 @@ module.exports = {
         }
     },
     InputPatterns: {
-        NAME: {exp: "^[a-zA-Z]{2,30}$", errorMessage: "Invalid Name"},
+        NAME: {exp: "^[a-zA-Z ]{2,30}$", errorMessage: "Invalid Name"},
         LOGIN: {exp: "^[a-zA-Z0-9]{4,}", errorMessage: "Invalid Login"},
         PASSWORD: {exp: "[^ ]{4,}", errorMessage: "Invalid Password"},
         MESSAGE_BODY: {exp: "^[a-zA-Z0-9А-Яа-яєі]{1,}", errorMessage: "Invalid message body"}
