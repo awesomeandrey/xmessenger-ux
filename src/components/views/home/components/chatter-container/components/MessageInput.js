@@ -27,7 +27,7 @@ class MessageInput extends React.Component {
     };
 
     handleTypeIn = (message) => {
-        if (Utility.check(message, InputPatterns.MESSAGE_BODY)) {
+        if (Utility.matches(message, InputPatterns.MESSAGE_BODY)) {
             this.setState({messageBody: message, error: ""});
         } else {
             this.setState({messageBody: message, error: InputPatterns.MESSAGE_BODY.errorMessage});
@@ -39,7 +39,7 @@ class MessageInput extends React.Component {
         Promise.resolve(this.state.messageBody)
             .then(message => {
                 this.setState({loading: true});
-                if (Utility.check(message, InputPatterns.MESSAGE_BODY)) {
+                if (Utility.matches(message, InputPatterns.MESSAGE_BODY)) {
                     return Promise.resolve(message);
                 } else {
                     return Promise.reject(InputPatterns.MESSAGE_BODY.errorMessage);

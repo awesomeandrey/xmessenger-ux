@@ -62,8 +62,8 @@ class Login extends React.Component {
 
     isFormFulfilled = _ => {
         const {inputs} = this.state;
-        if (!Utility.check(inputs.username, InputPatterns.LOGIN)) return false;
-        return Utility.check(inputs.password, InputPatterns.PASSWORD);
+        if (!Utility.matches(inputs.username, InputPatterns.LOGIN)) return false;
+        return Utility.matches(inputs.password, InputPatterns.PASSWORD);
     };
 
     render() {

@@ -28,10 +28,10 @@ class AppContextProvider extends Component {
         .then(user => this.setState({currentUser: user}));
 
     render() {
+        const {currentUser} = this.state;
         return (
             <AppContext.Provider value={{
-                user: this.state.currentUser,
-                reloadUser: this.reloadCurrentUser
+                user: currentUser
             }}>
                 {this.props.children}
             </AppContext.Provider>

@@ -18,7 +18,7 @@ class PasswordInput extends React.Component {
 
     handleChange = (event) => {
         const inputValue = event.target.value,
-            error = Utility.check(inputValue, InputPatterns.PASSWORD) ? "" : InputPatterns.PASSWORD.errorMessage;
+            error = Utility.matches(inputValue, InputPatterns.PASSWORD) ? "" : InputPatterns.PASSWORD.errorMessage;
         this.setState({value: inputValue, error}, _ => {
             const {onChange} = this.props;
             if (typeof onChange === "function") {

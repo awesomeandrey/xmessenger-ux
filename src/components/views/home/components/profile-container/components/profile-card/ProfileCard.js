@@ -31,7 +31,7 @@ class ProfileCard extends React.Component {
         const {user} = this.props;
         return (
             <div className="slds-media slds-media_center slds-has-flexi-truncate">
-                <SettingsModal user={user}/>
+                <SettingsModal {...this.props}/>
                 <div className="slds-media__figure slds-avatar slds-avatar_large">
                     <ScalableImage title={user.name} src={UserService.composeUserPictureUrl(user, true)}/>
                 </div>

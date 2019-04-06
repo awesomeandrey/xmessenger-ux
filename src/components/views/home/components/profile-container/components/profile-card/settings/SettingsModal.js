@@ -17,7 +17,7 @@ class SettingsModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            opened: true,
+            opened: false,
             loading: false,
             activeTabKey: DEFAULT_TAB_KEY
         }
@@ -57,7 +57,7 @@ class SettingsModal extends React.Component {
                                     <ProfileImage user={user}/>
                                 </div>
                                 <div className="slds-col slds-size_1-of-1 slds-medium-size_7-of-12 slds-large-size_6-of-12">
-                                    {/*<ProfileInfo user={user}/>*/}
+                                    <ProfileInfo user={user}/>
                                 </div>
                             </div>
                         </Tab>

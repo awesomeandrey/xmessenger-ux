@@ -1,202 +1,63 @@
 import React from "react";
 import Events from "../../../../../../../../../model/events/application-events";
-import FieldDefinition from "../../../../../../../../common/model/FieldDefinition";
 
-import {Settings, UserService} from "../../../../../../../../../model/services/core/UserService";
+import {Settings} from "../../../../../../../../../model/services/core/UserService";
 import {CustomEvents} from "../../../../../../../../../model/services/utility/EventsService";
 import {InputPatterns, Utility} from "../../../../../../../../../model/services/utility/UtilityService";
-import {Button, Icon, Input, Spinner} from "react-lightning-design-system";
+import {Input, Spinner} from "react-lightning-design-system";
 
 class ProfileInfo extends React.Component {
     constructor(props) {
         super(props);
-        this.handleChangeInput = this.handleChangeInput.bind(this);
-        this.handleSubmitForm = this.handleSubmitForm.bind(this);
-        this.handlePreLoadPicture = this.handlePreLoadPicture.bind(this);
         this.state = {
             loading: false,
-            notification: Object.create(null),
-            inputs: {
-                name: Object.create(null),
-                picture: Object.create(null)
-            },
-            selectedPicture: null
+            nameInput: {value: "", error: ""}
         };
     }
 
     componentDidMount() {
-        // Instantiate fieldDef entities;
-        const {user} = this.props, inputFields = Object.create(null);
-        [
-            new FieldDefinition(user.name, {name: "name", pattern: InputPatterns.NAME}),
-            new FieldDefinition("", {name: "picture"})
-        ].forEach(fieldDef => {
-            Object.defineProperty(inputFields, fieldDef.name, {
-                value: fieldDef, writable: true
-            });
-        });
-        this.setState({
-            inputs: inputFields,
-            selectedPicture: UserService.composeUserPictureUrl(user)
-        });
+        const {user} = this.props;
+        this.setState({nameInput: {value: user.name, error: ""}});
     }
 
-    handlePreLoadPicture(event) {
-        const {inputs} = this.state, pictureField = inputs.picture;
-        const mediaFile = event.target.files[0],
-            fileSize = mediaFile.size / 1024 / 1024,
-            fileSizeLimit = 5;
-        if (fileSize > fileSizeLimit) {
-            pictureField.error = `Profile picture exceed file size limit: maximum ${fileSizeLimit}MB.`;
-        } else {
-            pictureField.error = "";
-            let reader = new FileReader();
-            reader.onload = _ => {
-                this._avatarImg.src = reader.result;
-            };
-            reader.readAsDataURL(mediaFile);
-        }
-        this.handleChangeInput(pictureField, mediaFile);
-    }
-
-    handleChangeInput(fieldDef, value) {
-        const {inputs} = this.state, propName = fieldDef.name;
-        if (!!inputs[propName]) {
-            fieldDef.value = value;
-            Object.defineProperty(inputs, propName, {
-                value: fieldDef
-            });
-            this.setState({inputs: inputs});
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {user: prevUser} = prevProps, {user} = this.props;
+        if (prevUser.name !== user.name) {
+            this.setState({nameInput: {value: user.name, error: ""}});
         }
     }
 
-    handleSubmitForm() {
-        this.setState({loading: true});
-        if (this.isFormFulfilled()) {
-            let {inputs} = this.state, promisesToExecute = [];
-            [
-                {
-                    fieldDef: inputs.picture, promise: _ => {
-                        let FD = new FormData();
-                        FD.append('file', inputs.picture.value);
-                        return Settings.changePicture(FD);
-                    }
-                },
-                {
-                    fieldDef: inputs.name, promise: _ => {
-                        let {user} = this.props;
-                        const userToUpdate = {
-                            id: user.id,
-                            name: inputs.name.value,
-                        };
-                        return Settings.changeProfileInfo(userToUpdate);
-                    }
-                }
-            ].forEach(item => {
-                if (item.fieldDef.changed) {
-                    promisesToExecute.push(item.promise()); // return Promise to be executed;
-                }
-            });
-            if (promisesToExecute.length === 0) {
-                this.setState({
-                    loading: false,
-                    notification: {type: "error", message: "Nothing was changed on the profile form."}
-                });
-            } else {
-                CustomEvents.fire({eventName: Events.SETTINGS.LOCK, detail: {locked: true}});
-                Promise.all(promisesToExecute)
+    handleChangeName = event => {
+        const {user} = this.props, {nameInput} = this.state, pattern = InputPatterns.NAME;
+        if (!Utility.matches(nameInput.value, pattern)) {
+            nameInput.error = pattern.errorMessage;
+            this.setState({nameInput});
+        } else if (user.name !== nameInput.value) {
+            nameInput.error = "";
+            this.setState({loading: true, nameInput}, _ => {
+                Settings.changeProfileInfo({...user, name: nameInput.value})
                     .then(_ => CustomEvents.fire({eventName: Events.USER.RELOAD}))
-                    .then(_ => {
-                        Object.getOwnPropertyNames(inputs).forEach(propName => {
-                            inputs[propName].changed = false;
-                        });
-                        return inputs;
-                    })
-                    .then(inputs => this.setState({
-                        inputs: inputs,
-                        loading: false,
-                        notification: {type: "success", message: "Done!"}
-                    }))
-                    .then(CustomEvents.fire({eventName: Events.SETTINGS.LOCK, detail: {locked: false}}));
-            }
-        } else {
-            this.setState({
-                loading: false,
-                notification: {type: "error", message: "All fields should be populated correctly."}
+                    .then(_ => this.setState({loading: false}));
             });
+        } else {
+            nameInput.value = event.target.value;
+            nameInput.error = "";
+            this.setState({nameInput});
         }
-    }
-
-    isFormFulfilled() {
-        let allInputsMatchPattern = true, {inputs} = this.state;
-        Object.getOwnPropertyNames(inputs).forEach(propName => {
-            let fieldDef = inputs[propName];
-            if (fieldDef.changed && !fieldDef.matchesPattern()) {
-                allInputsMatchPattern = false;
-            }
-        });
-        return allInputsMatchPattern;
-    }
+    };
 
     render() {
-        const {user} = this.props, {loading, notification, inputs, selectedPicture} = this.state;
+        const {user} = this.props, {loading, nameInput} = this.state;
         return (
-            <div className="slds-grid slds-wrap slds-gutters">
-                <div className="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-large-size_6-of-12">
-                    <div className="slds-text-align_center">
-                        <span className="slds-avatar slds-avatar_large settings-profile-picture">
-                            <img src={selectedPicture} ref={el => this._avatarImg = el} alt={user.name}/>
-                        </span>
-                    </div>
-                    <div className="slds-form-element slds-has-error slds-m-top_small">
-                        <div className="slds-form-element__label">Profile photo</div>
-                        <div className="slds-form-element__control slds-text-align_center">
-                            <div className={`slds-file-selector slds-file-selector_files
-                                ${loading ? `slds-hide` : `slds-show`}`}>
-                                <div className="slds-file-selector__dropzone">
-                                    <input type="file" disabled={loading} accept={"image/*"}
-                                           ref={el => this._fileInput = el}
-                                           onChange={this.handlePreLoadPicture}
-                                           className="slds-file-selector__input slds-assistive-text"/>
-                                    <label className="slds-file-selector__body" onClick={_ => this._fileInput.click()}>
-                                        <span className="slds-file-selector__button slds-button slds-button_neutral">
-                                            <Icon icon="utility:upload" size="x-small"/>&nbsp;Upload Files
-                                        </span>
-                                        <span className="slds-file-selector__text slds-medium-show">or Drop Files</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="slds-form-element__help">
-                            <span className={`${loading ? 'slds-hide' : 'slds-show'}`}>
-                                {inputs.picture.error}</span>
-                        </div>
-                    </div>
-                </div>
-                <div className="slds-col slds-size_1-of-1 slds-medium-size_7-of-12 slds-large-size_6-of-12">
-                    <div className="slds-form--stacked">
-                        <Input label="Name" iconRight="user" disabled={loading}
-                               value={inputs.name.value}
-                               onChange={e => this.handleChangeInput(inputs.name, e.target.value)}
-                               error={inputs.name.error}
-                               placeholder="Enter your name" required/>
-                        <Input label="Username" value={Utility.decorateUsername(user.username)}
-                               iconRight="fallback" readOnly/>
-                        <div className={`slds-p-top_x-small ${loading ? 'slds-hide' : 'slds-show'}`}>
-                            {!!notification &&
-                            <div className={`slds-text-color_${notification.type}`}>{notification.message}</div>}
-                        </div>
-                    </div>
-                </div>
-                <hr/>
-                <div className="slds-col">
-                    {loading
-                        ? (<div className="slds-is-relative slds-p-around_medium slds-float_left">
-                            <Spinner type="brand" container={false}/>
-                        </div>)
-                        : (<Button className="slds-float_right" type="brand"
-                                   onClick={this.handleSubmitForm}>Submit</Button>)}
-                </div>
+            <div className="slds-form--stacked">
+                <Input label="Name" iconRight="user" placeholder="Enter your name"
+                       disabled={loading} error={nameInput.error} value={nameInput.value} required
+                       onChange={event => this.setState({nameInput: {value: event.target.value}})}
+                       onBlur={this.handleChangeName}/>
+                <Input label="Username" value={Utility.decorateUsername(user.username)} iconRight="fallback" readOnly/>
+                {loading && <div className="slds-float_left slds-is-relative slds-p-vertical--large slds-p-left_large">
+                    <Spinner type="brand" container={false}/>
+                </div>}
             </div>
         );
     }

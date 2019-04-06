@@ -16,7 +16,7 @@ class UsernameInput extends React.Component {
 
     handleChange = (event) => {
         const inputValue = event.target.value, pattern = InputPatterns.LOGIN, {onChange} = this.props;
-        if (!Utility.check(inputValue, pattern)) {
+        if (!Utility.matches(inputValue, pattern)) {
             this.setState({changed: true, error: pattern.errorMessage}, onChange);
         } else {
             this.setState({changed: true, error: "", loading: true});

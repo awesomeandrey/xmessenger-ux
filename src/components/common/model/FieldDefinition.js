@@ -56,7 +56,7 @@ class FieldDefinition {
 
     matchesPattern() {
         if (this._pattern === undefined) return true;
-        return Utility.check(this._value, this._pattern);
+        return Utility.matches(this._value, this._pattern);
     }
 }
 

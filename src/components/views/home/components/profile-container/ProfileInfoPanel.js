@@ -16,7 +16,7 @@ import {DragDropContext} from "react-dnd/lib/index";
 
 import "./styles/styles.css";
 
-class ProfilePanel extends React.Component {
+class ProfileInfoPanel extends React.Component {
     constructor(props) {
         super(props);
         this.handleSelectTab = this.handleSelectTab.bind(this);
@@ -56,7 +56,7 @@ class ProfilePanel extends React.Component {
                 {context => (
                     <div className="slds-card height-inherit theme-marker--border">
                         <div className="theme-marker slds-card__header slds-m-bottom_none slds-p-bottom_medium">
-                            <ProfileCard user={context.user} reloadUser={context.reloadUser}/>
+                            <ProfileCard user={context.user}/>
                         </div>
                         <div className="slds-card__body tabs-container">
                             <Tabs type="default" activeKey={activeTabKey} className="height-percent-100">
@@ -97,4 +97,4 @@ const TabItem = ({title, amount, iconName, onClick}) => {
     );
 };
 
-export default DragDropContext(MultiBackend(HTML5toTouch))(ProfilePanel);
+export default DragDropContext(MultiBackend(HTML5toTouch))(ProfileInfoPanel);

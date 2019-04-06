@@ -56,10 +56,10 @@ class Register extends React.Component {
 
     isFormFulfilled = _ => {
         const {inputs} = this.state;
-        if (!Utility.check(inputs.name, InputPatterns.NAME)) return false;
-        if (!Utility.check(inputs.username, InputPatterns.LOGIN)) return false;
+        if (!Utility.matches(inputs.name, InputPatterns.NAME)) return false;
+        if (!Utility.matches(inputs.username, InputPatterns.LOGIN)) return false;
         for (let key in [inputs.password, inputs.repeatedPassword]) {
-            if (inputs.hasOwnProperty(key) && !Utility.check(inputs[key], InputPatterns.PASSWORD)) return false;
+            if (inputs.hasOwnProperty(key) && !Utility.matches(inputs[key], InputPatterns.PASSWORD)) return false;
         }
         return inputs.password === inputs.repeatedPassword;
     };

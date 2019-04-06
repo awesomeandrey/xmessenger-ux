@@ -1,7 +1,7 @@
 import React from 'react';
 import SessionValidator from "../../common/model/SessionValidator";
 import ChatPanel from "./components/chatter-container/ChatPanel";
-import ProfilePanel from "./components/profile-container/ProfilePanel";
+import ProfilePanel from "./components/profile-container/ProfileInfoPanel";
 import AppContextProvider from "../../../model/services/context/AppContextProvider";
 import subscribeToTopics from "../../../model/api/streaming/TopicsSubscriber";
 

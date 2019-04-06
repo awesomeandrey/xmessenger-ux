@@ -14,7 +14,7 @@ class MaskedInput extends React.Component {
 
     handleChange = (event) => {
         const {pattern} = this.props, inputValue = event.target.value,
-            errorMessage = Utility.check(inputValue, pattern) ? "" : pattern.errorMessage;
+            errorMessage = Utility.matches(inputValue, pattern) ? "" : pattern.errorMessage;
         this.setState({value: inputValue, error: errorMessage}, _ => {
             const {onChange} = this.props;
             if (typeof onChange === "function") onChange(inputValue);
