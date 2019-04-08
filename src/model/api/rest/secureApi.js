@@ -43,7 +43,7 @@ export const performRequest = ({method, entity, path, headers = DEFAULT_HEADERS}
         body: entity,
         headers: headers
     }).then(data => Promise.resolve(data), error => {
-        if ([401, 403].includes(error.status) || error.message.includes("expired")) {
+        if ([400, 401, 403].includes(error.status)) {
             revokeClient();
             Navigation.toLogin({jwtExpired: true});
         }
