@@ -1,6 +1,5 @@
 import React from "react";
 import Countdown from "react-countdown-now";
-import ToastContainer from "../../../../common/components/toasts/components/ToastContainer";
 import Events from "../../../../common/components/toasts/events";
 import GmailService from "../../../../../model/services/core/GmailService";
 
@@ -38,7 +37,7 @@ class ProxyPage extends React.Component {
 
     render() {
         return (
-            <ToastContainer>
+            <div className="proxy-page-container">
                 <div className="slds-modal slds-fade-in-open" aria-hidden="false" role="dialog">
                     <div className="slds-modal__container">
                         <div className="slds-modal__header">
@@ -56,7 +55,7 @@ class ProxyPage extends React.Component {
                     </div>
                 </div>
                 <div className="slds-modal-backdrop slds-modal-backdrop--open"/>
-            </ToastContainer>
+            </div>
         );
     }
 }
