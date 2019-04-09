@@ -17,7 +17,13 @@ class ProfileImage extends React.Component {
 
     componentDidMount() {
         const {user} = this.props;
-        this.setState({picture: UserService.composeUserPictureUrl(user)})
+        this.setState({picture: UserService.composeUserPictureUrl(user)});
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (!prevProps.reset && this.props.reset) {
+            this.setState({loading: false, error: ""});
+        }
     }
 
     handleLoadImage = event => {
@@ -51,7 +57,7 @@ class ProfileImage extends React.Component {
     render() {
         const {user} = this.props, {loading, picture, error} = this.state;
         return (
-            <div className="profile-settings__image">
+            <div className="profile-settings__image slds-p-horizontal--small">
                 <div className="slds-text-align_center">
                     <span className="slds-avatar slds-avatar_large">
                         <img src={picture} ref={el => this._avatarImg = el} alt={user.name}/></span>
@@ -75,8 +81,7 @@ class ProfileImage extends React.Component {
                     </div>
                     <div className="slds-form-element__help">
                         {!loading && !!error && <span className="slds-text-color_error">{error}</span>}
-                        {loading &&
-                        <div className="slds-float_left slds-is-relative slds-p-vertical--medium slds-p-left_large">
+                        {loading && <div className="slds-float_left slds-is-relative slds-p-vertical--medium slds-p-left_large">
                             <Spinner type="brand" container={false}/>
                         </div>}
                     </div>

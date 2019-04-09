@@ -17,6 +17,12 @@ class AccountDeactivation extends React.Component {
         };
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (!prevProps.reset && this.props.reset) {
+            this.setState({loading: false, username: "", error: ""});
+        }
+    }
+
     handleDeleteAccount = _ => {
         const {user} = this.props, {username} = this.state;
         if (user.username !== username) {

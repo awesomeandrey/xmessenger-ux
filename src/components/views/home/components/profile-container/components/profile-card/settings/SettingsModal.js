@@ -20,7 +20,7 @@ class SettingsModal extends React.Component {
             opened: false,
             loading: false,
             activeTabKey: DEFAULT_TAB_KEY
-        }
+        };
     }
 
     componentDidMount() {
@@ -45,7 +45,7 @@ class SettingsModal extends React.Component {
     };
 
     render() {
-        const {loading, opened, activeTabKey} = this.state, {user} = this.props;
+        const {loading, opened, activeTabKey} = this.state, {user} = this.props, reset = !opened;
         return (
             <Modal opened={opened} onHide={_ => this.setState({opened: false})} className="settings-modal-container">
                 <ModalHeader title="Settings" closeButton={!loading}/>
@@ -54,10 +54,10 @@ class SettingsModal extends React.Component {
                         <Tab eventKey="1" title="Profile Info">
                             <div className="slds-grid slds-wrap slds-gutters">
                                 <div className="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-large-size_6-of-12">
-                                    <ProfileImage user={user}/>
+                                    <ProfileImage user={user} reset={reset}/>
                                 </div>
                                 <div className="slds-col slds-size_1-of-1 slds-medium-size_7-of-12 slds-large-size_6-of-12">
-                                    <ProfileInfo user={user}/>
+                                    <ProfileInfo user={user} reset={reset}/>
                                 </div>
                             </div>
                         </Tab>
@@ -65,13 +65,13 @@ class SettingsModal extends React.Component {
                             {user["loggedExternally"]
                                 ? (<div className="slds-align--absolute-center">
                                     <h1 className="slds-p-around_large">No password change</h1>
-                                </div>) : <PasswordChange user={user}/>}
+                                </div>) : <PasswordChange user={user} reset={reset}/>}
                         </Tab>
                         <Tab eventKey="3" title="Choose Theme">
                             <ThemePicker/>
                         </Tab>
                         <Tab eventKey="4" title="Delete Account">
-                            <AccountDeactivation user={user}/>
+                            <AccountDeactivation user={user} reset={reset}/>
                         </Tab>
                     </Tabs>
                 </ModalContent>

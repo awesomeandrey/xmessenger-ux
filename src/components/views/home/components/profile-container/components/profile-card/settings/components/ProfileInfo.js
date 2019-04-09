@@ -21,9 +21,9 @@ class ProfileInfo extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const {user: prevUser} = prevProps, {user} = this.props;
-        if (prevUser.name !== user.name) {
-            this.setState({nameInput: {value: user.name, error: ""}});
+        const {user: prevUser, reset: prevReset} = prevProps, {user, reset} = this.props;
+        if ((prevUser.name !== user.name) || (!prevReset && reset)) {
+            this.setState({loading: false, nameInput: {value: user.name, error: ""}});
         }
     }
 
@@ -49,7 +49,7 @@ class ProfileInfo extends React.Component {
     render() {
         const {user} = this.props, {loading, nameInput} = this.state;
         return (
-            <div className="slds-form--stacked">
+            <div className="slds-form--stacked slds-p-horizontal--small">
                 <Input label="Name" iconRight="user" placeholder="Enter your name"
                        disabled={loading} error={nameInput.error} value={nameInput.value} required
                        onChange={event => this.setState({nameInput: {value: event.target.value}})}

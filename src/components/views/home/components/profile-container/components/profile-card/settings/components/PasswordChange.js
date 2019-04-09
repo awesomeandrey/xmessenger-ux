@@ -21,6 +21,12 @@ class PasswordChange extends React.Component {
         };
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (!prevProps.reset && this.props.reset) {
+            this.handleClearForm();
+        }
+    }
+
     handleClearForm = notification => {
         this.setState({
             loading: false,
@@ -59,7 +65,8 @@ class PasswordChange extends React.Component {
     };
 
     render() {
-        const {loading, notification, inputs} = this.state;
+        const {loading, notification, inputs} = this.state, {reset} = this.props;
+        if (reset) return <span/>;
         return (
             <Form onSubmit={e => e.preventDefault()}>
                 <PasswordInput label="Current password"
@@ -67,21 +74,21 @@ class PasswordChange extends React.Component {
                                value={inputs.p1}
                                onChange={val => {
                                    inputs.p1 = val;
-                                   this.setState({inputs})
+                                   this.setState({inputs});
                                }}/>
                 <PasswordInput label="New password"
                                disabled={loading}
                                value={inputs.p2}
                                onChange={val => {
                                    inputs.p2 = val;
-                                   this.setState({inputs})
+                                   this.setState({inputs});
                                }}/>
                 <PasswordInput label="Repeat password"
                                disabled={loading}
                                value={inputs.p3}
                                onChange={val => {
                                    inputs.p3 = val;
-                                   this.setState({inputs})
+                                   this.setState({inputs});
                                }}/>
                 <div className="slds-clearfix slds-m-top_small">
                     <div className="slds-float--left">
@@ -92,7 +99,7 @@ class PasswordChange extends React.Component {
                                 {notification.message}</div>)}
                     </div>
                     <div className="slds-float--right">
-                        <ButtonGroup className={loading ? "slds-hide" : "slds-show"}>
+                        <ButtonGroup className={loading && "slds-hide"}>
                             <Button type="neutral" onClick={this.handleClearForm}>Reset</Button>
                             <Button type="brand" onClick={this.handleChangePassword}>Change Password</Button>
                         </ButtonGroup>

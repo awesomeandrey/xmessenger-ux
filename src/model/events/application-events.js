@@ -20,8 +20,6 @@ export default {
     },
     SETTINGS: {
         LOCK: "onLockSettings",
-        OPEN: "onOpenSettings",
-        SELECT_TAB: "onSelectSettingsTab",
-        LOAD_TAB: "onLoadSettingsTab"
+        OPEN: "onOpenSettings"
     }
 };
