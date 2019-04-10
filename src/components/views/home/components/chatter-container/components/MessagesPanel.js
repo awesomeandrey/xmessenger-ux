@@ -13,7 +13,7 @@ class MessagesPanel extends React.Component {
             selectedChat: null,
             messagesMap: new Map(),
             loading: false
-        }
+        };
     }
 
     componentWillMount() {
@@ -59,7 +59,7 @@ class MessagesPanel extends React.Component {
     }
 
     render() {
-        const {chat, messagesMap, loading} = this.state, {user} = this.props,
+        const {selectedChat, messagesMap, loading} = this.state, {user} = this.props,
             messageItems = Array.from(messagesMap.values()).map(message => {
                 message.formattedDate = Utility.formatDate({dateNum: message.date});
                 return message.author.id !== user.id
@@ -71,7 +71,7 @@ class MessagesPanel extends React.Component {
                 <section role="log" className="slds-chat height-percent-100">
                     {loading && <Spinner/>}
                     <ul className="slds-chat-list slds-scrollable_y" ref={element => this._container = element}>
-                        <ChatTitle chat={chat}/>
+                        <ChatTitle chat={selectedChat}/>
                         {messageItems}
                     </ul>
                 </section>
