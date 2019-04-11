@@ -9,6 +9,19 @@
     <link rel="stylesheet" type="text/css" href="/public/assets/styles/salesforce-lightning-design-system.css"/>
     <link rel="stylesheet" type="text/css" href="/public/assets/styles/common-styles.css"/>
     <link rel="stylesheet" type="text/css" href="/public/assets/styles/theming.css"/>
+
+    <style type="text/css">
+        #app > div:first-child {
+            position: absolute !important;
+        }
+
+        /*For iPhone and smartphones*/
+        @media only screen and (min-device-width: 315px) and (max-device-width: 820px) {
+            #app > div:first-child {
+                position: relative !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
