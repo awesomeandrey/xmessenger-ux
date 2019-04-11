@@ -24,8 +24,8 @@ class MaskedInput extends React.Component {
         const {error} = this.state;
         return (
             <Input placeholder="Type here..."
-                   {...this.props}
                    errorText={error}
+                   {...this.props}
                    onChange={this.handleChange}
             />
         );

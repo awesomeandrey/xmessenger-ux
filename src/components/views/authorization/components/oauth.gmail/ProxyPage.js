@@ -2,8 +2,8 @@ import React from "react";
 import Countdown from "react-countdown-now";
 import Events from "../../../../common/components/toasts/events";
 import GmailService from "../../../../../model/services/core/GmailService";
+import Button from "@salesforce/design-system-react/module/components/button";
 
-import {Button} from "react-lightning-design-system";
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
 import {Navigation} from "../../../../../model/services/utility/NavigationService";
 import {Utility} from "../../../../../model/services/utility/UtilityService";
@@ -28,7 +28,7 @@ class ProxyPage extends React.Component {
     countdownRenderer = ({hours, minutes, seconds, completed}) => {
         if (completed) {
             // Render a complete state;
-            return <Button type="brand" label="Redirect" onClick={_ => Navigation.toHome({replace: true})}/>;
+            return <Button variant="brand" label="Redirect" onClick={_ => Navigation.toHome({replace: true})}/>;
         } else {
             // Render a countdown;
             return <span>{seconds} sec</span>;

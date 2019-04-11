@@ -1,16 +1,16 @@
 import React from 'react';
 import MaskedInput from "../../../../common/components/inputs/MaskedInput";
 import PasswordInput from "../../../../common/components/inputs/PasswordInput";
-import UsernameInput from "./UsernameInput";
+import StatefulInput from "../../../../common/components/inputs/StatefulInput";
 import ToastEvents from "../../../../common/components/toasts/events";
+import Button from "@salesforce/design-system-react/module/components/button";
+import Spinner from "@salesforce/design-system-react/module/components/spinner";
+import InputIcon from "@salesforce/design-system-react/module/components/icon/input-icon";
 
 import {LoginService, RegistrationService} from "../../../../../model/services/core/AuthenticationService";
-import {Button, Spinner} from "react-lightning-design-system";
 import {InputPatterns, Utility} from "../../../../../model/services/utility/UtilityService";
 import {Navigation} from "../../../../../model/services/utility/NavigationService";
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
-
-import "../../styles/styles.css";
 
 const INVALID_INPUT = "Incorrect input. Make sure that all fields are populated correctly.";
 
@@ -69,45 +69,48 @@ class Register extends React.Component {
         return (
             <div className={`register-form slds-form--horizontal ${!!error && "slds-has-error"}`}>
                 <MaskedInput label="Your Name"
-                             iconRight="user"
+                             iconRight={<InputIcon name="user" category="utility"/>}
                              value={inputs.name}
                              disabled={loading} required
                              pattern={InputPatterns.NAME}
                              onChange={val => {
                                  inputs.name = val;
-                                 this.setState({name})
+                                 this.setState({name});
                              }}/>
-                <UsernameInput label="Choose username"
+                <StatefulInput label="Choose username"
+                               iconRight={<InputIcon name="activity" category="utility"/>}
                                disabled={loading} required
+                               promiseFunc={RegistrationService.checkUsername}
+                               pattern={InputPatterns.LOGIN}
                                onChange={val => {
-                                   inputs.username = val || "";
-                                   this.setState({inputs: inputs});
+                                   inputs.username = val;
+                                   this.setState({name});
                                }}/>
                 <PasswordInput disabled={loading}
                                value={inputs.password}
                                onChange={val => {
                                    inputs.password = val;
-                                   this.setState({inputs})
+                                   this.setState({inputs});
                                }}/>
                 <PasswordInput label="Confirm password"
                                disabled={loading}
                                value={inputs.repeatedPassword}
                                onChange={val => {
                                    inputs.repeatedPassword = val;
-                                   this.setState({inputs})
+                                   this.setState({inputs});
                                }}/>
                 <div className="slds-form-element__control slds-m-top_small">
                     <div className="slds-clearfix">
                         <div className="slds-float_left">
-                            <Button type="neutral" onClick={this.handleRegister}
+                            <Button variant="neutral" onClick={this.handleRegister}
                                     className={`${loading && "slds-hide"}`}>Register</Button>
                         </div>
                         <div className="slds-float_right">
-                            <Button onClick={onSwitchForm} className={`${loading && "slds-hide"}`}>
-                                Back to Login</Button>
+                            <Button onClick={onSwitchForm} variant="base"
+                                    className={`${loading && "slds-hide"}`}>Back to Login</Button>
                         </div>
                         <div className="slds-float_left slds-is-relative slds-p-around_small slds-p-left_medium">
-                            {loading && <Spinner type="brand" container={false}/>}
+                            {loading && <Spinner variant="brand" size="small"/>}
                         </div>
                     </div>
                 </div>
