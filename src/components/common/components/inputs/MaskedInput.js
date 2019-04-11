@@ -1,13 +1,12 @@
 import React from "react";
+import Input from "@salesforce/design-system-react/module/components/input";
 
-import {Input} from "react-lightning-design-system";
 import {Utility} from "../../../../model/services/utility/UtilityService";
 
 class MaskedInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: "",
             error: ""
         };
     }
@@ -15,22 +14,20 @@ class MaskedInput extends React.Component {
     handleChange = (event) => {
         const {pattern} = this.props, inputValue = event.target.value,
             errorMessage = Utility.matches(inputValue, pattern) ? "" : pattern.errorMessage;
-        this.setState({value: inputValue, error: errorMessage}, _ => {
+        this.setState({error: errorMessage}, _ => {
             const {onChange} = this.props;
             if (typeof onChange === "function") onChange(inputValue);
         });
     };
 
     render() {
-        const {value, error} = this.state;
+        const {error} = this.state;
         return (
-            <Input label="Input field"
-                   iconRight="fallback"
-                   placeholder="Type here..."
-                   value={value}
-                   error={error}
+            <Input placeholder="Type here..."
                    {...this.props}
-                   onChange={this.handleChange}/>
+                   errorText={error}
+                   onChange={this.handleChange}
+            />
         );
     }
 }

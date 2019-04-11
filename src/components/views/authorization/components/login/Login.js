@@ -3,8 +3,10 @@ import MaskedInput from "../../../../common/components/inputs/MaskedInput";
 import PasswordInput from "../../../../common/components/inputs/PasswordInput";
 import ToastEvents from "../../../../common/components/toasts/events";
 import GmailService from "../../../../../model/services/core/GmailService";
+import Button from "@salesforce/design-system-react/module/components/button";
+import Spinner from "@salesforce/design-system-react/module/components/spinner";
+import InputIcon from "@salesforce/design-system-react/module/components/icon/input-icon";
 
-import {Button, Form, Spinner} from "react-lightning-design-system";
 import {LoginService} from "../../../../../model/services/core/AuthenticationService";
 import {InputPatterns, Utility} from "../../../../../model/services/utility/UtilityService";
 import {Navigation} from "../../../../../model/services/utility/NavigationService";
@@ -69,35 +71,36 @@ class Login extends React.Component {
     render() {
         const {loading, inputs, error} = this.state, {onSwitchForm} = this.props;
         return (
-            <Form onSubmit={this.handleLogin} className={`${!!error && "slds-has-error"}`}>
-                <MaskedInput label="Login"
-                             iconRight="user" required
+            <form onSubmit={this.handleLogin} className={`slds-form--stacked ${!!error && "slds-has-error"}`}>
+                <MaskedInput label="Login" required
+                             iconRight={<InputIcon name="user" category="utility"/>}
                              pattern={InputPatterns.LOGIN}
                              disabled={loading}
                              value={inputs.username}
                              onChange={val => {
                                  inputs.username = val;
-                                 this.setState({inputs})
+                                 this.setState({inputs});
                              }}/>
                 <PasswordInput disabled={loading}
                                value={inputs.password}
                                onChange={val => {
                                    inputs.password = val;
-                                   this.setState({inputs})
+                                   this.setState({inputs});
                                }}/>
-                <div className="slds-clearfix">
+                <div className="slds-clearfix slds-m-top_small">
                     <div className={`slds-float_left ${loading && "slds-hide"}`}>
-                        <Button type="brand" onClick={this.handleLogin}>Login</Button>
-                        <Button type="destructive" onClick={this.handleLoginViaGmail}>Login via Gmail</Button>
+                        <Button variant="brand" onClick={this.handleLogin}>Login</Button>
+                        <Button variant="destructive" onClick={this.handleLoginViaGmail}>Login via Gmail</Button>
                     </div>
                     <div className="slds-float_right">
-                        <Button onClick={onSwitchForm} className={`${loading && "slds-hide"}`}>Register</Button>
+                        <Button variant="base" onClick={onSwitchForm}
+                                className={`${loading && "slds-hide"}`}>Register</Button>
                     </div>
                     <div className="slds-float_left slds-is-relative slds-p-vertical--medium slds-p-left_large">
-                        {loading && <Spinner type="brand" container={false}/>}
+                        {loading && <Spinner variant="brand" size="small"/>}
                     </div>
                 </div>
-            </Form>
+            </form>
         );
     }
 }
