@@ -2,8 +2,10 @@ import React from 'react';
 import SessionValidator from "../../common/model/SessionValidator";
 import Register from "./components/register/Register";
 import Login from "./components/login/Login";
+import Alert from "@salesforce/design-system-react/module/components/alert";
+import Icon from "@salesforce/design-system-react/module/components/icon";
+import PageHeader from "@salesforce/design-system-react/module/components/page-header";
 
-import {Grid, Row, Col, PageHeader, PageHeaderHeading, Icon, Alert} from "react-lightning-design-system";
 import {Utility} from "../../../model/services/utility/UtilityService";
 
 const register = Utility.getParamFromUrl({paramName: "register"}) === "true";
@@ -22,31 +24,25 @@ class Authorization extends React.Component {
     render() {
         const {register, jwtExpired} = this.state;
         return (
-            <Grid className="slds-brand-band slds-brand-band_medium">
-                <Row>
-                    <Col>
-                        <Alert icon="ban" level="error" className={`${!jwtExpired && "slds-hide"}`}
-                               onClose={_ => this.setState({jwtExpired: false})}>
-                            Your session has expired, please login again.
-                        </Alert>
-                        <div className="slds-align_absolute-center slds-m-top_large">
-                            <div className="slds-box slds-theme_shade slds-theme_alert-texture">
-                                <PageHeader>
-                                    <PageHeaderHeading title="xMessenger"
-                                                       info="Free messenger written on ReactJS, Java Spring and SLDS"
-                                                       figure={<Icon category="standard" size="medium"
-                                                                     icon="connected_apps"/>}/>
-                                </PageHeader>
-                                <div className="slds-m-top_medium">
-                                    {register
-                                        ? <Register onSwitchForm={this.switchForm}/>
-                                        : <Login onSwitchForm={this.switchForm}/>}
-                                </div>
-                            </div>
+            <div className="slds-col height-fill">
+                <Alert icon={<Icon category="utility" name="ban"/>} variant="error"
+                       className={`${!jwtExpired && "slds-hide"}`} dismissible
+                       labels={{heading: "Your session has expired, please login again.",}}
+                       onRequestClose={_ => this.setState({jwtExpired: false})}/>
+                <div className="slds-align_absolute-center slds-m-top_medium">
+                    <div className="slds-box slds-theme_shade slds-theme_alert-texture" style={{width: "25rem"}}>
+                        <PageHeader iconCategory="standard" iconName="connected_apps"
+                                    label="Cloud based app" variant="objectHome" truncate
+                                    title={<h1 className="slds-page-header__title slds-p-right_x-small">xMessenger</h1>}
+                        />
+                        <div className="slds-m-top_medium">
+                            {register
+                                ? <Register onSwitchForm={this.switchForm}/>
+                                : <Login onSwitchForm={this.switchForm}/>}
                         </div>
-                    </Col>
-                </Row>
-            </Grid>
+                    </div>
+                </div>
+            </div>
         );
     }
 }

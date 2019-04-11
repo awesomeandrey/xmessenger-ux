@@ -14,7 +14,7 @@ import {Route, IndexRoute} from "react-router";
 const App = props => {
     return (
         <IconSettings iconPath="/assets/icons">
-            <BrandBand className="slds-p-around_x-small" theme="lightning-blue">
+            <BrandBand theme="lightning-blue">
                 <ModalsContainer>
                     <ToastContainer>
                         {props.children}

@@ -73,11 +73,11 @@ const About = _ => {
     );
     return (
         <div className="slds-col slds-align_absolute-center">
-            <div className="slds-m-vertical--x-small">
+            <div className="slds-m-around--x-small">
                 <PageHeader iconCategory="standard" iconName="connected_apps"
                             label="Portfolio project" variant="objectHome"
                             navRight={navRight} truncate
-                            title={<h1 className="slds-page-header__title slds-p-right_x-small">xMessenger </h1>}
+                            title={<h1 className="slds-page-header__title slds-p-right_x-small">xMessenger</h1>}
                 />
                 <div className="slds-box slds-m-top_small slds-theme_default">
                     <div className="slds-illustration slds-illustration_small slds-text-align_center">
