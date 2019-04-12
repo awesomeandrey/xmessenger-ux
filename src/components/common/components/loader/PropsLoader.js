@@ -1,6 +1,6 @@
 import React, {Component} from "react";
+import Spinner from "@salesforce/design-system-react/module/components/spinner";
 
-import {Spinner} from "react-lightning-design-system";
 import {Utility} from "../../../../model/services/utility/UtilityService";
 
 const PropsLoader = propNameToCheck => WrappedComponent => {
@@ -10,7 +10,9 @@ const PropsLoader = propNameToCheck => WrappedComponent => {
             const propValue = this.props[propNameToCheck], ready = !Utility.isObjectEmpty(propValue);
             return (
                 <div className={`stateful-container ${!ready && "slds-p-vertical--medium"}`}>
-                    {ready ? <WrappedComponent {...this.props}/> : (<div className="slds-is-relative"><Spinner/></div>)}
+                    {ready
+                        ? <WrappedComponent {...this.props}/>
+                        : (<div className="slds-is-relative"><Spinner variant="brand" size="small"/></div>)}
                 </div>
             );
         }

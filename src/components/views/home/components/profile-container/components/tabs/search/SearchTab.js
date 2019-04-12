@@ -81,7 +81,7 @@ class SearchTab extends React.Component {
                     {!!selectedUser
                         ? <Card user={selectedUser} isRequestSent={isRequestSent}
                                 sendRequest={_ => this.sendFriendshipRequest(selectedUser)}/>
-                        : <EmptyArea title="Search for people by typing their names" icon="utility:groups"/>}
+                        : <EmptyArea title="Search for people by typing their names" icon="groups"/>}
                 </div>
             </div>
         );

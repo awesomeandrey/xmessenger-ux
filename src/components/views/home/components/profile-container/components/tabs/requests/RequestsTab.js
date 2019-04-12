@@ -106,8 +106,7 @@ class RequestsTab extends React.Component {
         return (
             <div className="slds-scrollable_y height-inherit">
                 {requestItems.length === 0
-                    ? <EmptyArea title="There are no requests for now"
-                                 className="height-inherit" icon="utility:announcement"/>
+                    ? <EmptyArea title="There are no requests for now" icon="announcement"/>
                     : <div className="slds-text-longform">{requestItems}</div>}
             </div>
         );

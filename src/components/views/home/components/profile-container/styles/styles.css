@@ -21,6 +21,11 @@ div.chat.selected:hover {
     height: 72%;
 }
 
+.tabs-container .slds-tabs_default__content {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
 /*For iPhone and smartphones*/
 @media only screen and (min-device-width: 480px) and (max-device-width: 820px) and (min-device-height: 300px) and (max-device-height: 420px) {
     .tabs-container {

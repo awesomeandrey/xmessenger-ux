@@ -8,8 +8,9 @@ import MultiBackend from 'react-dnd-multi-backend';
 import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch';
 import GitHubLink from "../../../../common/components/github-link/GitHubLink";
 import AppContext from "../../../../../model/services/context/AppContext";
+import Tabs from "@salesforce/design-system-react/module/components/tabs";
+import TabsPanel from "@salesforce/design-system-react/module/components/tabs/panel";
 
-import {Tabs, Tab, Icon} from "react-lightning-design-system";
 import {SessionStorage, SessionEntities} from "../../../../../model/services/utility/StorageService";
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
 import {DragDropContext} from "react-dnd/lib/index";
@@ -23,7 +24,7 @@ class ProfileInfoPanel extends React.Component {
         this.state = {
             chatsAmount: 0,
             requestsAmount: 0,
-            activeTabKey: "1" // should be of 'string' type;
+            activeTabKey: 0
         };
     }
 
@@ -36,7 +37,6 @@ class ProfileInfoPanel extends React.Component {
             eventName: Events.REQUEST.CALCULATE,
             callback: event => this.setState({requestsAmount: event.detail})
         });
-
         const activeTabKey = SessionStorage.getItem(SessionEntities.ACTIVE_TAB_KEY);
         if (!!activeTabKey) {
             this.handleSelectTab(activeTabKey);
@@ -44,7 +44,6 @@ class ProfileInfoPanel extends React.Component {
     }
 
     handleSelectTab(activeTabKey) {
-        activeTabKey = activeTabKey.toString();
         SessionStorage.setItem({key: SessionEntities.ACTIVE_TAB_KEY, value: activeTabKey});
         this.setState({activeTabKey: activeTabKey});
     }
@@ -55,29 +54,23 @@ class ProfileInfoPanel extends React.Component {
             <AppContext.Consumer>
                 {context => (
                     <div className="slds-card height-inherit theme-marker--border">
-                        <div className="theme-marker slds-card__header slds-m-bottom_none slds-p-bottom_medium">
-                            <ProfileCard user={context.user}/>
+                        <div className="slds-card__header slds-m-bottom_none slds-p-bottom_medium theme-marker">
+                            {/*<ProfileCard user={context.user}/>*/}
                         </div>
                         <div className="slds-card__body tabs-container">
-                            <Tabs type="default" activeKey={activeTabKey} className="height-percent-100">
-                                <Tab eventKey="1" className="height-inherit slds-p-top_none"
-                                     tabItemRenderer={_ => <TabItem title="chats" amount={chatsAmount}
-                                                                    onClick={_ => this.handleSelectTab(1)}/>}>
+                            <Tabs onSelect={this.handleSelectTab} selectedIndex={activeTabKey}>
+                                <TabsPanel label={<TabItem title="chats" amount={chatsAmount}/>}>
                                     <ChatsTab user={context.user}/>
-                                </Tab>
-                                <Tab eventKey="2" className="height-inherit slds-p-top_none"
-                                     tabItemRenderer={_ => <TabItem title="requests" amount={requestsAmount}
-                                                                    onClick={_ => this.handleSelectTab(2)}/>}>
+                                </TabsPanel>
+                                <TabsPanel label={<TabItem title="requests" amount={requestsAmount}/>}>
                                     <RequestsTab user={context.user}/>
-                                </Tab>
-                                <Tab eventKey="3" className="height-inherit"
-                                     tabItemRenderer={_ => <TabItem title="search" iconName="standard:search"
-                                                                    onClick={_ => this.handleSelectTab(3)}/>}>
+                                </TabsPanel>
+                                <TabsPanel label={<TabItem title="search"/>}>
                                     <SearchTab/>
-                                </Tab>
+                                </TabsPanel>
                             </Tabs>
                         </div>
-                        <footer className="theme-marker slds-card__footer position-bottom slds-align_absolute-center">
+                        <footer className="slds-card__footer position-bottom theme-marker">
                             <GitHubLink/>
                         </footer>
                     </div>
@@ -87,12 +80,11 @@ class ProfileInfoPanel extends React.Component {
     }
 }
 
-const TabItem = ({title, amount, iconName, onClick}) => {
+const TabItem = ({title, amount}) => {
     return (
-        <div className="slds-p-vertical--x-small hoverable" onClick={onClick}>
+        <div className="hoverable">
             <span>{title}</span>&nbsp;
             {amount !== 0 && <span className="slds-badge" style={{verticalAlign: "middle"}}>{amount}</span>}
-            {!!iconName && <Icon icon={iconName} size="x-small"/>}
         </div>
     );
 };

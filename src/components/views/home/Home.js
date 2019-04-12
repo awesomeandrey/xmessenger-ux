@@ -29,7 +29,7 @@ class Home extends React.Component {
                         <ProfilePanel/>
                     </div>
                     <div className={Utility.join(commonClass, "slds-medium-size_7-of-12", "slds-large-size_8-of-12")}>
-                        <ChatPanel/>
+                        {/*<ChatPanel/>*/}
                     </div>
                 </div>
             </AppContextProvider>

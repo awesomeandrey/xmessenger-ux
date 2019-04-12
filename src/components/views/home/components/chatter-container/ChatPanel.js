@@ -32,7 +32,7 @@ class ChatPanel extends React.Component {
         const {selectedChat} = this.state, hasSelectedChat = !!selectedChat;
         return (
             <div className="height-inherit">
-                <EmptyArea title="Select chat from the list" icon="utility:comments"
+                <EmptyArea title="Select chat from the list" icon="comments"
                            className={`height-inherit slds-theme_shade slds-box slds-theme_alert-texture
                             ${hasSelectedChat && "slds-hide"}`}/>
                 <AppContext.Consumer>

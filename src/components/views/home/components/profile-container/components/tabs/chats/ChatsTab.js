@@ -150,7 +150,7 @@ class ChatsTab extends React.Component {
         return (
             <div className="slds-scrollable_y height-inherit">
                 {chatItems.length === 0
-                    ? <EmptyArea title="There are no chats for now" className="height-inherit" icon="utility:comments"/>
+                    ? <EmptyArea title="There are no chats for now" className="height-inherit" icon="comments"/>
                     : <div className="slds-text-longform">{chatItems}</div>}
                 <div className="slds-align_absolute-center position-bottom">
                     <TrashContainer/>

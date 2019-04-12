@@ -1,18 +1,16 @@
 import React from "react";
+
 import {GITHUB_REPO_URL} from "../../../../model/services/utility/NavigationService";
 
 const GitHubLink = _ => {
-    const openInNewTab = _ => {
-        let win = window.open(GITHUB_REPO_URL, '_blank');
-        win.focus();
-    };
     return (
         <div className="github-link">
             <span className="slds-avatar slds-avatar_small">
-                <img src="/public/pictures/github-logo.png" alt="GitHub logo"/></span>
-            <a href="#" onClick={openInNewTab} className="slds-m-left--small">Fork on GitHub</a>
+                <img src="/public/pictures/github-logo.png" alt="GitHub logo"/>
+            </span>
+            <a href={GITHUB_REPO_URL} target="_blank" className="slds-m-left--small">Fork on GitHub</a>
         </div>
-    )
+    );
 };
 
 export default GitHubLink;
