@@ -1,13 +1,12 @@
 import React from "react";
-
 import Modal from "@salesforce/design-system-react/module/components/modal";
-import ModalEvents from "../events";
-
-import {CustomEvents} from "../../../../../model/services/utility/EventsService";
-import {Utility} from "../../../../../model/services/utility/UtilityService";
-
-import "../styles/styles.css";
+import ModalEvents from "./events";
 import Button from "@salesforce/design-system-react/module/components/button";
+
+import {CustomEvents} from "../../../../model/services/utility/EventsService";
+import {Utility} from "../../../../model/services/utility/UtilityService";
+
+import "./styles.css";
 
 const _defaultState = {
     opened: false,
@@ -22,7 +21,7 @@ class ModalsContainer extends React.Component {
 
     componentDidMount() {
         CustomEvents.register({
-            eventName: ModalEvents.IMAGE.SHOW,
+            eventName: ModalEvents.SHOW_IMAGE,
             callback: event => {
                 const imgElement = event.detail;
                 this.setState({
@@ -33,7 +32,7 @@ class ModalsContainer extends React.Component {
             }
         });
         CustomEvents.register({
-            eventName: ModalEvents.SHOW,
+            eventName: ModalEvents.SHOW_DIALOG,
             callback: event => {
                 const {detail} = event;
                 this.setState({
@@ -45,14 +44,18 @@ class ModalsContainer extends React.Component {
         });
     }
 
+    onCloseModal = _ => this.setState(_defaultState);
+
     render() {
         const {opened, descriptor} = this.state, hasConfigs = !Utility.isObjectEmpty(descriptor);
         return (
             <div className="modals-container">
-                <Modal isOpen={hasConfigs && opened} title={descriptor.title} dismissible
-                       onRequestClose={_ => this.setState(_defaultState)}>
-                    {!!descriptor.imageNode ? <ModalImage imageNode={descriptor.imageNode}/> : <span/>}
-                    {!!descriptor.dialog ? <ModalDialog dialog={descriptor.dialog}/> : <span/>}
+                <Modal isOpen={hasConfigs && opened} title={!!descriptor.dialog && descriptor.dialog.title}
+                       dismissible onRequestClose={this.onCloseModal}>
+                    {!!descriptor.imageNode
+                        ? <ModalImage imageNode={descriptor.imageNode}/> : <span/>}
+                    {!!descriptor.dialog
+                        ? <ModalDialog dialog={descriptor.dialog} onClose={this.onCloseModal}/> : <span/>}
                 </Modal>
                 {this.props.children}
             </div>
@@ -61,16 +64,22 @@ class ModalsContainer extends React.Component {
 }
 
 const ModalDialog = props => {
-    const {} = props;
+    const {dialog, onClose} = props, {body, actionButton} = dialog;
     return (
         <div className="slds-show">
             <div className="slds-modal__content slds-p-around_small">
                 <p>{body}</p>
             </div>
             <footer className="slds-modal__footer">
-                <Button type="neutral" label="Cancel" onClick={this.hideModal}/>
-                <Button type={actionButton.type || "brand"} label={actionButton.label || "Done"}
-                        onClick={this.handleActionBtn}/>
+                <Button variant="neutral" label="Cancel" onClick={onClose}/>
+                <Button variant={actionButton.type || "brand"}
+                        label={actionButton.label || "Done"}
+                        onClick={_ => {
+                            if (!!actionButton && typeof actionButton.callback === "function") {
+                                actionButton.callback(); // execute callback;
+                            }
+                            onClose();
+                        }}/>
             </footer>
         </div>
     );

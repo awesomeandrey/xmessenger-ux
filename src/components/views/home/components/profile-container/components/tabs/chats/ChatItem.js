@@ -26,7 +26,7 @@ const _formatChatTitle = (username, dateNum) => {
                 callback: _ => ChattingService.removeChat(chatData)
             }
         };
-        CustomEvents.fire({eventName: ModalEvents.SHOW, detail: modalDetails});
+        CustomEvents.fire({eventName: ModalEvents.SHOW_DIALOG, detail: modalDetails});
     },
     _onClearChat = chatData => {
         const modalDetails = {
@@ -38,7 +38,7 @@ const _formatChatTitle = (username, dateNum) => {
                 callback: _ => ChattingService.clearChat(chatData)
             }
         };
-        CustomEvents.fire({eventName: ModalEvents.SHOW, detail: modalDetails});
+        CustomEvents.fire({eventName: ModalEvents.SHOW_DIALOG, detail: modalDetails});
     },
     _onSelectOption = (option, chatData) => {
         switch (option.value) {
