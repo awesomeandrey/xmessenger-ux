@@ -67,7 +67,7 @@ class SearchTab extends React.Component {
         const {selectedUser, requestedUsers, options, opened, loading} = this.state,
             isRequestSent = !!selectedUser && requestedUsers.has(selectedUser.username);
         return (
-            <div className="slds-scrollable_y height-inherit">
+            <div className="slds-scrollable_y">
                 <div className="slds-p-horizontal--small">
                     <Lookup label="Find fellow"
                             onSearchTextChange={this.handleSearch}
