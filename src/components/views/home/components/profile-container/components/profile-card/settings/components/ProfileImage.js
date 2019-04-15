@@ -57,9 +57,9 @@ class ProfileImage extends React.Component {
     render() {
         const {user} = this.props, {loading, picture, error} = this.state;
         return (
-            <div className="profile-settings__image slds-p-horizontal--small">
+            <div className="slds-p-horizontal--small">
                 <div className="slds-text-align_center">
-                    <span className="slds-avatar slds-avatar_large">
+                    <span className="slds-avatar slds-avatar_large" style={{width: "10rem", height: "10rem"}}>
                         <img src={picture} ref={el => this._avatarImg = el} alt={user.name}/></span>
                 </div>
                 <div className="slds-form-element slds-m-top_small">

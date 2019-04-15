@@ -45,7 +45,7 @@ const ProfileCard = props => {
                     </p>
                     <div className="slds-float_right">
                         <Button variant="neutral" className="mobile-visible-only" onClick={_onLogout}>Logout</Button>
-                        <Dropdown className="mobile-hidden"
+                        <Dropdown buttonClassName="mobile-hidden"
                                   iconCategory="utility"
                                   iconName="settings"
                                   iconVariant="border-filled"

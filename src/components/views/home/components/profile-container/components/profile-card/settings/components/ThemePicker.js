@@ -7,16 +7,9 @@ class ThemePicker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedTheme: null,
-            themes: []
-        };
-    }
-
-    componentDidMount() {
-        this.setState({
             selectedTheme: getCurrentTheme(),
             themes: THEMES
-        });
+        };
     }
 
     handleChooseTheme(theme) {
