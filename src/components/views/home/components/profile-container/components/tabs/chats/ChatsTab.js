@@ -1,18 +1,15 @@
 import React from "react";
 import Events from "../../../../../../../../model/events/application-events";
 import ToastEvents from "../../../../../../../common/components/toasts/events";
-import DnDEvents from "../../../../../../../common/components/dnd/events";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
 import ChatItem from "./ChatItem";
 
 import {ChattingService} from "../../../../../../../../model/services/core/ChattingService";
 import {CustomEvents, KeyEvents} from "../../../../../../../../model/services/utility/EventsService";
 import {SessionEntities, SessionStorage} from "../../../../../../../../model/services/utility/StorageService";
-import {DropTarget} from "react-dnd/lib/index";
-import {ItemTypes} from "../../../../../../../common/components/dnd/ItemTypes";
-import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
 import {requestPermission, notify} from "../../../../../../../../model/services/utility/NotificationsService";
-import {Icon} from "react-lightning-design-system";
+
+import "./styles.css";
 
 const NOTIFICATION_BLUEPRINTS = {
     onChatCleared: userName => {
@@ -138,59 +135,29 @@ class ChatsTab extends React.Component {
             }));
     };
 
+    handleSelectChat = (event, chatData) => {
+        if (event.target.nodeName === "BUTTON") return;
+        CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: chatData}});
+    };
+
     isSelectedChat = chat => {
         const {selectedChat} = this.state;
         return !!selectedChat && !!chat && selectedChat.id === chat.id;
     };
 
     render() {
-        const {chatsMap} = this.state, chatItems = [...chatsMap.values()].map(chat => {
-            return <ChatItem key={chat["id"]} data={chat} selected={this.isSelectedChat(chat)}/>
+        const {chatsMap} = this.state, chatItems = [...chatsMap.values()].map(chatData => {
+            let selected = this.isSelectedChat(chatData);
+            return (<div key={chatData["id"]} onClick={event => this.handleSelectChat(event, chatData)}
+                         className={`chat-item ${selected && "chat-item__selected"}`}>
+                <ChatItem chatData={chatData} selected={selected}/>
+            </div>);
         });
         return (
-            <div className="slds-scrollable_y height-inherit">
+            <div className="slds-scrollable_y">
                 {chatItems.length === 0
-                    ? <EmptyArea title="There are no chats for now" className="height-inherit" icon="comments"/>
+                    ? <EmptyArea title="There are no chats for now." icon="comments"/>
                     : <div className="slds-text-longform">{chatItems}</div>}
-                <div className="slds-align_absolute-center position-bottom">
-                    <TrashContainer/>
-                </div>
-            </div>
-        );
-    }
-}
-
-const chatItemTarget = {
-    drop(props, monitor) {
-        return {chatItem: monitor.getItem()};
-    }
-};
-
-@DropTarget(ItemTypes.CHAT, chatItemTarget, (connect, monitor) => ({
-    connectDropTarget: connect.dropTarget()
-}))
-class TrashContainer extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isDragged: false
-        };
-    }
-
-    componentDidMount() {
-        CustomEvents.register({
-            eventName: DnDEvents.DELETE_CHAT_DRAG, callback: _ => this.setState({isDragged: true})
-        });
-        CustomEvents.register({
-            eventName: DnDEvents.DELETE_CHAT_DROP, callback: _ => this.setState({isDragged: false})
-        });
-    }
-
-    render() {
-        const {connectDropTarget} = this.props, {isDragged} = this.state;
-        return connectDropTarget(
-            <div className={Utility.join("trash-container", isDragged ? "shake" : "slds-hide")}>
-                <Icon icon="action:delete" size="large"/>
             </div>
         );
     }

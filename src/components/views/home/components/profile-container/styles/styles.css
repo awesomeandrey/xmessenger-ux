@@ -1,41 +1,8 @@
-div.chat:hover {
-    background-color: var(--col-hover);
-    cursor: pointer;
+#profile-info-panel .slds-card__body {
+    height: 80%;
 }
 
-div.chat.selected {
-    background-color: var(--col-bg);
-    color: var(--col-text);
-}
-
-div.chat.selected button {
-    border: 1px solid var(--col-text);
-}
-
-div.chat.selected:hover {
-    background-color: var(--col-bg);
-    color: var(--col-text);
-}
-
-.tabs-container {
-    height: 72%;
-}
-
-.tabs-container .slds-tabs_default__content {
-    padding-top: 0;
-    padding-bottom: 0;
-}
-
-/*For iPhone and smartphones*/
-@media only screen and (min-device-width: 480px) and (max-device-width: 820px) and (min-device-height: 300px) and (max-device-height: 420px) {
-    .tabs-container {
-        height: 48%;
-    }
-}
-
-/*For Tablets*/
-@media only screen and (min-device-height: 1024px) and (max-device-width: 1400px) and (min-device-width: 760px) {
-    .tabs-container {
-        height: 81%;
-    }
+#profile-info-panel .slds-card__body .slds-tabs_default__content {
+    height: 95%;
+    padding-top: .5rem;
 }

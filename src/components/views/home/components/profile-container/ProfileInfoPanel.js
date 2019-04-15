@@ -4,8 +4,6 @@ import ChatsTab from "./components/tabs/chats/ChatsTab";
 import RequestsTab from "./components/tabs/requests/RequestsTab";
 import SearchTab from "./components/tabs/search/SearchTab";
 import Events from "../../../../../model/events/application-events";
-import MultiBackend from 'react-dnd-multi-backend';
-import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch';
 import GitHubLink from "../../../../common/components/github-link/GitHubLink";
 import AppContext from "../../../../../model/services/context/AppContext";
 import Tabs from "@salesforce/design-system-react/module/components/tabs";
@@ -13,7 +11,6 @@ import TabsPanel from "@salesforce/design-system-react/module/components/tabs/pa
 
 import {SessionStorage, SessionEntities} from "../../../../../model/services/utility/StorageService";
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
-import {DragDropContext} from "react-dnd/lib/index";
 
 import "./styles/styles.css";
 
@@ -53,12 +50,12 @@ class ProfileInfoPanel extends React.Component {
         return (
             <AppContext.Consumer>
                 {context => (
-                    <div className="slds-card height-inherit theme-marker--border">
+                    <div id="profile-info-panel" className="slds-card height-inherit theme-marker--border">
                         <div className="slds-card__header slds-m-bottom_none slds-p-bottom_medium theme-marker">
-                            {/*<ProfileCard user={context.user}/>*/}
+                            <ProfileCard user={context.user}/>
                         </div>
-                        <div className="slds-card__body tabs-container">
-                            <Tabs onSelect={this.handleSelectTab} selectedIndex={activeTabKey}>
+                        <div className="slds-card__body">
+                            <Tabs onSelect={this.handleSelectTab} selectedIndex={activeTabKey} className="height-percent-100">
                                 <TabsPanel label={<TabItem title="chats" amount={chatsAmount}/>}>
                                     <ChatsTab user={context.user}/>
                                 </TabsPanel>
@@ -89,4 +86,4 @@ const TabItem = ({title, amount}) => {
     );
 };
 
-export default DragDropContext(MultiBackend(HTML5toTouch))(ProfileInfoPanel);
+export default ProfileInfoPanel;

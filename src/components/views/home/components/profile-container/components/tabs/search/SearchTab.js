@@ -31,7 +31,7 @@ class SearchTab extends React.Component {
                         value: user.username,
                         userEntity: user
                     }));
-                    this.setState({loading: false, opened: true, options: options})
+                    this.setState({loading: false, opened: true, options: options});
                 });
             });
         }
@@ -77,12 +77,10 @@ class SearchTab extends React.Component {
                             loading={loading}
                             opened={opened}/>
                 </div>
-                <div className="slds-m-around--medium">
-                    {!!selectedUser
-                        ? <Card user={selectedUser} isRequestSent={isRequestSent}
-                                sendRequest={_ => this.sendFriendshipRequest(selectedUser)}/>
-                        : <EmptyArea title="Search for people by typing their names" icon="groups"/>}
-                </div>
+                {!!selectedUser
+                    ? <Card user={selectedUser} isRequestSent={isRequestSent}
+                            sendRequest={_ => this.sendFriendshipRequest(selectedUser)}/>
+                    : <EmptyArea title="Search for people by typing their names" icon="groups"/>}
             </div>
         );
     }
@@ -90,7 +88,7 @@ class SearchTab extends React.Component {
 
 const Card = ({user, sendRequest, isRequestSent}) => {
     return (
-        <figure className="slds-image slds-image--card">
+        <figure className="slds-image slds-image--card slds-m-top_medium">
             <div className="slds-image__crop slds-image__crop--16-by-9 stretch">
                 <UserPicture user={user}/>
             </div>

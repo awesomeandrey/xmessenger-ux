@@ -1,111 +1,80 @@
 import React from "react";
-import Image from "../../../../../../../common/components/images/plain/Image";
-import Events from "../../../../../../../../model/events/application-events";
 import ModalEvents from "../../../../../../../common/components/modals/events";
-import DnDEvents from "../../../../../../../common/components/dnd/events";
+import UserPicture from "../../../../../../../common/components/images/user-picture/UserPicture";
+import MediaObject from "@salesforce/design-system-react/module/components/media-object";
+import Dropdown from "@salesforce/design-system-react/module/components/menu-dropdown";
 
 import {ChattingService} from "../../../../../../../../model/services/core/ChattingService";
 import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";
 import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
-import {ItemTypes} from "../../../../../../../common/components/dnd/ItemTypes";
-import {DragSource} from "react-dnd";
-import {DropdownButton, DropdownMenuItem} from "react-lightning-design-system";
-import {UserService} from "../../../../../../../../model/services/core/UserService";
-import UserPicture from "../../../../../../../common/components/images/user-picture/UserPicture";
 
-const chatItemSource = {
-    beginDrag(props) {
-        if (Utility.isMobileDevice()) return {};
-        CustomEvents.fire({eventName: DnDEvents.DELETE_CHAT_DRAG});
-        return props.data;
+const _formatChatTitle = (username, dateNum) => {
+        const dateString = Utility.formatDate({dateNum, showTimestamp: false});
+        return (
+            <span className="slds-text-color_weak">
+            {Utility.decorateUsername(username) + (!!dateString ? (" • " + dateString) : "")}
+        </span>
+        );
     },
-    endDrag(props, monitor) {
-        CustomEvents.fire({eventName: DnDEvents.DELETE_CHAT_DROP});
-        let dropResult = monitor.getDropResult();
-        if (!!dropResult && !!dropResult.chatItem) {
-            ChatItem.handleRemoveChat(dropResult.chatItem);
-        }
-    }
-};
-
-@DragSource(ItemTypes.CHAT, chatItemSource, (connect, monitor) => ({
-    connectDragSource: connect.dragSource()
-}))
-export default class ChatItem extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-
-    handleSelectChat = (event) => {
-        if (event.target.nodeName !== 'BUTTON') {
-            CustomEvents.fire({
-                eventName: Events.CHAT.SELECT,
-                detail: {
-                    selectedChat: this.props.data
-                }
-            });
-        }
-    };
-
-    /*
-     * This method is 'static' as it's used in DnD process;
-     */
-    static handleRemoveChat(chatEntity) {
-        let modalDetails = {
+    _onRemoveChat = chatData => {
+        const modalDetails = {
             title: "Remove chat",
-            body: `Do you want to remove chat with ${chatEntity.fellow.name}?`,
+            body: `Do you want to remove chat with ${chatData.fellow.name}?`,
             actionButton: {
                 type: "destructive",
                 label: "Remove",
-                callback: _ => ChattingService.removeChat(chatEntity)
+                callback: _ => ChattingService.removeChat(chatData)
             }
         };
         CustomEvents.fire({eventName: ModalEvents.SHOW, detail: modalDetails});
-    }
-
-    handleClearHistory = _ => {
-        const {data} = this.props, chatEntity = data;
-        let modalDetails = {
+    },
+    _onClearChat = chatData => {
+        const modalDetails = {
             title: "Clear chat history",
-            body: `Do you want to delete all messages with ${chatEntity.fellow.name}?`,
+            body: `Do you want to delete all messages with ${chatData.fellow.name}?`,
             actionButton: {
                 type: "destructive",
                 label: "Clear",
-                callback: _ => ChattingService.clearChat(chatEntity)
+                callback: _ => ChattingService.clearChat(chatData)
             }
         };
         CustomEvents.fire({eventName: ModalEvents.SHOW, detail: modalDetails});
+    },
+    _onSelectOption = (option, chatData) => {
+        switch (option.value) {
+            case 1:
+                _onClearChat(chatData);
+                break;
+            case 2:
+                _onRemoveChat(chatData);
+                break;
+        }
     };
 
-    render() {
-        const {connectDragSource, data, selected} = this.props, {fellow} = data,
-            dateString = selected ? null : Utility.formatDate({dateNum: data.latestMessageDate, showTimestamp: false});
-        return connectDragSource(
-            <div className={`chat slds-media slds-box slds-box_x-small slds-p-vertical--x-small slds-m-top_x-small
-                ${selected && 'selected'}`} onClick={this.handleSelectChat}>
-                <div className="slds-media__figure">
-                    <div className="slds-avatar slds-avatar_large">
-                        <UserPicture user={fellow} scalable={false}/>
-                    </div>
-                </div>
-                <div className="slds-media__body">
-                    <p className="slds-float_left">
-                        <span className="slds-text-body_regular">{fellow.name}</span><br/>
-                        <span>
-                            {Utility.decorateUsername(fellow.username) + (!!dateString ? " • " + dateString : "")}
-                        </span>
-                    </p>
-                    <DropdownButton type="icon-border" className="slds-float_right" icon="down">
-                        <DropdownMenuItem onClick={this.handleClearHistory}>
-                            Clear history
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={_ => ChatItem.handleRemoveChat(data)}>
-                            Remove
-                        </DropdownMenuItem>
-                    </DropdownButton>
-                </div>
-            </div>
-        );
-    }
-}
+export default props => {
+    const {chatData, selected} = props, {fellow} = chatData;
+    return (
+        <MediaObject className="slds-box slds-box_x-small"
+                     figure={<div className="slds-avatar slds-avatar_large">
+                         <UserPicture user={fellow} scalable={false}/>
+                     </div>}
+                     body={
+                         <div className="slds-clearfix">
+                             <p className="slds-float_left">
+                                 <span className="slds-text-body_regular">{fellow.name}</span><br/>
+                                 {_formatChatTitle(fellow.username, selected ? null : chatData.latestMessageDate)}
+                             </p>
+                             <div className="slds-float_right">
+                                 <Dropdown iconCategory="utility"
+                                           iconVariant="border-filled"
+                                           iconName="down"
+                                           onSelect={opt => _onSelectOption(opt, chatData)}
+                                           options={[
+                                               {label: "Clear history", value: 1},
+                                               {label: "Remove", value: 2},
+                                           ]}/>
+                             </div>
+                         </div>
+                     }/>
+    );
+};

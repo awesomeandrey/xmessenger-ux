@@ -1,0 +1,27 @@
+.chat-item {
+    margin-bottom: .5rem;
+}
+
+.chat-item .slds-dropdown-trigger ul {
+    margin-left: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.chat-item:hover {
+    background-color: var(--col-hover);
+    cursor: pointer;
+}
+
+.chat-item__selected {
+    background-color: var(--col-bg);
+    color: var(--col-text);
+}
+
+.chat-item__selected button {
+    border: 1px solid var(--col-text);
+}
+
+.chat-item__selected:hover {
+    background-color: var(--col-bg);
+    color: var(--col-text);
+}
