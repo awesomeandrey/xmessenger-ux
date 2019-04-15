@@ -12,10 +12,7 @@ const ScalableImage = initProps => {
     props.className = Utility.join("scalable-image", props.className || "");
     return (
         <Image {...props} onClick={event => {
-            CustomEvents.fire({
-                eventName: ModalEvents.IMAGE.SHOW,
-                detail: event.target
-            });
+            CustomEvents.fire({eventName: ModalEvents.IMAGE.SHOW, detail: event.target});
         }}/>
     );
 };

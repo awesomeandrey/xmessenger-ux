@@ -2,7 +2,7 @@ import React from 'react';
 import ToastEvents from "../events";
 import ToastItem from "./ToastItem";
 
-import {Alert} from "react-lightning-design-system";
+// import {Alert} from "react-lightning-design-system";
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
 import {Utility} from "../../../../../model/services/utility/UtilityService";
 
@@ -40,10 +40,10 @@ class ToastContainer extends React.Component {
             toastItems = toasts.map(toastItem => <ToastItem key={toastItem.key} data={toastItem}/>);
         return (
             <div className="toasts-container">
-                <div className="slds-is-fixed slds-notify_container mobile-hidden">{toastItems}</div>
-                {!!mobileAlert && <Alert {...mobileAlert} className="mobile-visible-only"
-                                         onClose={_ => this.setState({mobileAlert: null})}>
-                    {mobileAlert.message}</Alert>}
+                {/*<div className="slds-is-fixed slds-notify_container mobile-hidden">{toastItems}</div>*/}
+                {/*{!!mobileAlert && <Alert {...mobileAlert} className="mobile-visible-only"*/}
+                                         {/*onClose={_ => this.setState({mobileAlert: null})}>*/}
+                    {/*{mobileAlert.message}</Alert>}*/}
                 {this.props.children}
             </div>
         );

@@ -2,7 +2,7 @@ import React from "react";
 import UserPicture from "../../../../../common/components/images/user-picture/UserPicture";
 import PropsLoader from "../../../../../common/components/loader/PropsLoader";
 
-import {Button} from "react-lightning-design-system";
+// import {Button} from "react-lightning-design-system";
 
 const HeaderPanel = props => {
     const {chat} = props, {fellow} = chat;
@@ -20,12 +20,12 @@ const HeaderPanel = props => {
                     </h2>
                 </div>
             </header>
-            <div className="slds-no-flex">
-                <Button type="neutral" onClick={_ => {
-                    document.body.scrollTop = 0; // For Safari
-                    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-                }} className="slds-m-top_x-small mobile-visible-only">Back</Button>
-            </div>
+            {/*<div className="slds-no-flex">*/}
+                {/*<Button type="neutral" onClick={_ => {*/}
+                    {/*document.body.scrollTop = 0; // For Safari*/}
+                    {/*document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera*/}
+                {/*}} className="slds-m-top_x-small mobile-visible-only">Back</Button>*/}
+            {/*</div>*/}
         </div>
     );
 };

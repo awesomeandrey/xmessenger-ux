@@ -5,7 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 80;
 
 app.use("/public", express.static("public"));
-app.use("/assets", express.static("public/assets"));
+app.use("/assets", express.static("node_modules/@salesforce-ux/design-system/assets"));
 
 app.get("*", function (req, res) {
     res.setHeader("X-Frame-Options", "DENY");

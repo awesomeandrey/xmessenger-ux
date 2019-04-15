@@ -1,6 +1,6 @@
 import React, {Component} from "react";
+import Spinner from "@salesforce/design-system-react/module/components/spinner";
 
-import {Spinner} from "react-lightning-design-system";
 import {Navigation} from "../../../model/services/utility/NavigationService";
 import {tokenExists} from "../../../model/api/rest/secureApi";
 
@@ -32,7 +32,7 @@ const SessionValidator = ({isLoginEntry = false}) => WrappedComponent => {
 
         render() {
             const {renderComponent} = this.state;
-            return renderComponent ? <WrappedComponent {...this.props}/> : <Spinner/>;
+            return renderComponent ? <WrappedComponent {...this.props}/> : <Spinner variant="brand" size="small"/>;
         }
     };
 };

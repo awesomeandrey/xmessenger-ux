@@ -2,7 +2,7 @@ import React from "react";
 import ToastEvents from "../events";
 
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
-import {Toast} from "react-lightning-design-system";
+// import {Toast} from "react-lightning-design-system";
 
 import "../styles/styles.css";
 
@@ -26,9 +26,7 @@ class ToastItem extends React.Component {
     render() {
         const {data} = this.props;
         return (
-            <Toast icon={data.icon} className="toast-item" level={data.level} onClose={this.handleClose}>
-                {data.message}
-            </Toast>
+            <span/>
         );
     }
 }

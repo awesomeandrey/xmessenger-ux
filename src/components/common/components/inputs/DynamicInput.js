@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Input, Spinner, Textarea} from "react-lightning-design-system";
+// import {Input, Spinner, Textarea} from "react-lightning-design-system";
 import {Utility} from "../../../../model/services/utility/UtilityService";
 
 class DynamicInput extends React.Component {
@@ -46,25 +46,25 @@ class DynamicInput extends React.Component {
         const {value, multiModeEnabled} = this.state, {loading = false, error} = this.props;
         return (
             <div className="slds-form-element">
-                <div className="slds-form-element__control slds-input-has-icon slds-text-title">
-                    {!multiModeEnabled && <Input placeholder="Type here..."
-                                                 inputRef={el => this._inputElement = el}
-                                                 value={value}
-                                                 disabled={loading}
-                                                 error={error}
-                                                 onKeyDown={this.handleKeyDown}
-                                                 onChange={this.handleChange}/>}
-                    {multiModeEnabled && <Textarea placeholder="Type here..."
-                                                   textareaRef={el => this._textareaElement = el}
-                                                   value={value}
-                                                   disabled={loading}
-                                                   error={error}
-                                                   rows={3}
-                                                   onChange={this.handleChange}/>}
-                    <div className="slds-input__icon-group slds-input__icon-group_right">
-                        {loading && <Spinner type="brand" className="slds-input__spinner"/>}
-                    </div>
-                </div>
+                {/*<div className="slds-form-element__control slds-input-has-icon slds-text-title">*/}
+                    {/*{!multiModeEnabled && <Input placeholder="Type here..."*/}
+                                                 {/*inputRef={el => this._inputElement = el}*/}
+                                                 {/*value={value}*/}
+                                                 {/*disabled={loading}*/}
+                                                 {/*error={error}*/}
+                                                 {/*onKeyDown={this.handleKeyDown}*/}
+                                                 {/*onChange={this.handleChange}/>}*/}
+                    {/*{multiModeEnabled && <Textarea placeholder="Type here..."*/}
+                                                   {/*textareaRef={el => this._textareaElement = el}*/}
+                                                   {/*value={value}*/}
+                                                   {/*disabled={loading}*/}
+                                                   {/*error={error}*/}
+                                                   {/*rows={3}*/}
+                                                   {/*onChange={this.handleChange}/>}*/}
+                    {/*<div className="slds-input__icon-group slds-input__icon-group_right">*/}
+                        {/*{loading && <Spinner type="brand" className="slds-input__spinner"/>}*/}
+                    {/*</div>*/}
+                {/*</div>*/}
             </div>
         );
     }

@@ -1,7 +1,7 @@
 import React from "react";
 import Events from "../../../../../../model/events/application-events";
 
-import {Icon, Spinner} from "react-lightning-design-system";
+// import {Icon, Spinner} from "react-lightning-design-system";
 import {CustomEvents} from "../../../../../../model/services/utility/EventsService";
 import {ChattingService} from "../../../../../../model/services/core/ChattingService";
 import {Utility} from "../../../../../../model/services/utility/UtilityService";
@@ -69,7 +69,7 @@ class MessagesPanel extends React.Component {
         return (
             <div className="slds-card__body messages-container">
                 <section role="log" className="slds-chat height-percent-100">
-                    {loading && <Spinner/>}
+                    {/*{loading && <Spinner/>}*/}
                     <ul className="slds-chat-list slds-scrollable_y" ref={element => this._container = element}>
                         <ChatTitle chat={selectedChat}/>
                         {messageItems}
@@ -85,7 +85,7 @@ const ChatTitle = ({chat}) => {
         <li className="slds-chat-listitem slds-chat-listitem_bookend">
             <div className="slds-chat-bookend">
                 <span className="slds-icon_container slds-icon-utility-chat slds-chat-icon">
-                    <Icon icon="utility:chat" size="small"/>
+                    {/*<Icon icon="utility:chat" size="small"/>*/}
                 </span>
                 <p>Chat started by <b>{!!chat && chat.startedBy.name}</b></p>
             </div>

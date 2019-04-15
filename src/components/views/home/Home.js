@@ -1,7 +1,7 @@
 import React from 'react';
 import SessionValidator from "../../common/model/SessionValidator";
 import ChatPanel from "./components/chatter-container/ChatPanel";
-import ProfilePanel from "./components/profile-container/ProfileInfoPanel";
+import ProfileInfoPanel from "./components/profile-container/ProfileInfoPanel";
 import AppContextProvider from "../../../model/services/context/AppContextProvider";
 import subscribeToTopics from "../../../model/api/streaming/TopicsSubscriber";
 
@@ -26,7 +26,7 @@ class Home extends React.Component {
             <AppContextProvider>
                 <div className="home-container slds-grid slds-p-around_small slds-wrap">
                     <div className={Utility.join(commonClass, "slds-medium-size_5-of-12", "slds-large-size_4-of-12")}>
-                        <ProfilePanel/>
+                        <ProfileInfoPanel/>
                     </div>
                     <div className={Utility.join(commonClass, "slds-medium-size_7-of-12", "slds-large-size_8-of-12")}>
                         {/*<ChatPanel/>*/}

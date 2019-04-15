@@ -1,7 +1,7 @@
 import React from "react";
 import DynamicInput from "../../../../../common/components/inputs/DynamicInput";
 
-import {Button} from "react-lightning-design-system";
+// import {Button} from "react-lightning-design-system";
 import {ChattingService} from "../../../../../../model/services/core/ChattingService";
 import {Utility, InputPatterns} from "../../../../../../model/services/utility/UtilityService";
 
@@ -58,8 +58,8 @@ class MessageInput extends React.Component {
                                       ref={component => this._dynamicInputComponent = component}/>
                     </div>
                     <div className="slds-is-relative">
-                        <Button type="neutral" disabled={loading} onClick={this.handleSendMessage}
-                                className="slds-m-left--x-small mobile-hidden">SEND</Button>
+                        {/*<Button type="neutral" disabled={loading} onClick={this.handleSendMessage}*/}
+                                {/*className="slds-m-left--x-small mobile-hidden">SEND</Button>*/}
                     </div>
                 </form>
             </footer>
