@@ -1,17 +1,17 @@
 @media (min-width: 1090px) and (max-width: 1260px) {
-    .Home.container {
+    .home-container {
         margin: 0 5rem;
     }
 }
 
 @media (min-width: 1260px) and (max-width: 1370px) {
-    .Home.container {
+    .home-container {
         margin: 0 10rem;
     }
 }
 
 @media (min-width: 1370px) {
-    .Home.container {
+    .home-container {
         margin: 0 15rem;
     }
 }
