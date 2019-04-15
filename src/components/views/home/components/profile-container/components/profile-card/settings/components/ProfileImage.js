@@ -1,7 +1,8 @@
 import React from "react";
 import Events from "../../../../../../../../../model/events/application-events";
+import Spinner from "@salesforce/design-system-react/module/components/spinner";
+import Icon from "@salesforce/design-system-react/module/components/icon";
 
-import {Icon, Spinner} from "react-lightning-design-system";
 import {Settings, UserService} from "../../../../../../../../../model/services/core/UserService";
 import {CustomEvents} from "../../../../../../../../../model/services/utility/EventsService";
 
@@ -60,7 +61,8 @@ class ProfileImage extends React.Component {
             <div className="slds-p-horizontal--small">
                 <div className="slds-text-align_center">
                     <span className="slds-avatar slds-avatar_large" style={{width: "10rem", height: "10rem"}}>
-                        <img src={picture} ref={el => this._avatarImg = el} alt={user.name}/></span>
+                        <img src={picture} ref={el => this._avatarImg = el} alt={user.name}/>
+                    </span>
                 </div>
                 <div className="slds-form-element slds-m-top_small">
                     <div className="slds-form-element__label">Profile photo</div>
@@ -73,7 +75,7 @@ class ProfileImage extends React.Component {
                                        className="slds-file-selector__input slds-assistive-text"/>
                                 <label className="slds-file-selector__body" onClick={_ => this._fileInput.click()}>
                                     <span className="slds-file-selector__button slds-button slds-button_neutral">
-                                        <Icon icon="utility:upload" size="x-small"/>&nbsp;Upload Files</span>
+                                        <Icon category="utility" name="upload" size="x-small"/>&nbsp;Upload Files</span>
                                     <span className="slds-file-selector__text slds-medium-show">or Drop Files</span>
                                 </label>
                             </div>
@@ -82,7 +84,7 @@ class ProfileImage extends React.Component {
                     <div className="slds-form-element__help">
                         {!loading && !!error && <span className="slds-text-color_error">{error}</span>}
                         {loading && <div className="slds-float_left slds-is-relative slds-p-vertical--medium slds-p-left_large">
-                            <Spinner type="brand" container={false}/>
+                            <Spinner variant="brand" size="small"/>
                         </div>}
                     </div>
                 </div>

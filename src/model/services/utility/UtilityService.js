@@ -26,7 +26,7 @@ export const Utility = {
     generateUniqueId: _ => Math.random().toString(36).substr(2, 9),
     matches: (value, patternObj) => {
         if (patternObj === undefined || value === undefined) {
-            throw "'Value' and 'pattern' parameters shouldn't be empty.";
+            throw "'value' and 'patternObj' parameters shouldn't be empty.";
         }
         let regExp = new RegExp(patternObj.exp);
         return regExp.test(value.trim());
