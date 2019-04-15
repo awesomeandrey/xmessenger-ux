@@ -8,6 +8,7 @@ import ThemePicker from "./components/ThemePicker";
 import Modal from "@salesforce/design-system-react/module/components/modal";
 import Tabs from "@salesforce/design-system-react/module/components/tabs";
 import TabsPanel from "@salesforce/design-system-react/module/components/tabs/panel";
+import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
 
 import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";
 
@@ -60,9 +61,8 @@ class SettingsModal extends React.Component {
                     </TabsPanel>
                     <TabsPanel label="Change Password">
                         {user["loggedExternally"]
-                            ? (<div className="slds-align--absolute-center">
-                                <h1 className="slds-p-around_large">No password change</h1>
-                            </div>) : <PasswordChange user={user} reset={reset}/>}
+                            ? <EmptyArea title="No password change." icon="announcement"/>
+                            : <PasswordChange user={user} reset={reset}/>}
                     </TabsPanel>
                     <TabsPanel label="Choose Theme">
                         <ThemePicker/>

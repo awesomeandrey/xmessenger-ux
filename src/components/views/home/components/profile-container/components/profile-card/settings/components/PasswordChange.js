@@ -1,11 +1,15 @@
 import React from "react";
 import Events from "../../../../../../../../../model/events/application-events";
 import PasswordInput from "../../../../../../../../common/components/inputs/PasswordInput";
+import MediaObject from "@salesforce/design-system-react/module/components/media-object";
+import Spinner from "@salesforce/design-system-react/module/components/spinner";
+import ButtonGroup from "@salesforce/design-system-react/module/components/button-group";
+import Button from "@salesforce/design-system-react/module/components/button";
+import Icon from "@salesforce/design-system-react/module/components/icon";
 
 import {Settings} from "../../../../../../../../../model/services/core/UserService";
 import {InputPatterns, Utility} from "../../../../../../../../../model/services/utility/UtilityService";
 import {CustomEvents} from "../../../../../../../../../model/services/utility/EventsService";
-import {Button, ButtonGroup, Form, Spinner} from "react-lightning-design-system";
 
 class PasswordChange extends React.Component {
     constructor(props) {
@@ -68,44 +72,51 @@ class PasswordChange extends React.Component {
         const {loading, notification, inputs} = this.state, {reset} = this.props;
         if (reset) return <span/>;
         return (
-            <Form onSubmit={e => e.preventDefault()}>
-                <PasswordInput label="Current password"
-                               disabled={loading}
-                               value={inputs.p1}
-                               onChange={val => {
-                                   inputs.p1 = val;
-                                   this.setState({inputs});
-                               }}/>
-                <PasswordInput label="New password"
-                               disabled={loading}
-                               value={inputs.p2}
-                               onChange={val => {
-                                   inputs.p2 = val;
-                                   this.setState({inputs});
-                               }}/>
-                <PasswordInput label="Repeat password"
-                               disabled={loading}
-                               value={inputs.p3}
-                               onChange={val => {
-                                   inputs.p3 = val;
-                                   this.setState({inputs});
-                               }}/>
-                <div className="slds-clearfix slds-m-top_small">
-                    <div className="slds-float--left">
-                        {loading
-                            ? (<div className="slds-is-relative slds-p-around_medium">
-                                <Spinner type="brand" container={false}/></div>)
-                            : (!!notification && <div className={`slds-text-color_${notification.type}`}>
-                                {notification.message}</div>)}
-                    </div>
-                    <div className="slds-float--right">
-                        <ButtonGroup className={loading && "slds-hide"}>
-                            <Button type="neutral" onClick={this.handleClearForm}>Reset</Button>
-                            <Button type="brand" onClick={this.handleChangePassword}>Change Password</Button>
-                        </ButtonGroup>
-                    </div>
-                </div>
-            </Form>
+            <MediaObject figure={<Icon category="action" name="password_unlock" size="large"/>}
+                         body={
+                             <form className="slds-form_stacked" onSubmit={e => e.preventDefault()}>
+                                 <PasswordInput className="slds-m-bottom--small"
+                                                label="Current password"
+                                                disabled={loading}
+                                                value={inputs.p1}
+                                                onChange={val => {
+                                                    inputs.p1 = val;
+                                                    this.setState({inputs});
+                                                }}/>
+                                 <PasswordInput className="slds-m-bottom--small"
+                                                label="New password"
+                                                disabled={loading}
+                                                value={inputs.p2}
+                                                onChange={val => {
+                                                    inputs.p2 = val;
+                                                    this.setState({inputs});
+                                                }}/>
+                                 <PasswordInput label="Repeat password"
+                                                disabled={loading}
+                                                value={inputs.p3}
+                                                onChange={val => {
+                                                    inputs.p3 = val;
+                                                    this.setState({inputs});
+                                                }}/>
+                                 <div className="slds-clearfix slds-m-top_small">
+                                     <div className="slds-float--left">
+                                         {loading
+                                             ? (<div className="slds-is-relative slds-p-around_medium">
+                                                 <Spinner variant="brand" size="small"/></div>)
+                                             : (!!notification &&
+                                                 <div className={`slds-text-color_${notification.type}`}>
+                                                     {notification.message}</div>)}
+                                     </div>
+                                     <div className="slds-float--right">
+                                         <ButtonGroup className={loading ? "slds-hide" : "slds-show"}>
+                                             <Button variant="neutral" onClick={this.handleClearForm}>Reset</Button>
+                                             <Button variant="brand" onClick={this.handleChangePassword}>
+                                                 Change Password</Button>
+                                         </ButtonGroup>
+                                     </div>
+                                 </div>
+                             </form>
+                         }/>
         );
     }
 }
