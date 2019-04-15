@@ -1,12 +1,13 @@
 import React from "react";
 import ToastEvents from "../../../../../../../common/components/toasts/events";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
-import UserPicture from "../../../../../../../common/components/images/user-picture/UserPicture";
 import RequestService from "../../../../../../../../model/services/core/RequestService";
+import Lookup from "@salesforce/design-system-react/module/components/lookup/lookup";
+import UserCard from "./UserCard";
+import Spinner from "@salesforce/design-system-react/module/components/spinner";
 
 import {UserService} from "../../../../../../../../model/services/core/UserService";
 import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
-import {Button, Icon, Lookup} from "react-lightning-design-system";
 import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";
 
 class SearchTab extends React.Component {
@@ -25,11 +26,8 @@ class SearchTab extends React.Component {
         if (!!query) {
             this.setState({loading: true, opened: false}, _ => {
                 UserService.findUsers(query).then(options => {
-                    options = options.map(user => ({
-                        icon: "standard:avatar_loading",
-                        label: user.name.concat(" - ").concat(Utility.decorateUsername(user.username)),
-                        value: user.username,
-                        userEntity: user
+                    options = options.map(foundUser => ({
+                        label: Utility.formatUserInfo(foundUser), foundUser
                     }));
                     this.setState({loading: false, opened: true, options: options});
                 });
@@ -37,13 +35,10 @@ class SearchTab extends React.Component {
         }
     };
 
-    handleSelect = (option) => {
-        this.handleBlur(_ => this.setState({selectedUser: !!option ? option.userEntity : null}));
-    };
-
-    handleBlur = callback => {
-        this.setState({opened: false, loading: false}, callback);
-    };
+    handleSelect = (option) => this.setState({
+        selectedUser: option.foundUser,
+        opened: false
+    });
 
     sendFriendshipRequest = (targetUser) => {
         RequestService.sendRequest(targetUser)
@@ -67,45 +62,24 @@ class SearchTab extends React.Component {
         const {selectedUser, requestedUsers, options, opened, loading} = this.state,
             isRequestSent = !!selectedUser && requestedUsers.has(selectedUser.username);
         return (
-            <div className="slds-scrollable_y">
-                <div className="slds-p-horizontal--small">
-                    <Lookup label="Find fellow"
-                            onSearchTextChange={this.handleSearch}
-                            data={options}
-                            onSelect={this.handleSelect}
-                            onBlur={this.handleBlur}
-                            loading={loading}
-                            opened={opened}/>
-                </div>
+            <div className="slds-p-horizontal--small">
+                <Lookup emptyMessage="No items found."
+                        placeholder="Type here..."
+                        isOpen={opened}
+                        label="Find fellow"
+                        onChange={this.handleSearch}
+                        onSelect={this.handleSelect}
+                        onBlur={_ => this.setState({opened: false})}
+                        options={options}
+                />
+                {loading && <Spinner variant="brand" size="small"/>}
                 {!!selectedUser
-                    ? <Card user={selectedUser} isRequestSent={isRequestSent}
-                            sendRequest={_ => this.sendFriendshipRequest(selectedUser)}/>
-                    : <EmptyArea title="Search for people by typing their names" icon="groups"/>}
+                    ? <UserCard user={selectedUser} alreadySent={isRequestSent}
+                                onSendRequest={_ => this.sendFriendshipRequest(selectedUser)}/>
+                    : <EmptyArea title="Search for people by typing their names." icon="groups"/>}
             </div>
         );
     }
 }
-
-const Card = ({user, sendRequest, isRequestSent}) => {
-    return (
-        <figure className="slds-image slds-image--card slds-m-top_medium">
-            <div className="slds-image__crop slds-image__crop--16-by-9 stretch">
-                <UserPicture user={user}/>
-            </div>
-            <figcaption className="slds-image__title slds-image__title--card">
-                <div className="slds-clearfix" style={{width: "100%"}}>
-                    <h3 className="slds-float_left">
-                        {user.name}<br/>
-                        <small>{Utility.decorateUsername(user.username)}</small>
-                    </h3>
-                    <div className="slds-float_right">
-                        {isRequestSent && <Icon icon="utility:check" size="medium"/>}
-                        {!isRequestSent && <Button type="neutral" onClick={sendRequest}>Send Request</Button>}
-                    </div>
-                </div>
-            </figcaption>
-        </figure>
-    );
-};
 
 export default SearchTab;

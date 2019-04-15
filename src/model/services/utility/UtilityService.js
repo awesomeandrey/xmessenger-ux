@@ -21,6 +21,9 @@ export const Utility = {
             return date.toLocaleString(); // "20/7/2019, 12:20:16 AM";
         }
     },
+    formatUserInfo: function (user) {
+        return user.name.concat(" - ").concat(this.decorateUsername(user.username));
+    },
     decorateUsername: p => "@".concat(p),
     join: (...classNames) => classNames.join(" "),
     generateUniqueId: _ => Math.random().toString(36).substr(2, 9),
