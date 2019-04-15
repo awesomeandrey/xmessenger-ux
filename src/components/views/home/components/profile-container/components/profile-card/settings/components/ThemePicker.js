@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
+import Icon from "@salesforce/design-system-react/module/components/icon";
 
 import {applyTheme, THEMES, getCurrentTheme} from "../../../../../../../../../model/services/utility/ThemingService";
-import {Icon} from "react-lightning-design-system";
 
 class ThemePicker extends React.Component {
     constructor(props) {
@@ -41,7 +41,7 @@ const ThemeItem = ({theme, selected, onClick}) => {
     return (
         <div className={`slds-col slds-p-vertical--large slds-m-horizontal_x-small ${!selected && 'hoverable'}`}
              style={style} onClick={selected ? null : onClick}>
-            {selected ? <Icon icon="utility:check" size="small"/> : <span>{title}</span>}
+            {selected ? <Icon category="utility" name="check" size="small"/> : <span>{title}</span>}
         </div>
     );
 };
