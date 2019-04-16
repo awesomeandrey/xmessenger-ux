@@ -37,8 +37,7 @@ class ChatterPanel extends React.Component {
                             ${hasSelectedChat && "slds-hide"}`}/>
                 <AppContext.Consumer>
                     {context => (
-                        <div
-                            className={`height-inherit theme-marker--border slds-card ${!hasSelectedChat && "slds-hide"}`}>
+                        <div className={`height-inherit theme-marker--border slds-card ${!hasSelectedChat && "slds-hide"}`}>
                             <div className="slds-p-around--medium slds-theme_shade slds-m-bottom--none theme-marker">
                                 <HeaderPanel chat={selectedChat}/>
                             </div>
