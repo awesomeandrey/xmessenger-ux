@@ -1,0 +1,67 @@
+/*Themes' styles*/
+
+.theme-marker--border {
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/*Default theme*/
+
+.theme-default .theme-marker, .theme-default .theme-marker:hover {
+    background-color: #dddbda;
+    color: #706e6b;
+}
+
+.theme-default .theme-marker a {
+    color: #706e6b;
+}
+
+.theme-default .theme-marker--border {
+    border-color: #dddbda;
+}
+
+/*Green theme*/
+
+.theme-green .theme-marker, .theme-green .theme-marker:hover {
+    background-color: #04844b;
+    color: #fff;
+}
+
+.theme-green .theme-marker a {
+    color: #fff;
+}
+
+.theme-green .theme-marker--border {
+    border-color: #04844b;
+}
+
+/*Orange theme*/
+
+.theme-orange .theme-marker, .theme-orange .theme-marker:hover {
+    background-color: #ffb75d;
+    color: #080707;
+}
+
+.theme-orange .theme-marker a {
+    color: #080707;
+}
+
+.theme-orange .theme-marker--border {
+    border-color: #ffb75d;
+}
+
+/*Darkblue theme*/
+
+.theme-darkblue .theme-marker, .theme-darkblue .theme-marker:hover {
+    background-color: #253045;
+    color: #fff;
+}
+
+.theme-darkblue .theme-marker a {
+    color: #fff;
+}
+
+.theme-darkblue .theme-marker--border {
+    border-color: #253045;
+}

@@ -68,7 +68,7 @@ class ProfileInfoPanel extends React.Component {
                                 </TabsPanel>
                             </Tabs>
                         </div>
-                        <footer className="slds-card__footer position-bottom theme-marker">
+                        <footer className="slds-card__footer position-bottom theme-marker mobile-hidden">
                             <GitHubLink/>
                         </footer>
                     </div>

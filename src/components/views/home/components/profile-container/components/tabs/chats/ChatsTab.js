@@ -148,7 +148,7 @@ class ChatsTab extends React.Component {
         const {chatsMap} = this.state, chatItems = [...chatsMap.values()].map(chatData => {
             let selected = this.isSelectedChat(chatData);
             return (<div key={chatData["id"]} onClick={event => this.handleSelectChat(event, chatData)}
-                         className={`chat-item ${selected && "chat-item__selected"}`}>
+                         className={`chat-item ${selected && "theme-marker"}`}>
                 <ChatItem chatData={chatData} selected={selected}/>
             </div>);
         });

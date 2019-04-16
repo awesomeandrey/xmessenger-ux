@@ -4,7 +4,7 @@ import ProfileInfo from "./components/ProfileInfo";
 import ProfileImage from "./components/ProfileImage";
 import PasswordChange from "./components/PasswordChange";
 import AccountDeactivation from "./components/AccountDeactivation";
-import ThemePicker from "./components/ThemePicker";
+import ThemePicker from "../../../../../../../common/components/theming/components/ThemePicker";
 import Modal from "@salesforce/design-system-react/module/components/modal";
 import Tabs from "@salesforce/design-system-react/module/components/tabs";
 import TabsPanel from "@salesforce/design-system-react/module/components/tabs/panel";
