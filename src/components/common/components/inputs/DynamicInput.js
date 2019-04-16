@@ -60,7 +60,7 @@ class DynamicInput extends React.Component {
                                                    disabled={loading}
                                                    errorText={error}
                                                    onChange={this.handleChange}/>}
-                    <div className="slds-input__icon-group slds-input__icon-group_right">
+                    <div className="slds-input__icon-group slds-input__icon-group_right" style={{right: "1rem"}}>
                         {loading && <Spinner variant="brand" className="slds-input__spinner" size="small"/>}
                     </div>
                 </div>
