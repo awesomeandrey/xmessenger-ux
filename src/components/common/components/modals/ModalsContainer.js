@@ -6,8 +6,6 @@ import Button from "@salesforce/design-system-react/module/components/button";
 import {CustomEvents} from "../../../../model/services/utility/EventsService";
 import {Utility} from "../../../../model/services/utility/UtilityService";
 
-import "./styles.css";
-
 const _defaultState = {
     opened: false,
     descriptor: {}

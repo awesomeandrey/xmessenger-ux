@@ -5,7 +5,7 @@ import ProxyPage from "./components/views/authorization/components/oauth.gmail/P
 import Home from "./components/views/home/Home";
 import Error from "./components/views/error/Error";
 import ModalsContainer from "./components/common/components/modals/ModalsContainer";
-import ToastContainer from "./components/common/components/toasts/components/ToastContainer";
+import ToastContainer from "./components/common/components/toasts/ToastContainer";
 import BrandBand from "@salesforce/design-system-react/module/components/brand-band";
 import IconSettings from "@salesforce/design-system-react/module/components/icon-settings";
 

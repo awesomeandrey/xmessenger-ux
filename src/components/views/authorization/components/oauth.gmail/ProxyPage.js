@@ -19,7 +19,7 @@ class ProxyPage extends React.Component {
             .then(_ => Navigation.toHome({replace: true}), error => {
                 CustomEvents.fire({
                     eventName: Events.SHOW,
-                    detail: {icon: "error", message: "Internal error occurred, please address support."},
+                    detail: {level: "error", message: "Internal error occurred, please address support."},
                     callback: _ => console.log(error)
                 });
             });

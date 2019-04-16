@@ -48,7 +48,7 @@ class Register extends React.Component {
             inputs.repeatedPassword = "";
             this.setState({inputs, error: INVALID_INPUT}, _ => {
                 CustomEvents.fire({
-                    eventName: ToastEvents.SHOW, detail: {icon: "warning", level: "error", message: INVALID_INPUT}
+                    eventName: ToastEvents.SHOW, detail: {level: "error", message: INVALID_INPUT}
                 });
             });
         }

@@ -45,7 +45,7 @@ class SearchTab extends React.Component {
             .then(_ => CustomEvents.fire({
                 eventName: ToastEvents.SHOW,
                 detail: {
-                    icon: "notification", level: "success",
+                    level: "success",
                     message: <span>Sent request to <strong>{targetUser.name}</strong></span>
                 }
             }))
@@ -54,7 +54,7 @@ class SearchTab extends React.Component {
             }))
             .catch(error => CustomEvents.fire({
                 eventName: ToastEvents.SHOW,
-                detail: {icon: "warning", level: "warning", message: error.message}
+                detail: {level: "warning", message: error.message}
             }));
     };
 

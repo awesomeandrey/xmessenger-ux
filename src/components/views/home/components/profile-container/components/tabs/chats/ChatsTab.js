@@ -22,8 +22,7 @@ const NOTIFICATION_BLUEPRINTS = {
         CustomEvents.fire({
             eventName: ToastEvents.SHOW,
             detail: {
-                icon: "notification", level: "error",
-                message: <span><b>{userName}</b> removed chat with you.</span>
+                level: "error", message: <span><b>{userName}</b> removed chat with you.</span>
             }
         });
     },

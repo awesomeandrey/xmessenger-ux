@@ -37,7 +37,7 @@ class Login extends React.Component {
                     this.setState({loading: false, inputs: inputs, error: errorMessage}, _ => {
                         CustomEvents.fire({
                             eventName: ToastEvents.SHOW,
-                            detail: {icon: "notification", level: "error", message: errorMessage}
+                            detail: {level: "error", message: errorMessage}
                         });
                     });
                 });
@@ -45,7 +45,7 @@ class Login extends React.Component {
         } else {
             CustomEvents.fire({
                 eventName: ToastEvents.SHOW,
-                detail: {icon: "warning", level: "warning", message: "Credentials required."}
+                detail: {level: "warning", message: "Credentials required."}
             });
         }
     };

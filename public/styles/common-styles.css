@@ -100,3 +100,7 @@
 .slds-spinner_container {
     background-color: transparent !important;
 }
+
+.slds-text-longform {
+    min-height: 5rem;
+}
