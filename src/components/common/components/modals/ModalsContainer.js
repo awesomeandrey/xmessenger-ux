@@ -49,7 +49,7 @@ class ModalsContainer extends React.Component {
         return (
             <div className="modals-container">
                 <Modal isOpen={hasConfigs && opened} title={!!descriptor.dialog && descriptor.dialog.title}
-                       dismissible onRequestClose={this.onCloseModal}>
+                       dismissible onRequestClose={this.onCloseModal} ariaHideApp={false}>
                     {!!descriptor.imageNode
                         ? <ModalImage imageNode={descriptor.imageNode}/> : <span/>}
                     {!!descriptor.dialog
