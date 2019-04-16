@@ -28,7 +28,8 @@ CLI commands. They contain app sensitive information (API keys, DB credentials).
 
 * [WebStorm](https://www.jetbrains.com/webstorm/) - Integrated IDE
 * [ReactJS](https://reactjs.org/) - Library for Making Interactive Websites
-* [SLDS](https://www.lightningdesignsystem.com/getting-started/) - Lightning Design System
+* [SLDS](https://www.lightningdesignsystem.com/getting-started/) - Salesforce Lightning Design System
+* [SLDS for React](https://react.lightningdesignsystem.com/) - Lightning Design System for React
 * [TravisCI](https://travis-ci.com/) - CI and CD web utility
 * [Heroku](https://www.heroku.com/) - Cloud platform that lets companies build, deliver, monitor and scale apps
 * [VivifyScrum](https://app.vivifyscrum.com/) - Issue tracking product which allows bug tracking and agile project management
