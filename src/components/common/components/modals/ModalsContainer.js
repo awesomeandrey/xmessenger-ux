@@ -70,8 +70,7 @@ const ModalDialog = props => {
             </div>
             <footer className="slds-modal__footer">
                 <Button variant="neutral" label="Cancel" onClick={onClose}/>
-                <Button variant={actionButton.type || "brand"}
-                        label={actionButton.label || "Done"}
+                <Button variant={actionButton.type || "brand"} label={actionButton.label || "Done"}
                         onClick={_ => {
                             if (!!actionButton && typeof actionButton.callback === "function") {
                                 actionButton.callback(); // execute callback;

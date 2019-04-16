@@ -9,7 +9,7 @@ const PropsLoader = propNameToCheck => WrappedComponent => {
         render() {
             const propValue = this.props[propNameToCheck], ready = !Utility.isObjectEmpty(propValue);
             return (
-                <div className={`stateful-container ${!ready && "slds-p-vertical--medium"}`}>
+                <div className={`props-loader-container width-stretch ${!ready && "slds-p-vertical--medium"}`}>
                     {ready
                         ? <WrappedComponent {...this.props}/>
                         : (<div className="slds-is-relative"><Spinner variant="brand" size="small"/></div>)}

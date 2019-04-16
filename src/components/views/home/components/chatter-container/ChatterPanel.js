@@ -10,7 +10,7 @@ import {CustomEvents} from "../../../../../model/services/utility/EventsService"
 
 import "./styles/styles.css";
 
-class ChatPanel extends React.Component {
+class ChatterPanel extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -37,10 +37,17 @@ class ChatPanel extends React.Component {
                             ${hasSelectedChat && "slds-hide"}`}/>
                 <AppContext.Consumer>
                     {context => (
-                        <div className={`height-inherit theme-marker--border slds-card ${!hasSelectedChat && "slds-hide"}`}>
-                            <HeaderPanel chat={selectedChat}/>
-                            <MessagesPanel user={context.user}/>
-                            <MessageInput chat={selectedChat}/>
+                        <div
+                            className={`height-inherit theme-marker--border slds-card ${!hasSelectedChat && "slds-hide"}`}>
+                            <div className="slds-p-around--medium slds-theme_shade slds-m-bottom--none theme-marker">
+                                <HeaderPanel chat={selectedChat}/>
+                            </div>
+                            <div className="messages-container">
+                                <MessagesPanel user={context.user}/>
+                            </div>
+                            <div className="message-input theme-marker position-bottom">
+                                <MessageInput chat={selectedChat}/>
+                            </div>
                         </div>
                     )}
                 </AppContext.Consumer>
@@ -49,4 +56,4 @@ class ChatPanel extends React.Component {
     }
 }
 
-export default ChatPanel;
+export default ChatterPanel;

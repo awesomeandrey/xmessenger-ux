@@ -51,7 +51,7 @@ class MessageInput extends React.Component {
     render() {
         const {loading, error} = this.state;
         return (
-            <footer className="theme-marker slds-card__footer slds-theme_shade position-bottom message-input">
+            <footer className="slds-theme_shade">
                 <form onSubmit={this.handleSendMessage} className="flex-container flex-container__stretch">
                     <div className="flex-item__grow">
                         <DynamicInput loading={loading} error={error} onChange={this.handleTypeIn}
