@@ -3,6 +3,7 @@ import Countdown from "react-countdown-now";
 import Events from "../../../../common/components/toasts/events";
 import GmailService from "../../../../../model/services/core/GmailService";
 import Button from "@salesforce/design-system-react/module/components/button";
+import Modal from "@salesforce/design-system-react/module/components/modal";
 
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
 import {Navigation} from "../../../../../model/services/utility/NavigationService";
@@ -37,25 +38,16 @@ class ProxyPage extends React.Component {
 
     render() {
         return (
-            <div className="proxy-page-container">
-                <div className="slds-modal slds-fade-in-open" aria-hidden="false" role="dialog">
-                    <div className="slds-modal__container">
-                        <div className="slds-modal__header">
-                            <h2 className="slds-text-heading--medium">OAuth Proxy Page</h2>
-                        </div>
-                        <div className="slds-modal__content">
-                            <div className="slds-p-around--small">
-                                <p>Please, wait while this proxy page authorizes you.</p>
-                                <p>If nothing happens, click "Redirect" button.</p>
-                            </div>
-                        </div>
-                        <div className="slds-modal__footer">
-                            <Countdown date={Date.now() + 7000} renderer={this.countdownRenderer}/>
-                        </div>
-                    </div>
+            <Modal dismissible={false}
+                   footer={[
+                       <Countdown date={Date.now() + 7000} renderer={this.countdownRenderer}/>
+                   ]}
+                   isOpen={true} prompt="info" size="medium" title={"OAuth Proxy Page"}>
+                <div className="slds-p-around--small slds-text-align_center">
+                    <p>Please, wait while this proxy page authorizes you.</p>
+                    <p>If nothing happens, click "Redirect" button.</p>
                 </div>
-                <div className="slds-modal-backdrop slds-modal-backdrop--open"/>
-            </div>
+            </Modal>
         );
     }
 }

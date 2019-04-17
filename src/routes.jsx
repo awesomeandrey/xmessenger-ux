@@ -14,13 +14,13 @@ import {Route, IndexRoute} from "react-router";
 const App = props => {
     return (
         <IconSettings iconPath="/assets/icons">
-            <BrandBand theme="lightning-blue">
-                <ModalsContainer>
-                    <ToastContainer>
+            <ModalsContainer>
+                <ToastContainer>
+                    <BrandBand theme="lightning-blue">
                         {props.children}
-                    </ToastContainer>
-                </ModalsContainer>
-            </BrandBand>
+                    </BrandBand>
+                </ToastContainer>
+            </ModalsContainer>
         </IconSettings>
     );
 };

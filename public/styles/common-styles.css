@@ -104,3 +104,18 @@
 .slds-text-longform {
     min-height: 5rem;
 }
+
+.slds-brand-band {
+    height: 100vh;
+}
+
+/*For iPhone and SmartPhones*/
+@media only screen
+and (min-device-width: 315px)
+and (max-device-width: 812px)
+and (min-device-height: 315px)
+and (max-device-height: 812px) {
+    .slds-brand-band {
+        height: 100%;
+    }
+}
