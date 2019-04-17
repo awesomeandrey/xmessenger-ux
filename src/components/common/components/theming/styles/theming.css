@@ -1,9 +1,20 @@
 /*Themes' styles*/
 
+/*Common classes*/
+
+.theme-inherit {
+    background-color: inherit;
+    color: inherit;
+}
+
 .theme-marker--border {
     border-radius: 5px;
     border-style: solid;
     border-width: 1px;
+}
+
+.theme-marker .slds-dropdown a {
+    color: #080707 !important; /*Preserve SLDS styling for dropdown menu items*/
 }
 
 /*Default theme*/

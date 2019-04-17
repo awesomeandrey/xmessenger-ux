@@ -11,9 +11,9 @@ import {Utility} from "../../../../../../../../model/services/utility/UtilitySer
 const _formatChatTitle = (username, dateNum) => {
         const dateString = Utility.formatDate({dateNum, showTimestamp: false});
         return (
-            <span className="slds-text-color_weak">
-            {Utility.decorateUsername(username) + (!!dateString ? (" • " + dateString) : "")}
-        </span>
+            <span className="slds-text-color_weak theme-inherit">
+                {Utility.decorateUsername(username) + (!!dateString ? (" • " + dateString) : "")}
+            </span>
         );
     },
     _onRemoveChat = chatData => {

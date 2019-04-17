@@ -46,9 +46,9 @@ const ThemeItem = ({theme, selected, onClick}) => {
     };
     return (
         <div className={`slds-m-horizontal_x-small ${theme.className}`}>
-            <div className={`slds-col slds-p-vertical--large theme-marker ${!selected && 'hoverable'}`}
+            <div className={`slds-col slds-p-vertical--large theme-marker ${!selected && "hoverable"}`}
                  style={style} onClick={selected ? null : onClick}>
-                {selected ? <Icon category="utility" name="check" size="small"/> : <span>{title}</span>}
+                {selected ? <Icon category="utility" name="check" size="x-small"/> : <span>{title}</span>}
             </div>
         </div>
     );

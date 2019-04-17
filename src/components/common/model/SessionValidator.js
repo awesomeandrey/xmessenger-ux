@@ -32,7 +32,7 @@ const SessionValidator = ({isLoginEntry = false}) => WrappedComponent => {
 
         render() {
             const {renderComponent} = this.state;
-            return renderComponent ? <WrappedComponent {...this.props}/> : <Spinner variant="brand" size="small"/>;
+            return renderComponent ? <WrappedComponent {...this.props}/> : <Spinner variant="base" size="small"/>;
         }
     };
 };
