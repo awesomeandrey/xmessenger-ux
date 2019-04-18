@@ -4,7 +4,7 @@
     "type": "git",
     "url": "https://github.com/awesomeandrey/xmessenger-ux"
   },
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "UI/UX part of xMessenger application ecosystem",
   "scripts": {
     "start": "node server.js",
