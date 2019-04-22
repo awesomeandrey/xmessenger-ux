@@ -69,7 +69,8 @@ class MessagesPanel extends React.Component {
             });
         return (
             <section role="log" className="slds-chat height-percent-100">
-                {loading && <Spinner variant="brand" size="small"/>}
+                {loading && <Spinner variant="brand" size="small"
+                                     containerClassName="slds-spinner_container_overridden"/>}
                 <ul className="slds-chat-list slds-scrollable_y" ref={element => this._container = element}>
                     <ChatTitle chat={selectedChat}/>
                     {messageItems}

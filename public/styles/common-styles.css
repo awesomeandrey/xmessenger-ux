@@ -98,7 +98,11 @@
 /*SLDS overrides*/
 
 .slds-spinner_container {
-    background-color: transparent !important;
+    background-color: transparent;
+}
+
+.slds-spinner_container_overridden {
+    background-color: rgba(255, 255, 255, 0.75);
 }
 
 .slds-text-longform {
