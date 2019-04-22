@@ -1,4 +1,4 @@
-import {Utility, InputPatterns} from "../../../model/services/utility/UtilityService";
+import {Utility, InputPatterns} from "../../../src/model/services/utility/UtilityService";
 
 describe("Common utility methods.", () => {
     test("Format date.", () => {
