@@ -2,6 +2,7 @@ import React from "react";
 import Modal from "@salesforce/design-system-react/module/components/modal";
 import ModalEvents from "./events";
 import Button from "@salesforce/design-system-react/module/components/button";
+import Image from "../images/plain/Image";
 
 import {CustomEvents} from "../../../../model/services/utility/EventsService";
 import {Utility} from "../../../../model/services/utility/UtilityService";
@@ -87,9 +88,7 @@ const ModalImage = props => {
     return (
         <div className="slds-show">
             <div className="slds-modal__content slds-p-around_small">
-                 <span className="slds-align_absolute-center">
-                     <img alt={imageNode.alt} src={imageNode.src} title={imageNode.title}/>
-                </span>
+                <span className="slds-align_absolute-center"><Image {...imageNode}/></span>
             </div>
             <footer className="slds-modal__footer">
                 <div className="slds-text-heading_small slds-text-align_center">{imageNode.title}</div>
