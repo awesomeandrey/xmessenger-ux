@@ -8,7 +8,7 @@ class Image extends React.Component {
         this.handleRef = this.handleRef.bind(this);
         this.state = {
             src: LAZY_LOAD_PICTURE
-        }
+        };
     }
 
     componentDidMount() {
@@ -49,6 +49,7 @@ class Image extends React.Component {
         const {title, className, onClick} = this.props;
         return (
             <img title={title}
+                 style={{borderRadius: "5px", maxHeight: "50vh"}}
                  className={className}
                  alt={title}
                  src={this.state.src}
