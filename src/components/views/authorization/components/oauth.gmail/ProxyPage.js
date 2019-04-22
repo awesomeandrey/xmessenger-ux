@@ -39,9 +39,10 @@ class ProxyPage extends React.Component {
     render() {
         return (
             <div style={{height: "100vh"}}>
-                <Modal dismissible={false}
+                <Modal dismissible={false} ariaHideApp={false}
                        footer={[
-                           <Countdown date={Date.now() + 7000} renderer={this.countdownRenderer}/>
+                           <Countdown key={Utility.generateUniqueId()}
+                                      date={Date.now() + 7000} renderer={this.countdownRenderer}/>
                        ]}
                        isOpen={true} prompt="info" size="medium" title={"OAuth Proxy Page"}>
                     <div className="slds-p-around--small slds-text-align_center">
