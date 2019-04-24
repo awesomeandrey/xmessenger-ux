@@ -17,6 +17,10 @@ describe("Common utility methods.", () => {
         // console.log("Output #3: " + output3);
         expect(output3).toMatch(/\d{4}/);
     });
+    test("Format user info.", () => {
+        const name = "Test", username = "test001", user = {name, username};
+        expect(Utility.formatUserInfo(user)).toBe(`${name} - ${Utility.decorateUsername(username)}`);
+    });
     test("Decorate username.", () => {
         const username = "test";
         expect(Utility.decorateUsername(username)).toBe("@".concat(username));
