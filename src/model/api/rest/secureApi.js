@@ -8,9 +8,19 @@ const _TOKEN_HEADER_NAME = "Authorization", _TOKEN_PREFIX = "Bearer ", _retrieve
 };
 
 export const API_BASE_PATH = "/api",
-    tokenExists = _ => !!SessionStorage.getItem(SessionEntities.JWT_TOKEN),
+    getToken = _ => SessionStorage.getItem(SessionEntities.JWT_TOKEN),
+    tokenExists = _ => !!getToken(),
     revokeClient = _ => SessionStorage.removeItem(SessionEntities.JWT_TOKEN);
 
+/**
+ * If successful authenticates client returning JWT token
+ * in 'Authorization' header.
+ * @param url - resource URL address;
+ * @param method - http method;
+ * @param body - payload;
+ * @param headers - http headers;
+ * @returns Javascript Promise.
+ */
 export const authenticateClient = ({url, method = "POST", body = "", headers = DEFAULT_HEADERS}) => {
     return fetch(API_SERVER_URL.concat(url), {
         method: method,
@@ -18,25 +28,25 @@ export const authenticateClient = ({url, method = "POST", body = "", headers = D
         headers: headers
     }).then(response => {
         if (response.ok) {
-            let token = _retrieveBearerToken(response.headers);
-            SessionStorage.setItem({key: SessionEntities.JWT_TOKEN, value: token});
-            return true;
-        } else if (response.status === 401) {
+            SessionStorage.setItem({key: SessionEntities.JWT_TOKEN, value: _retrieveBearerToken(response.headers)});
+            return Promise.resolve(true);
+        } else {
             SessionStorage.removeItem(SessionEntities.JWT_TOKEN);
             return Promise.reject("Bad credentials.");
-        } else {
-            throw "Unknown error occurred when authenticating client."
         }
     });
 };
 
+/**
+ * Performs request supplying it with JWT token.
+ * @param method
+ * @param entity
+ * @param path
+ * @param headers
+ * @returns In case of non-authorized operation it navigates to auth page.
+ */
 export const performRequest = ({method, entity, path, headers = DEFAULT_HEADERS}) => {
-    const token = SessionStorage.getItem(SessionEntities.JWT_TOKEN);
-    if (!!token) {
-        headers[_TOKEN_HEADER_NAME] = _TOKEN_PREFIX + token;
-    } else {
-        Navigation.toLogin({jwtExpired: true});
-    }
+    headers[_TOKEN_HEADER_NAME] = _TOKEN_PREFIX + getToken();
     return callRestApi({
         url: API_BASE_PATH + path,
         method: method,
