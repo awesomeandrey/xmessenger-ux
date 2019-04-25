@@ -10,14 +10,11 @@ class AppContextProvider extends Component {
         super(props);
         this.state = {
             currentUser: null
-        }
+        };
     }
 
     componentWillMount() {
-        CustomEvents.register({
-            eventName: Events.USER.RELOAD,
-            callback: this.reloadCurrentUser
-        });
+        CustomEvents.register({eventName: Events.USER.RELOAD, callback: this.reloadCurrentUser});
     }
 
     componentDidMount() {
