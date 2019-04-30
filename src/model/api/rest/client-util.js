@@ -3,9 +3,15 @@ const _handleSuccess = response => _parseJSON(response).then(data => Promise.res
 const _handleError = response => _parseJSON(response).then(error => Promise.reject(error));
 
 /**
- * 'XM_API_SERVER_URL' variable is provided by Webpack configuration file.
+ * 'STATIC_API_SERVER_URL' variable is provided by Webpack configuration file.
  */
-export const API_SERVER_URL = XM_API_SERVER_URL;
+export const API_SERVER_URL = (_ => {
+    try {
+        return STATIC_API_SERVER_URL; // provided by webpack bundler for client;
+    } catch (e) {
+        return process.env.XM_API_SERVER_URL; // derived from environmental variables for server;
+    }
+})();
 
 export const DEFAULT_HEADERS = {"Content-Type": "application/json;charset=UTF-8"};
 

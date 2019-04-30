@@ -15,6 +15,8 @@ class AppContextProvider extends Component {
 
     componentWillMount() {
         CustomEvents.register({eventName: Events.USER.RELOAD, callback: this.reloadCurrentUser});
+
+        // TODO - register push notification listener;
     }
 
     componentDidMount() {
