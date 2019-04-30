@@ -1,7 +1,6 @@
 const path = require("path");
 
 import express from "express";
-import subscribeToTopics from "./src/model/api/streaming/TopicsSubscriber-v2";
 
 const app = express(), PORT = process.env.PORT || 80,
     cacheControl = process.env.NODE_ENV === "production" ? {maxAge: "1d"} : {};
@@ -20,6 +19,3 @@ app.listen(PORT, function (err) {
     }
     console.log("Launched NodeJS application.");
 });
-
-// TODO - subscribe to channels from API server;
-subscribeToTopics();

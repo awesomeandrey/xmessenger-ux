@@ -9,7 +9,7 @@ export const API_SERVER_URL = (_ => {
     try {
         return STATIC_API_SERVER_URL; // provided by webpack bundler for client;
     } catch (e) {
-        return process.env.XM_API_SERVER_URL; // derived from environmental variables for server;
+        return process.env.XM_API_SERVER_URL; // taken from environmental variables for server;
     }
 })();
 
