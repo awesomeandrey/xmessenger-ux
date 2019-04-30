@@ -7,7 +7,7 @@
   "version": "3.0.0",
   "description": "UI/UX part of xMessenger application ecosystem",
   "scripts": {
-    "start": "node server.js",
+    "start": "node src/config/start-server.js",
     "build": "npm install && webpack --config webpack.prod.js",
     "build-dev": "npm install && webpack --config webpack.dev.js",
     "heroku-prebuild": "echo 'PRE-BUILD on HEROKU.'",
@@ -33,11 +33,12 @@
     "stompjs": "^2.3.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.3",
+    "@babel/core": "^7.4.4",
     "@babel/plugin-proposal-class-properties": "^7.4.0",
     "@babel/plugin-proposal-decorators": "^7.4.0",
-    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.4.4",
     "babel-jest": "^24.7.1",
     "babel-loader": "^8.0.0-beta.6",
     "babel-polyfill": "^6.26.0",

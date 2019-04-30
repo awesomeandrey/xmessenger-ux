@@ -1,10 +1,9 @@
 const path = require("path");
-const express = require("express");
-const app = express();
 
-const PORT = process.env.PORT || 80;
+import express from "express";
 
-const cacheControl = {maxAge: "1d"};
+const app = express(), PORT = process.env.PORT || 80,
+    cacheControl = process.env.NODE_ENV === "production" ? {maxAge: "1d"} : {};
 app.use("/public", express.static("public", cacheControl));
 app.use("/assets", express.static("node_modules/@salesforce-ux/design-system/assets", cacheControl));
 

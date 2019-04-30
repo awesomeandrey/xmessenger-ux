@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import AppContext from './AppContext';
 import Events from "../../events/application-events";
+import subscribeToTopics from "../../api/streaming/TopicsSubscriber";
 
 import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
@@ -19,6 +20,8 @@ class AppContextProvider extends Component {
 
     componentDidMount() {
         this.reloadCurrentUser();
+        // Subscribe to topics;
+        CustomEvents.register({eventName: "load", callback: subscribeToTopics});
     }
 
     reloadCurrentUser = _ => UserService.getCurrentUser(true)
