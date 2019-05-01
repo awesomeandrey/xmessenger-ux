@@ -1,6 +1,5 @@
 const path = require("path");
-
-import express from "express";
+const express = require("express");
 
 const app = express(), PORT = process.env.PORT || 80,
     cacheControl = process.env.NODE_ENV === "production" ? {maxAge: "1d"} : {};
