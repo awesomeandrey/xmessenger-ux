@@ -29,7 +29,7 @@ class Login extends React.Component {
         if (this.isFormFulfilled()) {
             this.setState({loading: true, error: ""}, _ => {
                 const {inputs} = this.state;
-                LoginService.login({
+                LoginService.loginUser({
                     username: inputs.username,
                     password: inputs.password
                 }).then(_ => Navigation.toHome({}), errorMessage => {

@@ -11,11 +11,10 @@ import {LoginService} from "../../../../../../../model/services/core/Authenticat
 import {Utility} from "../../../../../../../model/services/utility/UtilityService";
 import {Navigation} from "../../../../../../../model/services/utility/NavigationService";
 import {CustomEvents} from "../../../../../../../model/services/utility/EventsService";
-import {SessionStorage} from "../../../../../../../model/services/utility/StorageService";
 import {UserService} from "../../../../../../../model/services/core/UserService";
 
 const _onOpenSettings = _ => CustomEvents.fire({eventName: Events.SETTINGS.OPEN}),
-    _onLogout = _ => LoginService.logout().then(SessionStorage.clear).then(_ => Navigation.toLogin({})),
+    _onLogout = user => LoginService.logoutUser(user).then(_ => Navigation.toLogin({})),
     _onSelectOption = (option) => {
         switch (option.value) {
             case 1:
@@ -44,7 +43,8 @@ const ProfileCard = props => {
                         <span className="slds-text-color_weak theme-inherit">{Utility.decorateUsername(user.username)}</span>
                     </p>
                     <div className="slds-float_right">
-                        <Button variant="neutral" className="mobile-visible-only" onClick={_onLogout}>Logout</Button>
+                        <Button variant="neutral" className="mobile-visible-only"
+                                onClick={_ => _onLogout(user)}>Logout</Button>
                         <Dropdown buttonClassName="mobile-hidden"
                                   iconCategory="utility"
                                   iconName="settings"
