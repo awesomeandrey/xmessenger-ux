@@ -11,5 +11,8 @@ export default {
     REQUEST: {
         SEND: `${TOPICS_PREFIX}/request/send`,
         PROCESS: `${TOPICS_PREFIX}/request/process`
+    },
+    USER: {
+        INDICATOR_CHANGE: `${TOPICS_PREFIX}/indicator-change`
     }
 };

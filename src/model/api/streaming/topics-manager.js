@@ -6,7 +6,6 @@ import {Stomp} from "stompjs/lib/stomp.js";
 const _stompClientClosure = _ => {
     let _stompClient = null; //
     return function (callback) {
-        debugger;
         if (!!_stompClient && _stompClient.connected) {
             callback(_stompClient);
             return;
@@ -20,9 +19,8 @@ const _stompClientClosure = _ => {
     };
 }, _getStompClient = _stompClientClosure();
 
-export const sendMessage = ({destination, body}) => _ => {
+export const sendMessage = ({destination, body}) => {
     _getStompClient(stompClient => {
-        debugger;
         stompClient.send(destination, {}, JSON.stringify(body));
     });
 };
