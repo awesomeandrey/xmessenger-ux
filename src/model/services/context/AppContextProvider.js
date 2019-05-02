@@ -16,12 +16,12 @@ class AppContextProvider extends Component {
 
     componentWillMount() {
         CustomEvents.register({eventName: Events.USER.RELOAD, callback: this.reloadCurrentUser});
+        // Subscribe to topics;
+        CustomEvents.register({eventName: "load", callback: subscribeToTopics});
     }
 
     componentDidMount() {
         this.reloadCurrentUser();
-        // Subscribe to topics;
-        CustomEvents.register({eventName: "load", callback: subscribeToTopics});
     }
 
     reloadCurrentUser = _ => UserService.getCurrentUser(true)

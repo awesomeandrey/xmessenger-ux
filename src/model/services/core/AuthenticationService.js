@@ -1,6 +1,7 @@
 import {API_BASE_PATH, authenticateClient, revokeClient} from "../../api/rest/secureApi";
 import {performRequest} from "../../api/rest/openApi";
 
+// TODO - notify on 'login'/'logout' event;
 export const LoginService = {
     login: rawCredentials => authenticateClient({url: `${API_BASE_PATH}/login`, body: rawCredentials}),
     logout: _ => {

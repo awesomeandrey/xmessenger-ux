@@ -1,12 +1,12 @@
 import TOPICS from "./topics";
 import Events from "../../events/application-events";
-import subscribeToTopics from "./topics-subscriber";
+import {subscribe} from "./topics-manager";
 
 import {CustomEvents} from "../../services/utility/EventsService";
 
 const parsePayload = payload => JSON.parse(payload.body);
 
-export default _ => subscribeToTopics([
+export default _ => subscribe([
     {
         route: TOPICS.CHAT.DELETE,
         callback: payload => {
