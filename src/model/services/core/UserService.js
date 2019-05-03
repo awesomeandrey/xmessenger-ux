@@ -3,7 +3,7 @@ import {performRequest} from "../../api/rest/secureApi";
 import {API_BASE_PATH as OPEN_API_PATH} from "../../api/rest/openApi";
 
 export const UserService = {
-    getCurrentUser: _ => performRequest({
+    getUserInfo: _ => performRequest({
         method: "GET",
         path: "/user/info"
     }),

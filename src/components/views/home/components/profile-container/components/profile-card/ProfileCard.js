@@ -14,7 +14,7 @@ import {CustomEvents} from "../../../../../../../model/services/utility/EventsSe
 import {UserService} from "../../../../../../../model/services/core/UserService";
 
 const _onOpenSettings = _ => CustomEvents.fire({eventName: Events.SETTINGS.OPEN}),
-    _onLogout = user => LoginService.logoutUser(user).then(_ => Navigation.toLogin({})),
+    _onLogout = _ => Promise.resolve(true).then(LoginService.logoutUser).then(_ => Navigation.toLogin({})),
     _onSelectOption = (option) => {
         switch (option.value) {
             case 1:
@@ -43,8 +43,7 @@ const ProfileCard = props => {
                         <span className="slds-text-color_weak theme-inherit">{Utility.decorateUsername(user.username)}</span>
                     </p>
                     <div className="slds-float_right">
-                        <Button variant="neutral" className="mobile-visible-only"
-                                onClick={_ => _onLogout(user)}>Logout</Button>
+                        <Button variant="neutral" className="mobile-visible-only" onClick={_onLogout}>Logout</Button>
                         <Dropdown buttonClassName="mobile-hidden"
                                   iconCategory="utility"
                                   iconName="settings"

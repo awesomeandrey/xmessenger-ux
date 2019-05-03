@@ -19,13 +19,10 @@ const _stompClientClosure = _ => {
     };
 }, _getStompClient = _stompClientClosure();
 
-export const sendMessage = params => {
-    return Promise.resolve(params)
-        .then(({destination, body}) => {
-            _getStompClient(stompClient => {
-                stompClient.send(`/message${destination}`, {}, JSON.stringify(body));
-            });
-        });
+export const sendMessage = ({destination, body}) => {
+    return _getStompClient(stompClient => {
+        stompClient.send(`/message${destination}`, {}, JSON.stringify(body));
+    });
 };
 
 export const subscribe = (registrations) => {

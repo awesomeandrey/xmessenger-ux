@@ -33,11 +33,12 @@ class AccountDeactivation extends React.Component {
         if (user.username !== username) {
             this.setState({username: "", error: "Username is not confirmed"});
         } else {
-            CustomEvents.fire({eventName: Events.SETTINGS.LOCK, detail: {locked: true}})
-                .then(_ => this.setState({loading: true, error: ""}))
-                .then(_ => Settings.changeProfileInfo({id: user.id, active: false}))
-                .then(_ => LoginService.logoutUser(user))
-                .then(_ => Navigation.toLogin({}));
+            this.setState({loading: true, error: ""}, _ => {
+                CustomEvents.fire({eventName: Events.SETTINGS.LOCK, detail: {locked: true}})
+                    .then(_ => Settings.changeProfileInfo({id: user.id, active: false}))
+                    .then(LoginService.logoutUser)
+                    .then(_ => Navigation.toLogin({}));
+            });
         }
     };
 
