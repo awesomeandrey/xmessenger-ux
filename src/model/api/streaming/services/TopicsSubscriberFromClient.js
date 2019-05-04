@@ -1,42 +1,42 @@
-import TOPICS from "../core/topics";
-import Events from "../../../events/application-events";
+import Topics from "../core/topics";
+import ApplicationEvents from "../../../events/application-events";
 
 import {subscribe, parsePayload} from "../core/topics-manager";
 import {CustomEvents} from "../../../services/utility/EventsService";
 
 export default _ => subscribe([
     {
-        route: TOPICS.CHAT.DELETE,
+        route: Topics.CHAT.DELETE,
         callback: payload => {
-            CustomEvents.fire({eventName: Events.CHAT.DELETE, detail: {removedChat: parsePayload(payload)}});
+            CustomEvents.fire({eventName: ApplicationEvents.CHAT.DELETE, detail: {removedChat: parsePayload(payload)}});
         }
     },
     {
-        route: TOPICS.CHAT.CLEAR,
+        route: Topics.CHAT.CLEAR,
         callback: payload => {
-            CustomEvents.fire({eventName: Events.CHAT.CLEAR, detail: {clearedChat: parsePayload(payload)}});
+            CustomEvents.fire({eventName: ApplicationEvents.CHAT.CLEAR, detail: {clearedChat: parsePayload(payload)}});
         }
     },
     {
-        route: TOPICS.MESSAGE.SEND,
+        route: Topics.MESSAGE.SEND,
         callback: payload => {
-            CustomEvents.fire({eventName: Events.MESSAGE.ADD, detail: {message: parsePayload(payload)}});
+            CustomEvents.fire({eventName: ApplicationEvents.MESSAGE.ADD, detail: {message: parsePayload(payload)}});
         }
     },
     {
-        route: TOPICS.REQUEST.SEND,
+        route: Topics.REQUEST.SEND,
         callback: payload => {
-            CustomEvents.fire({eventName: Events.REQUEST.SEND, detail: {request: parsePayload(payload)}});
+            CustomEvents.fire({eventName: ApplicationEvents.REQUEST.SEND, detail: {request: parsePayload(payload)}});
         }
     },
     {
-        route: TOPICS.REQUEST.PROCESS,
+        route: Topics.REQUEST.PROCESS,
         callback: payload => {
-            CustomEvents.fire({eventName: Events.REQUEST.PROCESS, detail: {request: parsePayload(payload)}});
+            CustomEvents.fire({eventName: ApplicationEvents.REQUEST.PROCESS, detail: {request: parsePayload(payload)}});
         }
     },
     {
-        route: TOPICS.USER.INDICATOR_CHANGE,
+        route: Topics.USER.INDICATOR_CHANGE,
         callback: payload => {
             /**
              * Payload body blueprint:
@@ -46,7 +46,7 @@ export default _ => subscribe([
              * }
              */
             const indicator = parsePayload(payload);
-            CustomEvents.fire({eventName: Events.USER.INDICATOR_CHANGE, detail: {indicator}});
+            CustomEvents.fire({eventName: ApplicationEvents.USER.INDICATOR_CHANGE, detail: {indicator}});
         }
     }
 ]);

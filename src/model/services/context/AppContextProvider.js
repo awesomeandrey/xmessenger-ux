@@ -26,7 +26,7 @@ class AppContextProvider extends Component {
             registerServiceWorker();
         } catch (e) {
             console.error(e);
-            // If SW is not supported/allowed then client is subscribed to topics by himself;
+            // If SW is not supported/allowed then client is directly subscribed to topics;
             subscribeToTopics();
         }
     }

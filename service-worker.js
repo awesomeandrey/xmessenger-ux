@@ -7,18 +7,18 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener("push", event => {
-    const data = event.data.json();
-
-
-    console.log(">>> Got push", data);
-
-
-    self.clients.matchAll().then(clients => {
-        clients.forEach(client => {
-            client.postMessage(data);
+    try {
+        const eventDetails = event.data.json();
+        console.log(">>> Got push", eventDetails);
+        self.clients.matchAll().then(clients => {
+            clients.forEach(client => {
+                client.postMessage(eventDetails);
+            });
         });
-    });
-
+    } catch (e) {
+        console.warn(`Push notification: ${event.data.text()}`);
+    }
+    // TODO - setup message notifications on [newMessage, newRequest];
     // self.registration.showNotification(data.title, {
     //     body: "Hello, World!",
     //     icon: "http://mongoosejs.com/docs/images/mongoose5_62x30_transparent.png"

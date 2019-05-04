@@ -3,7 +3,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import subscribeToTopics from "./src/model/api/streaming/services/TopicsSubscriberFromServer";
 
-import {extractSubscriptionDetails, pushNotification} from "./src/model/api/streaming/core/web-push-manager";
+import {pushNotification} from "./src/model/api/streaming/core/web-push-manager";
 
 const app = express(), PORT = process.env.PORT || 80,
     cacheControl = process.env.NODE_ENV === "production" ? {maxAge: "1d"} : {};
@@ -22,7 +22,8 @@ app.get("*", function (req, res) {
 
 app.post("/push-topics/subscribe", (req, res) => {
     res.status(201).json({});
-    extractSubscriptionDetails(req);
+    const subscriptionDetails = req.body, pushNotificationFunc = pushNotification(subscriptionDetails);
+    subscribeToTopics(pushNotificationFunc);
 });
 
 app.listen(PORT, function (err) {
@@ -32,5 +33,3 @@ app.listen(PORT, function (err) {
     }
     console.log("Launched NodeJS application.");
 });
-
-subscribeToTopics(pushNotification);

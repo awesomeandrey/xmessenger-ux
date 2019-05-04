@@ -3,14 +3,14 @@ import SockJS from "sockjs-client";
 import {API_SERVER_URL} from "../../rest/client-util";
 import {Stomp} from "stompjs/lib/stomp.js";
 
-const _stompClientClosure = _ => {
+const _wsConfigUrlPath = "/ws-configurator", _stompClientClosure = _ => {
     let _stompClient = null; //
     return function (callback) {
         if (!!_stompClient && _stompClient.connected) {
             callback(_stompClient);
             return;
         }
-        const _socket = SockJS(API_SERVER_URL.concat("/ws-configurator")), stompClient = Stomp.over(_socket);
+        const _socket = SockJS(API_SERVER_URL.concat(_wsConfigUrlPath)), stompClient = Stomp.over(_socket);
         stompClient.debug = null; // disable logging;
         stompClient.connect({}, frame => {
             _stompClient = stompClient; // save to closure;
