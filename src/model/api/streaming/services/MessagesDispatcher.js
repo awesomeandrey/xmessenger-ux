@@ -1,4 +1,4 @@
-import {sendMessage} from "./topics-manager";
+import {sendMessage} from "../core/topics-manager";
 
 const _notifyOnUserStatusChange = (user) => (loggedIn = false) => {
     if (!user) return;

@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import AppContext from './AppContext';
-import Events from "../../events/application-events";
-import subscribeToTopics from "../../api/streaming/TopicsSubscriber";
+import ApplicationEvents from "../../events/application-events";
+import subscribeToTopics from "../../api/streaming/services/TopicsSubscriberFromClient";
+import registerServiceWorker from "../../api/streaming/services/ServiceWorkerRegistrator";
 
 import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
-import {registerServiceWorker} from "../../api/streaming/service-worker/PushingService";
 
 class AppContextProvider extends Component {
     constructor(props) {
@@ -16,15 +16,19 @@ class AppContextProvider extends Component {
     }
 
     componentWillMount() {
-        CustomEvents.register({eventName: Events.USER.RELOAD, callback: this.loadUser});
-        // Subscribe to topics;
-        // CustomEvents.register({eventName: "load", callback: subscribeToTopics});
+        CustomEvents.register({eventName: ApplicationEvents.USER.RELOAD, callback: this.loadUser});
     }
 
     componentDidMount() {
         this.loadUser();
-
-        registerServiceWorker();
+        try {
+            // Register service worker for rich user experience;
+            registerServiceWorker();
+        } catch (e) {
+            console.error(e);
+            // If SW is not supported/allowed then client is subscribed to topics by himself;
+            subscribeToTopics();
+        }
     }
 
     loadUser = _ => UserService.getUserInfo()

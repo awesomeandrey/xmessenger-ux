@@ -1,8 +1,9 @@
 import path from "path";
 import express from "express";
 import bodyParser from "body-parser";
+import subscribeToTopics from "./src/model/api/streaming/services/TopicsSubscriberFromServer";
 
-import {extractSubscriptionDetails} from "./src/config/WebPusherService";
+import {extractSubscriptionDetails, pushNotification} from "./src/model/api/streaming/core/web-push-manager";
 
 const app = express(), PORT = process.env.PORT || 80,
     cacheControl = process.env.NODE_ENV === "production" ? {maxAge: "1d"} : {};
@@ -11,7 +12,7 @@ app.use("/assets", express.static("node_modules/@salesforce-ux/design-system/ass
 app.use(bodyParser.json());
 
 app.get("/service-worker.js", (req, res) => {
-    res.sendFile(path.resolve("src/config/service-worker.js"));
+    res.sendFile(path.resolve("service-worker.js"));
 });
 
 app.get("*", function (req, res) {
@@ -20,8 +21,6 @@ app.get("*", function (req, res) {
 });
 
 app.post("/push-topics/subscribe", (req, res) => {
-    console.log(">>> Subscribing...");
-
     res.status(201).json({});
     extractSubscriptionDetails(req);
 });
@@ -33,3 +32,5 @@ app.listen(PORT, function (err) {
     }
     console.log("Launched NodeJS application.");
 });
+
+subscribeToTopics(pushNotification);

@@ -1,6 +1,6 @@
 import SockJS from "sockjs-client";
 
-import {API_SERVER_URL} from "../rest/client-util";
+import {API_SERVER_URL} from "../../rest/client-util";
 import {Stomp} from "stompjs/lib/stomp.js";
 
 const _stompClientClosure = _ => {
@@ -20,8 +20,9 @@ const _stompClientClosure = _ => {
 }, _getStompClient = _stompClientClosure();
 
 export const sendMessage = ({destination, body}) => {
+    const PATH_PREFIX = "/message";
     return _getStompClient(stompClient => {
-        stompClient.send(`/message${destination}`, {}, JSON.stringify(body));
+        stompClient.send(PATH_PREFIX.concat(destination), {}, JSON.stringify(body));
     });
 };
 
@@ -32,3 +33,5 @@ export const subscribe = (registrations) => {
         });
     });
 };
+
+export const parsePayload = payload => JSON.parse(payload.body);

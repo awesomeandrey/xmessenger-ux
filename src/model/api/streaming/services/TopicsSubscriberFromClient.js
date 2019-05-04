@@ -1,10 +1,8 @@
-import TOPICS from "./topics";
-import Events from "../../events/application-events";
+import TOPICS from "../core/topics";
+import Events from "../../../events/application-events";
 
-import {subscribe} from "./topics-manager";
-import {CustomEvents} from "../../services/utility/EventsService";
-
-const parsePayload = payload => JSON.parse(payload.body);
+import {subscribe, parsePayload} from "../core/topics-manager";
+import {CustomEvents} from "../../../services/utility/EventsService";
 
 export default _ => subscribe([
     {

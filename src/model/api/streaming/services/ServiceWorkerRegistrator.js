@@ -1,4 +1,5 @@
 import {performRequestLocally} from "../../rest/client-util";
+import {CustomEvents} from "../../../services/utility/EventsService";
 
 const _serviceWorkerUrlPath = "service-worker.js"
     , _PUBLIC_VAPID_KEY = STATIC_PUBLIC_VAPID_KEY // value provided by Webpack bundler;
@@ -17,30 +18,28 @@ const _serviceWorkerUrlPath = "service-worker.js"
     return outputArray;
 };
 
-export const registerServiceWorker = _ => {
+export default _ => {
     if ("serviceWorker" in navigator) {
-        debugger;
         navigator.serviceWorker.register(_serviceWorkerUrlPath, {scope: "/"})
-            .then(registration => {
-                debugger;
-                return registration.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: _urlBase64ToUint8Array(_PUBLIC_VAPID_KEY)
-                });
-            })
-            .then(subscription => {
-                debugger;
-                return performRequestLocally({
-                    url: "/push-topics/subscribe",
-                    method: "POST",
-                    body: subscription
-                });
+            .then(registration => registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: _urlBase64ToUint8Array(_PUBLIC_VAPID_KEY)
+            }))
+            .then(subscription => performRequestLocally({
+                url: "/push-topics/subscribe",
+                method: "POST",
+                body: subscription
+            }))
+            .then(_ => {
+                // Setup connection between client and service worker;
+                navigator.serviceWorker.onmessage = event => {
+                    CustomEvents.fire(event.data);
+                };
             })
             .catch(error => {
-                debugger;
-                console.error(error);
+                console.error("Error when registering service worker.", error);
             });
     } else {
-        console.warn("Service Workers are not allowed.");
+        throw "Service Workers are not allowed.";
     }
 };
