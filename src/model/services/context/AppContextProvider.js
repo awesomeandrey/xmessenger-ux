@@ -5,6 +5,7 @@ import subscribeToTopics from "../../api/streaming/TopicsSubscriber";
 
 import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
+import {registerServiceWorker} from "../../api/streaming/service-worker/PushingService";
 
 class AppContextProvider extends Component {
     constructor(props) {
@@ -17,11 +18,13 @@ class AppContextProvider extends Component {
     componentWillMount() {
         CustomEvents.register({eventName: Events.USER.RELOAD, callback: this.loadUser});
         // Subscribe to topics;
-        CustomEvents.register({eventName: "load", callback: subscribeToTopics});
+        // CustomEvents.register({eventName: "load", callback: subscribeToTopics});
     }
 
     componentDidMount() {
         this.loadUser();
+
+        registerServiceWorker();
     }
 
     loadUser = _ => UserService.getUserInfo()
