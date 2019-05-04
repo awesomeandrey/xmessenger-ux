@@ -20,6 +20,15 @@ export default _ => subscribe([
     {
         route: Topics.MESSAGE.SEND,
         callback: payload => {
+            /**
+             * {
+             *     author: {...},
+             *     body: "g",
+             *     date: 1557004863202,
+             *     id: 2298,
+             *     relation: {id: 2276}
+             * }
+             */
             CustomEvents.fire({eventName: ApplicationEvents.MESSAGE.ADD, detail: {message: parsePayload(payload)}});
         }
     },
