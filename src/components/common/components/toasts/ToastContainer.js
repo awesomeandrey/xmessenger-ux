@@ -14,7 +14,7 @@ class ToastContainer extends React.Component {
         super(props);
         this.state = {
             mobileAlert: null,
-            toasts: []
+            toastsMap: new Map()
         };
     }
 
@@ -22,26 +22,36 @@ class ToastContainer extends React.Component {
         CustomEvents.register({
             eventName: ToastEvents.SHOW,
             callback: event => {
-                const toastData = event.detail, {toasts} = this.state;
-                // Adjust to SLDS components structure;
-                const toastKey = Utility.generateUniqueId(), toastItem = {
-                    key: toastKey,
-                    variant: toastData.level,
-                    labels: {heading: toastData.message},
-                    dismissible: true,
-                    onRequestClose: _ => this.setState({toasts: toasts.filter(toastItem => toastItem.key !== toastKey)})
-                };
-                this.setState({toasts: [...toasts, toastItem], mobileAlert: toastItem});
+                const toastData = event.detail, {toastsMap} = this.state,
+                    toastKey = Utility.hashString(toastData.message);
+                if (!toastsMap.has(toastKey)) {
+                    // Adjust to SLDS components structure;
+                    const toastItem = {
+                        key: toastKey,
+                        variant: toastData.level,
+                        labels: {heading: toastData.message},
+                        dismissible: true,
+                        onRequestClose: _ => this.hideToast(toastKey)
+                    };
+                    this.setState({toastsMap: toastsMap.set(toastKey, toastItem), mobileAlert: toastItem});
+                }
             }
         });
     }
 
+    hideToast(toastKey) {
+        const {toastsMap} = this.state;
+        if (toastsMap.delete(toastKey)) {
+            this.setState(toastsMap);
+        }
+    }
+
     render() {
-        const {toasts, mobileAlert} = this.state;
+        const {toastsMap, mobileAlert} = this.state, toastItems = [...toastsMap.values()];
         return (
             <div className="toasts-container">
                 <div className="slds-is-fixed slds-notify_container mobile-hidden">
-                    {(toasts.map(toastItem =>
+                    {(toastItems.map(toastItem =>
                         <div key={toastItem.key} className="toast-item"><Toast {...toastItem} duration={3500}/></div>))}
                 </div>
                 <MobileAlert mobileAlert={mobileAlert} onClose={_ => this.setState({mobileAlert: null})}/>
