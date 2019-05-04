@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import AppContext from './AppContext';
 import ApplicationEvents from "../../events/application-events";
 import subscribeToTopics from "../../api/streaming/services/TopicsSubscriberFromClient";
-import registerServiceWorker from "../../api/streaming/services/ServiceWorkerRegistrator";
 
+import {registerServiceWorker} from "../../api/streaming/services/ServiceWorkerRegistrator";
 import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
 

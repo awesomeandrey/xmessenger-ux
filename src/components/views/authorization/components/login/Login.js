@@ -32,7 +32,7 @@ class Login extends React.Component {
                 LoginService.loginUser({
                     username: inputs.username,
                     password: inputs.password
-                }).then(_ => Navigation.toHome({}), errorMessage => {
+                }).catch(errorMessage => {
                     inputs.password = "";
                     this.setState({loading: false, inputs: inputs, error: errorMessage}, _ => {
                         CustomEvents.fire({

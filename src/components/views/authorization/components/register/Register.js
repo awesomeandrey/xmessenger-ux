@@ -40,8 +40,7 @@ class Register extends React.Component {
                     name: inputs.name, ...rawCredentials
                 };
                 RegistrationService.register(userToRegister)
-                    .then(_ => LoginService.loginUser(rawCredentials))
-                    .then(_ => Navigation.toHome({}));
+                    .then(_ => LoginService.loginUser(rawCredentials));
             });
         } else {
             inputs.password = "";

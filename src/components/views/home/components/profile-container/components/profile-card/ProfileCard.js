@@ -9,12 +9,11 @@ import MediaObject from "@salesforce/design-system-react/module/components/media
 
 import {LoginService} from "../../../../../../../model/services/core/AuthenticationService";
 import {Utility} from "../../../../../../../model/services/utility/UtilityService";
-import {Navigation} from "../../../../../../../model/services/utility/NavigationService";
 import {CustomEvents} from "../../../../../../../model/services/utility/EventsService";
 import {UserService} from "../../../../../../../model/services/core/UserService";
 
 const _onOpenSettings = _ => CustomEvents.fire({eventName: Events.SETTINGS.OPEN}),
-    _onLogout = _ => Promise.resolve(true).then(LoginService.logoutUser).then(_ => Navigation.toLogin({})),
+    _onLogout = _ => LoginService.logoutUser(),
     _onSelectOption = (option) => {
         switch (option.value) {
             case 1:

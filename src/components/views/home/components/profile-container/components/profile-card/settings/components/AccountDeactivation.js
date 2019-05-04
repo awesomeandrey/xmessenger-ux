@@ -36,8 +36,7 @@ class AccountDeactivation extends React.Component {
             this.setState({loading: true, error: ""}, _ => {
                 CustomEvents.fire({eventName: Events.SETTINGS.LOCK, detail: {locked: true}})
                     .then(_ => Settings.changeProfileInfo({id: user.id, active: false}))
-                    .then(LoginService.logoutUser)
-                    .then(_ => Navigation.toLogin({}));
+                    .then(LoginService.logoutUser);
             });
         }
     };
