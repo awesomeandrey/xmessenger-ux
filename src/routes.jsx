@@ -8,10 +8,12 @@ import ModalsContainer from "./components/common/components/modals/ModalsContain
 import ToastContainer from "./components/common/components/toasts/ToastContainer";
 import BrandBand from "@salesforce/design-system-react/module/components/brand-band";
 import IconSettings from "@salesforce/design-system-react/module/components/icon-settings";
+import registerServiceWorker from "./model/api/streaming/services/ServiceWorkerRegistrator";
 
 import {Route, IndexRoute} from "react-router";
 
 const App = props => {
+    registerServiceWorker();
     return (
         <IconSettings iconPath="/assets/icons">
             <ModalsContainer>

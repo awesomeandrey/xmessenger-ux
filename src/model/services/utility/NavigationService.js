@@ -1,5 +1,8 @@
+import {SessionStorage} from "./StorageService";
+
 export const Navigation = {
     toLogin: ({jwtExpired = false}) => {
+        if (jwtExpired) SessionStorage.clear();
         window.location.href = `/login${jwtExpired ? "?expired=1" : ""}`;
     },
     toHome: ({replace = false}) => {

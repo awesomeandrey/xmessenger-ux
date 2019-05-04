@@ -18,40 +18,25 @@ const _serviceWorkerUrlPath = "service-worker.js"
     return outputArray;
 };
 
-export const registerServiceWorker = _ => {
+export default _ => {
     if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register(_serviceWorkerUrlPath, {scope: "/"})
-            .then(registration => registration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: _urlBase64ToUint8Array(_PUBLIC_VAPID_KEY)
-            }))
-            .then(subscription => performRequestLocally({
-                url: "/push-topics/subscribe",
-                method: "POST",
-                body: subscription
-            }))
-            .then(_ => {
-                // Setup connection between client and service worker;
-                navigator.serviceWorker.onmessage = event => {
-                    CustomEvents.fire(event.data);
-                };
-            })
-            .catch(error => {
-                console.error("Error when registering service worker.", error);
-            });
-    } else {
-        throw "Service Workers are not allowed.";
-    }
-};
-
-export const unregisterServiceWorker = _ => {
-    if ("serviceWorker" in navigator) {
-        return navigator.serviceWorker.getRegistrations().then(registrations => {
-            for (let registration of registrations) {
-                registration.unregister();
-            }
+        navigator.serviceWorker.register(_serviceWorkerUrlPath, {scope: "/"});
+        navigator.serviceWorker.ready.then(registration => registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: _urlBase64ToUint8Array(_PUBLIC_VAPID_KEY)
+        })).then(subscription => performRequestLocally({
+            url: "/push-topics/subscribe",
+            method: "POST",
+            body: subscription
+        })).then(_ => {
+            // Setup 'data bridge' between client and service worker;
+            navigator.serviceWorker.onmessage = event => {
+                CustomEvents.fire(event.data);
+            };
+        }).catch(error => {
+            console.error("Error when registering service worker.", error);
         });
     } else {
-        return Promise.resolve();
+        console.warn("Service Workers are not allowed.");
     }
 };

@@ -3,7 +3,6 @@ import AppContext from './AppContext';
 import ApplicationEvents from "../../events/application-events";
 import subscribeToTopics from "../../api/streaming/services/TopicsSubscriberFromClient";
 
-import {registerServiceWorker} from "../../api/streaming/services/ServiceWorkerRegistrator";
 import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
 
@@ -21,12 +20,11 @@ class AppContextProvider extends Component {
 
     componentDidMount() {
         this.loadUser();
-        try {
-            // Register service worker for rich user experience;
-            registerServiceWorker();
-        } catch (e) {
-            console.error(e);
-            // If SW is not supported/allowed then client is directly subscribed to topics;
+        if (!("serviceWorker" in navigator)) {
+            /**
+             * If 'service worker' is not supported/allowed then client is directly subscribed to topics.
+             * Intended for devices which do not support service workers.
+             */
             subscribeToTopics();
         }
     }
