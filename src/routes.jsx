@@ -11,9 +11,10 @@ import IconSettings from "@salesforce/design-system-react/module/components/icon
 import registerServiceWorker from "./model/api/streaming/services/ServiceWorkerRegistrator";
 
 import {Route, IndexRoute} from "react-router";
+import {CustomEvents} from "./model/services/utility/EventsService";
 
 const App = props => {
-    registerServiceWorker();
+    CustomEvents.register({eventName: "load", callback: registerServiceWorker});
     return (
         <IconSettings iconPath="/assets/icons">
             <ModalsContainer>

@@ -7,7 +7,6 @@ import ChatItem from "./ChatItem";
 import {ChattingService} from "../../../../../../../../model/services/core/ChattingService";
 import {CustomEvents, KeyEvents} from "../../../../../../../../model/services/utility/EventsService";
 import {SessionEntities, SessionStorage} from "../../../../../../../../model/services/utility/StorageService";
-import {requestPermission, notify} from "../../../../../../../../model/services/utility/NotificationsService";
 
 import "./styles.css";
 
@@ -21,16 +20,9 @@ const NOTIFICATION_BLUEPRINTS = {
     onChatDeleted: userName => {
         CustomEvents.fire({
             eventName: ToastEvents.SHOW,
-            detail: {
-                level: "error", message: <span><b>{userName}</b> removed chat with you.</span>
-            }
+            detail: {level: "error", message: <span><b>{userName}</b> removed chat with you.</span>}
         });
-    },
-    onIncomingMessage: (chat, message) => notify({
-        title: `New message from ${chat.fellow.name}`,
-        text: message.body,
-        onclick: _ => CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: chat}})
-    })
+    }
 };
 
 class ChatsTab extends React.Component {
@@ -96,9 +88,6 @@ class ChatsTab extends React.Component {
                 const {chatsMap} = this.state, {message} = event.detail, {relation, date} = message;
                 if (chatsMap.has(relation.id)) {
                     const chat = chatsMap.get(relation.id);
-                    if (!this.isSelectedChat(chat)) {
-                        NOTIFICATION_BLUEPRINTS.onIncomingMessage(chat, message);
-                    }
                     chatsMap.set(chat.id, Object.assign(chat, {latestMessageDate: date}));
                     this.setState({chatsMap: ChattingService.sortChatsMap(chatsMap)});
                 }
@@ -118,9 +107,6 @@ class ChatsTab extends React.Component {
 
     componentDidMount() {
         CustomEvents.fire({eventName: Events.CHAT.LOAD_ALL});
-
-        requestPermission();
-
         const activeChat = SessionStorage.getItem(SessionEntities.ACTIVE_CHAT);
         if (!!activeChat) {
             CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: activeChat}});

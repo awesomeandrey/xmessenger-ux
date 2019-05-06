@@ -1,5 +1,5 @@
 import React from "react";
-import Events from "../../../../../../model/events/application-events";
+import ApplicationEvents from "../../../../../../model/events/application-events";
 import Icon from "@salesforce/design-system-react/module/components/icon";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";
 
@@ -19,7 +19,7 @@ class MessagesPanel extends React.Component {
 
     componentWillMount() {
         CustomEvents.register({
-            eventName: Events.CHAT.SELECT,
+            eventName: ApplicationEvents.CHAT.SELECT,
             callback: event => {
                 const {selectedChat} = event.detail, {selectedChat: localChat} = this.state;
                 if ((!!selectedChat && !localChat) || (!!selectedChat && !!localChat && selectedChat.id !== localChat.id)) {
@@ -32,7 +32,7 @@ class MessagesPanel extends React.Component {
         });
 
         CustomEvents.register({
-            eventName: Events.CHAT.CLEAR,
+            eventName: ApplicationEvents.CHAT.CLEAR,
             callback: event => {
                 let {clearedChat} = event.detail, {selectedChat} = this.state;
                 if (!!clearedChat && !!selectedChat && clearedChat.id === selectedChat.id) {
@@ -42,7 +42,7 @@ class MessagesPanel extends React.Component {
         });
 
         CustomEvents.register({
-            eventName: Events.MESSAGE.ADD,
+            eventName: ApplicationEvents.MESSAGE.ADD,
             callback: event => {
                 const {message} = event.detail, {selectedChat, messagesMap} = this.state;
                 if (!!selectedChat && selectedChat.id === message.relation.id && !messagesMap.has(message.id)) {
