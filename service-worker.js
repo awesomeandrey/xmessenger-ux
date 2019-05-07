@@ -19,11 +19,12 @@ const _isMessageRelated = message => {
     if (storage.chatsArray.length === 0) return false;
     let relationId = message.relation.id;
     return !!storage.chatsArray.find(chat => chat.id === relationId);
-}, _notify = ({itemId, title, body}) => {
-    self.registration.showNotification(title, {
-        body: body, icon: NOTIFICATION_ICON
-    }).then(_ => setTimeout(_ => itemsToNotifyAbout.delete(itemId), 5000));
-};
+}, _notify = ({itemId, title, options}) => {
+    self.registration.showNotification(title, {icon: NOTIFICATION_ICON, ...options})
+        .then(_ => setTimeout(_ => itemsToNotifyAbout.delete(itemId), 5000));
+}, _postEvent = eventDetails => self.clients.matchAll({type: "worker"}).then(clients => {
+    clients.forEach(client => client.postMessage(eventDetails));
+});
 
 const notifyOnIncomingMessage = eventDetails => {
     const {detail} = eventDetails, {message} = detail, {selectedChat} = storage;
@@ -32,7 +33,7 @@ const notifyOnIncomingMessage = eventDetails => {
         && !itemsToNotifyAbout.has(message.id)// avoid duplicate notifications;
     ) {
         itemsToNotifyAbout.set(message.id, message);
-        _notify({itemId: message.id, title: message.author.name, body: message.body});
+        _notify({itemId: message.id, title: message.author.name, options: {body: message.body}});
     }
 };
 
@@ -43,13 +44,13 @@ const notifyOnIncomingRequest = eventDetails => {
             itemsToNotifyAbout.set(request.id, request);
             _notify({
                 itemId: request.id, title: "New friendship request!",
-                body: request.sender.name + " wants to befriend with you."
+                options: {body: request.sender.name + " wants to befriend with you."}
             });
         } else if (eventName === "onProcessRequest" && request.sender.id === user.id && request.approved) {
             itemsToNotifyAbout.set(request.id, request);
             _notify({
                 itemId: request.id, title: "Friendship request approved!",
-                body: request.recipient.name + " accepted your friendship request."
+                options: {body: request.recipient.name + " accepted your friendship request."}
             });
         }
     }
@@ -69,18 +70,14 @@ self.addEventListener("push", event => {
         Promise.resolve().then(_ => {
             try {
                 const eventDetails = event.data.json();
-                self.clients.matchAll({type: "worker"})
-                    .then(clients => {
-                        clients.forEach(client => client.postMessage(eventDetails));
-                    })
-                    .then(_ => {
-                        let {eventName} = eventDetails;
-                        if (eventName.includes("Message")) {
-                            notifyOnIncomingMessage(eventDetails);
-                        } else if (eventName.includes("Request")) {
-                            notifyOnIncomingRequest(eventDetails);
-                        }
-                    });
+                _postEvent(eventDetails).then(_ => {
+                    let {eventName} = eventDetails;
+                    if (eventName.includes("Message")) {
+                        notifyOnIncomingMessage(eventDetails);
+                    } else if (eventName.includes("Request")) {
+                        notifyOnIncomingRequest(eventDetails);
+                    }
+                });
             } catch (e) {
                 console.warn(`Push notification: ${event.data.text()}`);
             }

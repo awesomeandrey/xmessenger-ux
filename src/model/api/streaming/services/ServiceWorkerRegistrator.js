@@ -53,3 +53,15 @@ export const postMessageToServiceWorker = (message, timeout = 0) => {
         }, timeout);
     }
 };
+
+export const unregisterServiceWorker = _ => {
+    if ("serviceWorker" in navigator) {
+        return navigator.serviceWorker.getRegistrations().then(registrations => {
+            for (let registration of registrations) {
+                registration.unregister();
+            }
+        });
+    } else {
+        return Promise.resolve(null);
+    }
+};
