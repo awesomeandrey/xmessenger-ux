@@ -33,10 +33,7 @@ export default pushFunc => {
             {
                 route: Topics.REQUEST.PROCESS,
                 callback: payload => {
-                    pushFunc({
-                        eventName: ApplicationEvents.REQUEST.PROCESS,
-                        detail: {request: parsePayload(payload)}
-                    });
+                    pushFunc({eventName: ApplicationEvents.REQUEST.PROCESS, detail: {request: parsePayload(payload)}});
                 }
             },
             {

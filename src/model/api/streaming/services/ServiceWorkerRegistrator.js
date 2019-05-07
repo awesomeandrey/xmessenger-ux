@@ -33,6 +33,9 @@ export const registerServiceWorker = _ => {
             navigator.serviceWorker.onmessage = event => {
                 CustomEvents.fire(event.data);
             };
+            return Notification.requestPermission();
+        }).then(result => {
+            console.log(`Notifications permission - ${result}`);
         }).catch(error => {
             console.error("Error when registering service worker.", error);
         });
