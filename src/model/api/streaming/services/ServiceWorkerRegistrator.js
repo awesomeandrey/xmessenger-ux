@@ -18,7 +18,7 @@ const _serviceWorkerUrlPath = "service-worker.js"
     return outputArray;
 };
 
-export default _ => {
+export const registerServiceWorker = _ => {
     if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register(_serviceWorkerUrlPath, {scope: "/"});
         navigator.serviceWorker.ready.then(registration => registration.pushManager.subscribe({
@@ -38,5 +38,15 @@ export default _ => {
         });
     } else {
         console.warn("Service Workers are not allowed.");
+    }
+};
+
+export const postMessageToServiceWorker = (message, timeout = 0) => {
+    if ("serviceWorker" in navigator) {
+        setTimeout(_ => {
+            navigator.serviceWorker.ready.then(_ => {
+                navigator.serviceWorker.controller.postMessage(JSON.stringify(message));
+            });
+        }, timeout);
     }
 };

@@ -1,19 +1,23 @@
-self.addEventListener("install", event => {
-    event.waitUntil(
-        self.skipWaiting().then(_ => {
-            // TODO - create IndexDB for storing current user info;
+/**
+ * Runtime storage object. Entries are provided from main thread.
+ *
+ * @type {Object}
+ */
+let storage = {};
 
-        })
-    );
+const notifyOnIncomingMessage = eventDetails => {
+    debugger;
+};
+const notifyOnIncomingRequest = eventDetails => {
+    debugger;
+};
+
+self.addEventListener("install", event => {
 });
 
 self.addEventListener("activate", event => {
     event.waitUntil(
-        Notification.requestPermission()
-            .then(permission => {
-                console.log(`Notifications permission - ${permission}.`);
-                return self.clients.claim();
-            })
+        self.clients.claim()
     );
 });
 
@@ -23,11 +27,15 @@ self.addEventListener("push", event => {
             try {
                 const eventDetails = event.data.json();
                 self.clients.matchAll({type: "worker"})
-                    .then(clients => clients.forEach(client => client.postMessage(eventDetails)))
+                    .then(clients => {
+                        clients.forEach(client => client.postMessage(eventDetails))
+                    })
                     .then(_ => {
-                        if (eventDetails.eventName.includes("Message")) {
-                            // TODO - push notifications in incoming messages related to current user;
-
+                        let {eventName} = eventDetails;
+                        if (eventName.includes("Message")) {
+                            notifyOnIncomingMessage(eventDetails);
+                        } else if (eventName.includes("Request")) {
+                            notifyOnIncomingRequest(eventDetails);
                         }
                     });
             } catch (e) {
@@ -39,17 +47,5 @@ self.addEventListener("push", event => {
 
 self.addEventListener("message", event => {
     const data = JSON.parse(event.data);
-    debugger;
-
-    if (Notification.permission === "granted") {
-        navigator.serviceWorker.getRegistration().then(reg => {
-            let options = {
-                title: `New message from ${chat.fellow.name}`,
-                text: message.body,
-                icon: "public/pictures/xmessenger-logo.jpg"
-            };
-            reg.showNotification("", options);
-        });
-    }
-
+    storage = {...storage, ...data};
 });

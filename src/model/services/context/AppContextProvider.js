@@ -5,12 +5,14 @@ import subscribeToTopics from "../../api/streaming/services/TopicsSubscriberFrom
 
 import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
+import {postMessageToServiceWorker} from "../../api/streaming/services/ServiceWorkerRegistrator";
 
 class AppContextProvider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentUser: null
+            user: null,
+            richOnlineExperienceMode: "serviceWorker" in navigator
         };
     }
 
@@ -19,25 +21,25 @@ class AppContextProvider extends Component {
     }
 
     componentDidMount() {
-        this.loadUser();
-        if (!("serviceWorker" in navigator)) {
+        const {richOnlineExperienceMode} = this.state;
+        if (!richOnlineExperienceMode) {
             /**
              * If 'service worker' is not supported/allowed then client is directly subscribed to topics.
-             * Intended for devices which do not support service workers.
+             * Intended for browsers/devices which do not support service workers.
              */
             subscribeToTopics();
         }
+        this.loadUser();
     }
 
     loadUser = _ => UserService.getUserInfo()
-        .then(user => this.setState({currentUser: user}));
+        .then(user => this.setState({user}, _ => {
+            postMessageToServiceWorker({user});
+        }));
 
     render() {
-        const {currentUser} = this.state;
         return (
-            <AppContext.Provider value={{
-                user: currentUser
-            }}>
+            <AppContext.Provider value={this.state}>
                 {this.props.children}
             </AppContext.Provider>
         );

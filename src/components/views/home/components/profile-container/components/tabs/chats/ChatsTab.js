@@ -7,6 +7,7 @@ import ChatItem from "./ChatItem";
 import {ChattingService} from "../../../../../../../../model/services/core/ChattingService";
 import {CustomEvents, KeyEvents} from "../../../../../../../../model/services/utility/EventsService";
 import {SessionEntities, SessionStorage} from "../../../../../../../../model/services/utility/StorageService";
+import {postMessageToServiceWorker} from "../../../../../../../../model/api/streaming/services/ServiceWorkerRegistrator";
 
 import "./styles.css";
 
@@ -78,7 +79,9 @@ class ChatsTab extends React.Component {
             callback: event => {
                 const {selectedChat} = event.detail;
                 SessionStorage.setItem({key: SessionEntities.ACTIVE_CHAT, value: selectedChat});
-                this.setState({selectedChat: selectedChat});
+                this.setState({selectedChat: selectedChat}, _ => {
+                    postMessageToServiceWorker({selectedChat});
+                });
             }
         });
 
@@ -115,7 +118,8 @@ class ChatsTab extends React.Component {
 
     handleLoadChats = _ => {
         ChattingService.loadChatsMap()
-            .then(chatsMap => this.setState({chatsMap: chatsMap}, _ => {
+            .then(chatsMap => this.setState({chatsMap}, _ => {
+                postMessageToServiceWorker({chatsArray: [...chatsMap.values()]}, 5000);
                 CustomEvents.fire({eventName: Events.CHAT.CALCULATE, detail: chatsMap.size || 0});
             }));
     };
