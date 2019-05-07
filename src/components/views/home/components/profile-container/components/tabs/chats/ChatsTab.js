@@ -59,7 +59,7 @@ class ChatsTab extends React.Component {
                 const {user} = this.props, {chatsMap} = this.state, {removedChat} = event.detail;
                 if (chatsMap.has(removedChat.id)) {
                     const {updatedBy} = removedChat;
-                    if (user.id !== updatedBy.id) {
+                    if (!!updatedBy && user.id !== updatedBy.id) {
                         NOTIFICATION_BLUEPRINTS.onChatDeleted(updatedBy.name);
                     }
                     if (chatsMap.delete(removedChat.id)) {

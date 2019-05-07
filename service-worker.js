@@ -1,3 +1,5 @@
+const NOTIFICATION_ICON = "/public/pictures/xmessenger-logo.jpg";
+
 /**
  * Runtime storage object. Entries are provided from main thread.
  * {
@@ -19,12 +21,12 @@ let storage = {
 
 const notifyOnIncomingMessage = eventDetails => {
     const {detail} = eventDetails, {message} = detail, {selectedChat} = storage;
-    if (_isMessageRelated(message) && (!selectedChat || selectedChat.id === message.relation.id)) {
-        if (!itemsToNotifyAbout.has(message.id)) {
+    if (_isMessageRelated(message) && (!selectedChat || selectedChat.id !== message.relation.id)) {
+        if (!itemsToNotifyAbout.has(message.id)) { // avoid duplicate notifications;
             itemsToNotifyAbout.set(message.id, message);
             self.registration.showNotification(message.author.name, {
                 body: message.body,
-                icon: "/public/pictures/xmessenger-logo.jpg",
+                icon: NOTIFICATION_ICON
             }).then(_ => setTimeout(_ => {
                 itemsToNotifyAbout.delete(message.id);
             }, 5000));
@@ -34,12 +36,23 @@ const notifyOnIncomingMessage = eventDetails => {
 
 const notifyOnIncomingRequest = eventDetails => {
     const {eventName, detail} = eventDetails, {request} = detail, {user} = storage;
-    if (eventName === "onSendRequest" && request.recipient.id === user.id) {
-        debugger;
-        // TODO - show notification;
-    } else if (eventName === "onProcessRequest" && request.sender.id === user.id) {
-        debugger;
-        // TODO - show notification;
+    debugger;
+    if (!itemsToNotifyAbout.has(request.id)) { // avoid duplicate notifications;
+        itemsToNotifyAbout.set(request.id, request);
+        if (eventName === "onSendRequest" && request.recipient.id === user.id) {
+            self.registration.showNotification("New friendship request!", {
+                body: request.sender.name + " wants to befriend with you.",
+                icon: NOTIFICATION_ICON
+            });
+        } else if (eventName === "onProcessRequest" && request.sender.id === user.id && request.approved) {
+            self.registration.showNotification("Friendship request approved!", {
+                body: request.recipient.name + " accepted your friendship request.",
+                icon: NOTIFICATION_ICON
+            });
+        }
+        setTimeout(_ => {
+            itemsToNotifyAbout.delete(message.id);
+        }, 5000);
     }
 };
 

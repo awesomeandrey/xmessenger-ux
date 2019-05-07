@@ -3,6 +3,7 @@ import ModalEvents from "../../../../../../../common/components/modals/events";
 import UserPicture from "../../../../../../../common/components/images/user-picture/UserPicture";
 import MediaObject from "@salesforce/design-system-react/module/components/media-object";
 import Dropdown from "@salesforce/design-system-react/module/components/menu-dropdown";
+import ApplicationEvents from "../../../../../../../../model/events/application-events";
 
 import {ChattingService} from "../../../../../../../../model/services/core/ChattingService";
 import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";
@@ -23,7 +24,10 @@ const _formatChatTitle = (username, dateNum) => {
             actionButton: {
                 type: "destructive",
                 label: "Remove",
-                callback: _ => ChattingService.removeChat(chatData)
+                callback: _ => {
+                    CustomEvents.fire({eventName: ApplicationEvents.CHAT.DELETE, detail: {removedChat: chatData}})
+                        .then(_ => ChattingService.removeChat(chatData));
+                }
             }
         };
         CustomEvents.fire({eventName: ModalEvents.SHOW_DIALOG, detail: modalDetails});
@@ -35,7 +39,10 @@ const _formatChatTitle = (username, dateNum) => {
             actionButton: {
                 type: "destructive",
                 label: "Clear",
-                callback: _ => ChattingService.clearChat(chatData)
+                callback: _ => {
+                    CustomEvents.fire({eventName: ApplicationEvents.CHAT.CLEAR, detail: {clearedChat: chatData}})
+                        .then(_ => ChattingService.clearChat(chatData));
+                }
             }
         };
         CustomEvents.fire({eventName: ModalEvents.SHOW_DIALOG, detail: modalDetails});
