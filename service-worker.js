@@ -13,46 +13,45 @@ let storage = {
     user: null,
     selectedChat: null,
     chatsArray: []
-}, itemsToNotifyAbout = new Map(), _isMessageRelated = message => {
+}, itemsToNotifyAbout = new Map();
+
+const _isMessageRelated = message => {
     if (storage.chatsArray.length === 0) return false;
     let relationId = message.relation.id;
     return !!storage.chatsArray.find(chat => chat.id === relationId);
+}, _notify = ({itemId, title, body}) => {
+    self.registration.showNotification(title, {
+        body: body, icon: NOTIFICATION_ICON
+    }).then(_ => setTimeout(_ => itemsToNotifyAbout.delete(itemId), 5000));
 };
 
 const notifyOnIncomingMessage = eventDetails => {
     const {detail} = eventDetails, {message} = detail, {selectedChat} = storage;
-    if (_isMessageRelated(message) && (!selectedChat || selectedChat.id !== message.relation.id)) {
-        if (!itemsToNotifyAbout.has(message.id)) { // avoid duplicate notifications;
-            itemsToNotifyAbout.set(message.id, message);
-            self.registration.showNotification(message.author.name, {
-                body: message.body,
-                icon: NOTIFICATION_ICON
-            }).then(_ => setTimeout(_ => {
-                itemsToNotifyAbout.delete(message.id);
-            }, 5000));
-        }
+    if (_isMessageRelated(message)
+        && (!selectedChat || selectedChat.id !== message.relation.id)
+        && !itemsToNotifyAbout.has(message.id)// avoid duplicate notifications;
+    ) {
+        itemsToNotifyAbout.set(message.id, message);
+        _notify({itemId: message.id, title: message.author.name, body: message.body});
     }
 };
 
 const notifyOnIncomingRequest = eventDetails => {
     const {eventName, detail} = eventDetails, {request} = detail, {user} = storage;
-    debugger;
     if (!itemsToNotifyAbout.has(request.id)) { // avoid duplicate notifications;
-        itemsToNotifyAbout.set(request.id, request);
         if (eventName === "onSendRequest" && request.recipient.id === user.id) {
-            self.registration.showNotification("New friendship request!", {
-                body: request.sender.name + " wants to befriend with you.",
-                icon: NOTIFICATION_ICON
+            itemsToNotifyAbout.set(request.id, request);
+            _notify({
+                itemId: request.id, title: "New friendship request!",
+                body: request.sender.name + " wants to befriend with you."
             });
         } else if (eventName === "onProcessRequest" && request.sender.id === user.id && request.approved) {
-            self.registration.showNotification("Friendship request approved!", {
-                body: request.recipient.name + " accepted your friendship request.",
-                icon: NOTIFICATION_ICON
+            itemsToNotifyAbout.set(request.id, request);
+            _notify({
+                itemId: request.id, title: "Friendship request approved!",
+                body: request.recipient.name + " accepted your friendship request."
             });
         }
-        setTimeout(_ => {
-            itemsToNotifyAbout.delete(message.id);
-        }, 5000);
     }
 };
 
