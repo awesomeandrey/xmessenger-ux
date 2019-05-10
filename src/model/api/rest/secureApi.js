@@ -1,4 +1,5 @@
-import {performRequest as callRestApi, API_SERVER_URL, DEFAULT_HEADERS} from "./client-util";
+import {API_SERVER_URL} from "../../constants";
+import {performRequest as callRestApi, DEFAULT_HEADERS} from "./client-util";
 import {SessionStorage, SessionEntities} from "../../services/utility/StorageService";
 import {Navigation} from "../../services/utility/NavigationService";
 
@@ -19,7 +20,7 @@ export const API_BASE_PATH = "/api",
  * @param method - http method;
  * @param body - payload;
  * @param headers - http headers;
- * @returns Javascript Promise.
+ * @returns Promise.
  */
 export const authenticateClient = ({url, method = "POST", body = "", headers = DEFAULT_HEADERS}) => {
     return fetch(API_SERVER_URL.concat(url), {

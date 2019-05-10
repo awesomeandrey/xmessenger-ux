@@ -1,4 +1,4 @@
-import {API_SERVER_URL} from "../../api/rest/client-util";
+import {API_SERVER_URL} from "../../constants";
 import {performRequest} from "../../api/rest/secureApi";
 import {API_BASE_PATH as OPEN_API_PATH} from "../../api/rest/openApi";
 

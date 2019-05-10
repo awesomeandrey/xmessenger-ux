@@ -1,6 +1,6 @@
 import SockJS from "sockjs-client";
 
-import {API_SERVER_URL} from "../../rest/client-util";
+import {API_SERVER_URL} from "./../../../constants";
 import {Stomp} from "stompjs/lib/stomp.js";
 
 const _wsConfigUrlPath = "/ws-configurator", _stompClientClosure = _ => {

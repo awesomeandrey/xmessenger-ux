@@ -1,8 +1,8 @@
 import {performRequestLocally} from "../../rest/client-util";
 import {CustomEvents} from "../../../services/utility/EventsService";
+import {PUBLIC_VAPID_KEY} from "../../../constants";
 
 const _serviceWorkerUrlPath = "service-worker.js"
-    , _PUBLIC_VAPID_KEY = STATIC_PUBLIC_VAPID_KEY // value provided by Webpack bundler;
     , _urlBase64ToUint8Array = (base64String) => {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
@@ -23,7 +23,7 @@ export const registerServiceWorker = _ => {
         navigator.serviceWorker.register(_serviceWorkerUrlPath, {scope: "/"});
         navigator.serviceWorker.ready.then(registration => registration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: _urlBase64ToUint8Array(_PUBLIC_VAPID_KEY)
+            applicationServerKey: _urlBase64ToUint8Array(PUBLIC_VAPID_KEY)
         })).then(subscription => performRequestLocally({
             url: "/push-topics/subscribe",
             method: "POST",

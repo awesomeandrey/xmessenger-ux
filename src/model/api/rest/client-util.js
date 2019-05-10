@@ -1,3 +1,5 @@
+import {API_SERVER_URL} from "../../constants";
+
 const _parseJSON = response => response.text().then(rawText => rawText ? JSON.parse(rawText) : {});
 const _handleSuccess = response => _parseJSON(response).then(data => Promise.resolve(data));
 const _handleError = response => _parseJSON(response).then(error => Promise.reject(error));
@@ -16,17 +18,6 @@ const _performRequest = endpoint => parameters => {
         }
     });
 };
-
-/**
- * 'STATIC_API_SERVER_URL' variable is provided by Webpack configuration file.
- */
-export const API_SERVER_URL = (_ => {
-    try {
-        return STATIC_API_SERVER_URL; // provided by webpack bundler for client;
-    } catch (e) {
-        return process.env.XM_API_SERVER_URL; // taken from environmental variables for server;
-    }
-})();
 
 export const DEFAULT_HEADERS = {"Content-Type": "application/json;charset=UTF-8"};
 

@@ -1,7 +1,9 @@
 import webPush from "web-push";
 
+import {DEV_EMAIL_ADDRESS, PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY} from "./../../../constants";
+
 webPush.setVapidDetails(
-    `mailto:${process.env.XM_DEV_EMAIL_ADDRESS}`, process.env.XM_PUBLIC_VAPID_KEY, process.env.XM_PRIVATE_VAPID_KEY
+    `mailto:${DEV_EMAIL_ADDRESS}`, PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY
 );
 
 export const pushNotification = subscription => data => {
