@@ -1,4 +1,8 @@
-const NOTIFICATION_ICON = "/public/pictures/xmessenger-logo.jpg";
+const NOTIFICATION_ICON = "/public/pictures/xmessenger-logo.jpg", EMPTY_STORAGE = {
+    user: null,
+    selectedChat: null,
+    chatsArray: []
+};
 
 /**
  * Runtime storage object. Entries are provided from main thread.
@@ -9,11 +13,7 @@ const NOTIFICATION_ICON = "/public/pictures/xmessenger-logo.jpg";
  * }
  * @type {Object}
  */
-let storage = {
-    user: null,
-    selectedChat: null,
-    chatsArray: []
-}, itemsToNotifyAbout = new Map();
+let storage = {...EMPTY_STORAGE}, itemsToNotifyAbout = new Map();
 
 const _isMessageRelated = message => {
     if (storage.chatsArray.length === 0) return false;
@@ -86,6 +86,23 @@ self.addEventListener("push", event => {
 });
 
 self.addEventListener("message", event => {
-    const data = JSON.parse(event.data);
-    storage = {...storage, ...data};
+    /**
+     * Data passed within event;
+     * {
+     *     command: 'changeState' | 'reset'
+     *     data: {...}
+     * }
+     */
+    const {command, data} = JSON.parse(event.data);
+    switch (command) {
+        case "changeState":
+            storage = {...storage, ...data};
+            break;
+        case "reset":
+            storage = {...EMPTY_STORAGE};
+            break;
+        default:
+            console.warn("Unknown message.");
+            break;
+    }
 });

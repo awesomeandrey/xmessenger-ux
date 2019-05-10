@@ -16,6 +16,11 @@ const _serviceWorkerUrlPath = "service-worker.js"
         outputArray[i] = rawData.charCodeAt(i);
     }
     return outputArray;
+}
+    , _postMessage = data => {
+    return navigator.serviceWorker.ready.then(_ => {
+        navigator.serviceWorker.controller.postMessage(JSON.stringify(data));
+    });
 };
 
 export const registerServiceWorker = _ => {
@@ -44,23 +49,17 @@ export const registerServiceWorker = _ => {
     }
 };
 
-export const postMessageToServiceWorker = (message, timeout = 0) => {
+export const postMessageToServiceWorker = (data, timeout = 0) => {
     if ("serviceWorker" in navigator) {
         setTimeout(_ => {
-            navigator.serviceWorker.ready.then(_ => {
-                navigator.serviceWorker.controller.postMessage(JSON.stringify(message));
-            });
+            _postMessage({command: "changeState", data});
         }, timeout);
     }
 };
 
-export const unregisterServiceWorker = _ => {
+export const dropState = _ => {
     if ("serviceWorker" in navigator) {
-        return navigator.serviceWorker.getRegistrations().then(registrations => {
-            for (let registration of registrations) {
-                registration.unregister();
-            }
-        });
+        return _postMessage({command: "reset"});
     } else {
         return Promise.resolve(null);
     }
