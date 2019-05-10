@@ -19,14 +19,18 @@ const _isMessageRelated = message => {
     if (storage.chatsArray.length === 0) return false;
     let relationId = message.relation.id;
     return !!storage.chatsArray.find(chat => chat.id === relationId);
-}, _notify = ({itemId, title, options}) => {
+};
+
+const _notify = ({itemId, title, options}) => {
     self.registration.showNotification(title, {icon: NOTIFICATION_ICON, ...options})
         .then(_ => setTimeout(_ => itemsToNotifyAbout.delete(itemId), 5000));
-}, _postEvent = eventDetails => self.clients.matchAll({type: "worker"}).then(clients => {
+};
+
+const _postEvent = eventDetails => self.clients.matchAll({type: "worker"}).then(clients => {
     clients.forEach(client => client.postMessage(eventDetails));
 });
 
-const notifyOnIncomingMessage = eventDetails => {
+const _notifyOnIncomingMessage = eventDetails => {
     const {detail} = eventDetails, {message} = detail, {selectedChat} = storage;
     if (_isMessageRelated(message)
         && (!selectedChat || selectedChat.id !== message.relation.id)
@@ -37,7 +41,7 @@ const notifyOnIncomingMessage = eventDetails => {
     }
 };
 
-const notifyOnIncomingRequest = eventDetails => {
+const _notifyOnIncomingRequest = eventDetails => {
     const {eventName, detail} = eventDetails, {request} = detail, {user} = storage;
     if (!itemsToNotifyAbout.has(request.id)) { // avoid duplicate notifications;
         if (eventName === "onSendRequest" && request.recipient.id === user.id) {
@@ -54,6 +58,15 @@ const notifyOnIncomingRequest = eventDetails => {
             });
         }
     }
+};
+
+const _switchUserStatus = (loggedIn = true) => {
+    if (!storage.user) return;
+    fetch("/status", {
+        method: "POST",
+        body: JSON.stringify({user: storage.user, loggedIn}),
+        headers: {"Content-Type": "application/json"}
+    });
 };
 
 self.addEventListener("install", event => {
@@ -73,9 +86,9 @@ self.addEventListener("push", event => {
                 _postEvent(eventDetails).then(_ => {
                     let {eventName} = eventDetails;
                     if (eventName.includes("Message")) {
-                        notifyOnIncomingMessage(eventDetails);
+                        _notifyOnIncomingMessage(eventDetails);
                     } else if (eventName.includes("Request")) {
-                        notifyOnIncomingRequest(eventDetails);
+                        _notifyOnIncomingRequest(eventDetails);
                     }
                 });
             } catch (e) {
@@ -89,16 +102,18 @@ self.addEventListener("message", event => {
     /**
      * Data passed within event;
      * {
-     *     command: 'changeState' | 'reset'
+     *     command: "changeState" | "reset"
      *     data: {...}
      * }
      */
     const {command, data} = JSON.parse(event.data);
     switch (command) {
         case "changeState":
+            _switchUserStatus(true);
             storage = {...storage, ...data};
             break;
         case "reset":
+            _switchUserStatus(false);
             storage = {...EMPTY_STORAGE};
             break;
         default:

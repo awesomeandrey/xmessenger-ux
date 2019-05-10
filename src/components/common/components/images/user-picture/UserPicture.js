@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "../plain/Image";
 import ScalableImage from "../scalable/ScalableImage";
-import Indicator from "../../status-indicator/Indicator";
+import Indicator from "./status-indicator/Indicator";
 
 import {UserService} from "../../../../../model/services/core/UserService";
 

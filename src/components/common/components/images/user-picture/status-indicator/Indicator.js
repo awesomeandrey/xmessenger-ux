@@ -1,8 +1,8 @@
 import React from "react";
-import ApplicationEvents from "./../../../../model/events/application-events";
-import AppContext from "../../../../model/services/context/AppContext";
+import ApplicationEvents from "../../../../../../model/events/application-events";
+import AppContext from "../../../../../../model/services/context/AppContext";
 
-import {CustomEvents} from "../../../../model/services/utility/EventsService";
+import {CustomEvents} from "../../../../../../model/services/utility/EventsService";
 
 import "./styles.css";
 
@@ -18,8 +18,10 @@ class Indicator extends React.Component {
         CustomEvents.register({
             eventName: ApplicationEvents.USER.INDICATOR_CHANGE,
             callback: event => {
-                const {} = event, {user} = this.props;
-                // TODO - switch user indicator;
+                const {user, loggedIn} = event.detail.indicator, {user: localUser} = this.props, {isOnline} = this.state;
+                if (user.id === localUser.id && isOnline !== loggedIn) {
+                    this.setState({isOnline: loggedIn});
+                }
             }
         });
     }

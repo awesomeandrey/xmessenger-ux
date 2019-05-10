@@ -2,7 +2,7 @@ import path from "path";
 import express from "express";
 import bodyParser from "body-parser";
 
-import {subscribeFromServer} from "./src/model/api/streaming/services/TopicsSubscriber";
+import {subscribeFromServer, switchUserStatus} from "./src/model/api/streaming/services/TopicsManager";
 import {pushNotification} from "./src/model/api/streaming/core/web-push-manager";
 
 const app = express(), PORT = process.env.PORT || 80,
@@ -29,6 +29,12 @@ app.post("/push-topics/subscribe", (req, res) => {
     } else {
         console.error("No subscription details provided!");
     }
+});
+
+app.post("/status", (req, res) => {
+    res.status(200).json({});
+    const {user, loggedIn} = req.body;
+    switchUserStatus(user, loggedIn);
 });
 
 app.listen(PORT, function (err) {

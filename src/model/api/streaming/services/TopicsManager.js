@@ -1,6 +1,6 @@
 import TopicsToEvents from "../core/topics-to-events";
 
-import {subscribe} from "../core/topics-manager";
+import {subscribe, sendMessage} from "../core/topics-manager";
 import {CustomEvents} from "../../../services/utility/EventsService";
 
 export const subscribeFromClient = _ => {
@@ -30,5 +30,13 @@ export const subscribeFromServer = pushFunc => {
         subscribe(registrations);
     } else {
         console.error("'pushFunc' is not defined.");
+    }
+};
+
+export const switchUserStatus = (user, loggedIn = true) => {
+    if (!!user) {
+        sendMessage({
+            destination: "/indicator-change", body: {user, loggedIn}
+        });
     }
 };

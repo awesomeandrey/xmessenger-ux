@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import AppContext from './AppContext';
 import ApplicationEvents from "../../events/application-events";
 
-import {subscribeFromClient} from "../../api/streaming/services/TopicsSubscriber";
+import {subscribeFromClient} from "../../api/streaming/services/TopicsManager";
 import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
 import {postMessageToServiceWorker} from "../../api/streaming/services/ServiceWorkerRegistrator";
