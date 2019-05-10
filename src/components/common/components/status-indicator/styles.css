@@ -1,0 +1,34 @@
+.indicator {
+    padding-bottom: 5px;
+    padding-right: 5px;
+}
+
+.indicator .online {
+    height: .6rem;
+    width: .6rem;
+    background-color: #4bca81;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    right: 1%;
+    bottom: 1%;
+    -webkit-animation: pulse-animation 2s infinite linear;
+}
+
+@-webkit-keyframes pulse-animation {
+    0% {
+        -webkit-transform: scale(1);
+    }
+    25% {
+        -webkit-transform: scale(1);
+    }
+    50% {
+        -webkit-transform: scale(1.2)
+    }
+    75% {
+        -webkit-transform: scale(1);
+    }
+    100% {
+        -webkit-transform: scale(1);
+    }
+}
