@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import AppContext from './AppContext';
 import ApplicationEvents from "../../events/application-events";
-import subscribeToTopics from "../../api/streaming/services/TopicsSubscriberFromClient";
 
+import {subscribeFromClient} from "../../api/streaming/services/TopicsSubscriber";
 import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
 import {postMessageToServiceWorker} from "../../api/streaming/services/ServiceWorkerRegistrator";
@@ -27,7 +27,7 @@ class AppContextProvider extends Component {
              * If 'service worker' is not supported/allowed then client is directly subscribed to topics.
              * Intended for browsers/devices which do not support service workers.
              */
-            subscribeToTopics();
+            subscribeFromClient();
         }
         this.loadUser();
     }

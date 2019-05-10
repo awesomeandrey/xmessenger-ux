@@ -1,5 +1,5 @@
 import React from "react";
-import ToastEvents from "./events";
+import ToastEvents from "./toasts-events";
 import AlertContainer from "@salesforce/design-system-react/module/components/alert/container";
 import Alert from "@salesforce/design-system-react/module/components/alert";
 import Toast from "@salesforce/design-system-react/module/components/toast";

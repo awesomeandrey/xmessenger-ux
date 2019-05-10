@@ -2,7 +2,7 @@ import React from 'react';
 import MaskedInput from "../../../../common/components/inputs/MaskedInput";
 import PasswordInput from "../../../../common/components/inputs/PasswordInput";
 import StatefulInput from "../../../../common/components/inputs/StatefulInput";
-import ToastEvents from "../../../../common/components/toasts/events";
+import ToastEvents from "../../../../common/components/toasts/toasts-events";
 import Button from "@salesforce/design-system-react/module/components/button";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";
 import InputIcon from "@salesforce/design-system-react/module/components/icon/input-icon";

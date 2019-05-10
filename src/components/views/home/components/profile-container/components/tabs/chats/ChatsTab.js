@@ -1,6 +1,6 @@
 import React from "react";
 import Events from "../../../../../../../../model/events/application-events";
-import ToastEvents from "../../../../../../../common/components/toasts/events";
+import ToastEvents from "../../../../../../../common/components/toasts/toasts-events";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
 import ChatItem from "./ChatItem";
 

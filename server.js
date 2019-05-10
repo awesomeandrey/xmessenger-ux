@@ -1,8 +1,8 @@
 import path from "path";
 import express from "express";
 import bodyParser from "body-parser";
-import subscribeToTopics from "./src/model/api/streaming/services/TopicsSubscriberFromServer";
 
+import {subscribeFromServer} from "./src/model/api/streaming/services/TopicsSubscriber";
 import {pushNotification} from "./src/model/api/streaming/core/web-push-manager";
 
 const app = express(), PORT = process.env.PORT || 80,
@@ -22,8 +22,13 @@ app.get("*", function (req, res) {
 
 app.post("/push-topics/subscribe", (req, res) => {
     res.status(201).json({});
-    const subscriptionDetails = req.body, pushNotificationFunc = pushNotification(subscriptionDetails);
-    subscribeToTopics(pushNotificationFunc);
+    const subscriptionDetails = req.body;
+    if (!!subscriptionDetails) {
+        let pushNotificationFunc = pushNotification(subscriptionDetails);
+        subscribeFromServer(pushNotificationFunc);
+    } else {
+        console.error("No subscription details provided!");
+    }
 });
 
 app.listen(PORT, function (err) {

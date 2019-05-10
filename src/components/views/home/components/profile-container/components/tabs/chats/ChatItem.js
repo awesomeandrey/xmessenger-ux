@@ -1,5 +1,5 @@
 import React from "react";
-import ModalEvents from "../../../../../../../common/components/modals/events";
+import ModalEvents from "../../../../../../../common/components/modals/modals-events";
 import UserPicture from "../../../../../../../common/components/images/user-picture/UserPicture";
 import MediaObject from "@salesforce/design-system-react/module/components/media-object";
 import Dropdown from "@salesforce/design-system-react/module/components/menu-dropdown";

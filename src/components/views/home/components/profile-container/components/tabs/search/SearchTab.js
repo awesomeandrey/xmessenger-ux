@@ -1,5 +1,5 @@
 import React from "react";
-import ToastEvents from "../../../../../../../common/components/toasts/events";
+import ToastEvents from "../../../../../../../common/components/toasts/toasts-events";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
 import RequestService from "../../../../../../../../model/services/core/RequestService";
 import Lookup from "@salesforce/design-system-react/module/components/lookup/lookup";
