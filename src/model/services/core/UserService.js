@@ -25,7 +25,11 @@ export const UserService = {
             method: "GET",
             path: `/user/search?nameOrLogin=${criteria}&searchByLogin=${searchByLogin}`
         });
-    }
+    },
+    getUserIndicators: _ => performRequest({
+        method: "GET",
+        path: "/user/indicators"
+    })
 };
 
 export const Settings = {
