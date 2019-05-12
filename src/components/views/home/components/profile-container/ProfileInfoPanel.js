@@ -58,7 +58,7 @@ class ProfileInfoPanel extends React.Component {
                             <Tabs onSelect={this.handleSelectTab} selectedIndex={activeTabKey}
                                   className="height-percent-100">
                                 <TabsPanel label={<TabItem title="chats" amount={chatsAmount}/>}>
-                                    <ChatsTab user={context.user}/>
+                                    <ChatsTab {...context}/>
                                 </TabsPanel>
                                 <TabsPanel label={<TabItem title="requests" amount={requestsAmount}/>}>
                                     <RequestsTab user={context.user}/>
