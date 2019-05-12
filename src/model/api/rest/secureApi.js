@@ -1,7 +1,7 @@
 import {API_SERVER_URL} from "../../constants";
 import {performRequest as callRestApi, DEFAULT_HEADERS} from "./client-util";
 import {SessionStorage, SessionEntities} from "../../services/utility/StorageService";
-import {Navigation} from "../../services/utility/NavigationService";
+import {LoginService} from "../../services/core/AuthenticationService";
 
 const _TOKEN_HEADER_NAME = "Authorization", _TOKEN_PREFIX = "Bearer ", _retrieveBearerToken = headers => {
     let headerValue = headers.get(_TOKEN_HEADER_NAME);
@@ -10,8 +10,7 @@ const _TOKEN_HEADER_NAME = "Authorization", _TOKEN_PREFIX = "Bearer ", _retrieve
 
 export const API_BASE_PATH = "/api",
     getToken = _ => SessionStorage.getItem(SessionEntities.JWT_TOKEN),
-    tokenExists = _ => !!getToken(),
-    revokeClient = _ => SessionStorage.removeItem(SessionEntities.JWT_TOKEN);
+    tokenExists = _ => !!getToken();
 
 /**
  * If successful authenticates client returning JWT token
@@ -55,8 +54,7 @@ export const performRequest = ({method, entity, path, headers = DEFAULT_HEADERS}
         headers: headers
     }).then(data => Promise.resolve(data), error => {
         if ([400, 401, 403].includes(error.status)) {
-            revokeClient();
-            Navigation.toLogin({jwtExpired: true});
+            LoginService.logoutUser(true);
         }
         return Promise.reject(error);
     });

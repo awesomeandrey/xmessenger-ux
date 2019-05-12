@@ -7,9 +7,9 @@ import {dropState} from "../../api/streaming/services/ServiceWorkerRegistrator";
 export const LoginService = {
     loginUser: rawCredentials => authenticateClient({url: `${API_BASE_PATH}/login`, body: rawCredentials})
         .then(_ => Navigation.toHome({})),
-    logoutUser: _ => dropState().then(_ => {
+    logoutUser: sessionExpired => dropState().then(_ => {
         SessionStorage.clear();
-        Navigation.toLogin({});
+        Navigation.toLogin({jwtExpired: sessionExpired});
     })
 };
 
