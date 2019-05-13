@@ -22,22 +22,15 @@ const _serviceWorkerUrlPath = "service-worker.js"
 
 export const registerServiceWorker = _ => {
     if ("serviceWorker" in navigator) {
-        debugger;
         navigator.serviceWorker.register(_serviceWorkerUrlPath, {scope: "/"});
-        navigator.serviceWorker.ready.then(registration => {
-            debugger;
-            return registration.pushManager.subscribe({
-                userVisibleOnly: true,
-                applicationServerKey: _urlBase64ToUint8Array(PUBLIC_VAPID_KEY)
-            });
-        }).then(subscription => {
-            debugger;
-            return performRequestLocally({
-                url: "/push-topics/subscribe",
-                method: "POST",
-                body: subscription
-            });
-        }).then(_ => {
+        navigator.serviceWorker.ready.then(registration => registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: _urlBase64ToUint8Array(PUBLIC_VAPID_KEY)
+        })).then(subscription => performRequestLocally({
+            url: "/push-topics/subscribe",
+            method: "POST",
+            body: subscription
+        })).then(_ => {
             // Setup 'data bridge' between client and service worker;
             navigator.serviceWorker.onmessage = event => {
                 CustomEvents.fire(event.data);
