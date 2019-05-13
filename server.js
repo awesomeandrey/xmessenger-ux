@@ -6,7 +6,8 @@ import {subscribeFromServer, switchUserStatus} from "./src/model/api/streaming/s
 import {pushNotification} from "./src/model/api/streaming/core/web-push-manager";
 
 const app = express(), PORT = process.env.PORT || 80,
-    cacheControl = process.env.NODE_ENV === "production" ? {maxAge: "1d"} : {};
+    cacheControl = {};
+    // cacheControl = process.env.NODE_ENV === "production" ? {maxAge: "1d"} : {};
 app.use("/public", express.static("public", cacheControl));
 app.use("/assets", express.static("node_modules/@salesforce-ux/design-system/assets", cacheControl));
 app.use(bodyParser.json());
