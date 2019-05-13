@@ -131,17 +131,7 @@ class ChatsTab extends React.Component {
                 });
                 return chatsMap.size || 0;
             })
-            .then(chatsAmount => CustomEvents.fire({eventName: ApplicationEvents.CHAT.CALCULATE, detail: chatsAmount}))
-            .then(_ => {
-                const {richOnlineExperienceMode} = this.props;
-                return richOnlineExperienceMode ? UserService.getUserIndicators() : Promise.reject("Not rich mode experience.");
-            })
-            .then(indicators => {
-                indicators.forEach(indicator => {
-                    CustomEvents.fire({eventName: ApplicationEvents.USER.INDICATOR_CHANGE, detail: {indicator}});
-                });
-            })
-            .catch(error => console.warn(error));
+            .then(chatsAmount => CustomEvents.fire({eventName: ApplicationEvents.CHAT.CALCULATE, detail: chatsAmount}));
     };
 
     handleSelectChat = (event, chatData) => {
