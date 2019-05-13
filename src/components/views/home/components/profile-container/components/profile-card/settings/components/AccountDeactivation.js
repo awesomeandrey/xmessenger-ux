@@ -1,5 +1,5 @@
 import React from "react";
-import Events from "../../../../../../../../../model/events/application-events";
+import Events from "../../../../../../../../../model/application-events";
 import MediaObject from "@salesforce/design-system-react/module/components/media-object";
 import Icon from "@salesforce/design-system-react/module/components/icon";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";
@@ -33,11 +33,11 @@ class AccountDeactivation extends React.Component {
         if (user.username !== username) {
             this.setState({username: "", error: "Username is not confirmed"});
         } else {
-            CustomEvents.fire({eventName: Events.SETTINGS.LOCK, detail: {locked: true}})
-                .then(_ => this.setState({loading: true, error: ""}))
-                .then(_ => Settings.changeProfileInfo({id: user.id, active: false}))
-                .then(LoginService.logout)
-                .then(_ => Navigation.toLogin({}));
+            this.setState({loading: true, error: ""}, _ => {
+                CustomEvents.fire({eventName: Events.SETTINGS.LOCK, detail: {locked: true}})
+                    .then(_ => Settings.changeProfileInfo({id: user.id, active: false}))
+                    .then(LoginService.logoutUser);
+            });
         }
     };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "@salesforce/design-system-react/module/components/modal";
-import ModalEvents from "./events";
+import ModalEvents from "./modals-events";
 import Button from "@salesforce/design-system-react/module/components/button";
 import Image from "../images/plain/Image";
 

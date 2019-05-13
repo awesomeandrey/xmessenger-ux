@@ -1,7 +1,7 @@
 import React from "react";
 
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
-import {getCurrentTheme, ON_APPLY_THEME, THEMES} from "../model/themes";
+import {getCurrentTheme, ON_APPLY_THEME, THEMES} from "../model/themes-manager";
 import {LocalEntities, LocalStorage} from "../../../../../model/services/utility/StorageService";
 
 import "../styles/theming.css";

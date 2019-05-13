@@ -1,5 +1,5 @@
 import React from "react";
-import Events from "../../../../../../../../model/events/application-events";
+import Events from "../../../../../../../../model/application-events";
 import ProfileInfo from "./components/ProfileInfo";
 import ProfileImage from "./components/ProfileImage";
 import PasswordChange from "./components/PasswordChange";

@@ -1,7 +1,8 @@
 // Constant names on custom events;
 export default {
     USER: {
-        RELOAD: "onReloadUserInfo"
+        RELOAD: "onReloadUserInfo",
+        INDICATOR_CHANGE: "onIndicatorChange"
     },
     CHAT: {
         LOAD_ALL: "onLoadChats",

@@ -32,6 +32,10 @@ describe("Common utility methods.", () => {
     test("Generate unique ID.", () => {
         expect(Utility.generateUniqueId()).toBeTruthy();
     });
+    test("Hash string.", () => {
+        expect(Utility.hashString("hello"))
+            .toBe(Utility.hashString('h' + 'e' + 'l' + 'l' + 'o'));
+    });
     test("Checking whether object is empty.", () => {
         expect(Utility.isObjectEmpty(null)).toBeTruthy();
         expect(Utility.isObjectEmpty(undefined)).toBeTruthy();

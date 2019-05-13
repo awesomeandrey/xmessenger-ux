@@ -1,13 +1,14 @@
 import React from "react";
-import Events from "../../../../../../../../model/events/application-events";
-import ToastEvents from "../../../../../../../common/components/toasts/events";
+import ApplicationEvents from "../../../../../../../../model/application-events";
+import ToastEvents from "../../../../../../../common/components/toasts/toasts-events";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
 import ChatItem from "./ChatItem";
 
 import {ChattingService} from "../../../../../../../../model/services/core/ChattingService";
 import {CustomEvents, KeyEvents} from "../../../../../../../../model/services/utility/EventsService";
 import {SessionEntities, SessionStorage} from "../../../../../../../../model/services/utility/StorageService";
-import {requestPermission, notify} from "../../../../../../../../model/services/utility/NotificationsService";
+import {postMessageToServiceWorker} from "../../../../../../../../model/api/streaming/services/ServiceWorkerRegistrator";
+import {UserService} from "../../../../../../../../model/services/core/UserService";
 
 import "./styles.css";
 
@@ -21,16 +22,9 @@ const NOTIFICATION_BLUEPRINTS = {
     onChatDeleted: userName => {
         CustomEvents.fire({
             eventName: ToastEvents.SHOW,
-            detail: {
-                level: "error", message: <span><b>{userName}</b> removed chat with you.</span>
-            }
+            detail: {level: "error", message: <span><b>{userName}</b> removed chat with you.</span>}
         });
-    },
-    onIncomingMessage: (chat, message) => notify({
-        title: `New message from ${chat.fellow.name}`,
-        text: message.body,
-        onclick: _ => CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: chat}})
-    })
+    }
 };
 
 class ChatsTab extends React.Component {
@@ -43,10 +37,10 @@ class ChatsTab extends React.Component {
     }
 
     componentWillMount() {
-        CustomEvents.register({eventName: Events.CHAT.LOAD_ALL, callback: this.handleLoadChats});
+        CustomEvents.register({eventName: ApplicationEvents.CHAT.LOAD_ALL, callback: this.handleLoadChats});
 
         CustomEvents.register({
-            eventName: Events.CHAT.CLEAR,
+            eventName: ApplicationEvents.CHAT.CLEAR,
             callback: event => {
                 const {user} = this.props, {chatsMap} = this.state, {clearedChat} = event.detail;
                 if (chatsMap.has(clearedChat.id)) {
@@ -61,19 +55,25 @@ class ChatsTab extends React.Component {
         });
 
         CustomEvents.register({
-            eventName: Events.CHAT.DELETE,
+            eventName: ApplicationEvents.CHAT.DELETE,
             callback: event => {
                 const {user} = this.props, {chatsMap} = this.state, {removedChat} = event.detail;
                 if (chatsMap.has(removedChat.id)) {
                     const {updatedBy} = removedChat;
-                    if (user.id !== updatedBy.id) {
+                    if (!!updatedBy && user.id !== updatedBy.id) {
                         NOTIFICATION_BLUEPRINTS.onChatDeleted(updatedBy.name);
                     }
                     if (chatsMap.delete(removedChat.id)) {
                         this.setState({chatsMap: chatsMap}, _ => {
-                            CustomEvents.fire({eventName: Events.CHAT.CALCULATE, detail: chatsMap.size || 0});
+                            CustomEvents.fire({
+                                eventName: ApplicationEvents.CHAT.CALCULATE,
+                                detail: chatsMap.size || 0
+                            });
                             if (this.isSelectedChat(removedChat)) {
-                                CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: null}});
+                                CustomEvents.fire({
+                                    eventName: ApplicationEvents.CHAT.SELECT,
+                                    detail: {selectedChat: null}
+                                });
                             }
                         });
                     }
@@ -82,23 +82,22 @@ class ChatsTab extends React.Component {
         });
 
         CustomEvents.register({
-            eventName: Events.CHAT.SELECT,
+            eventName: ApplicationEvents.CHAT.SELECT,
             callback: event => {
                 const {selectedChat} = event.detail;
                 SessionStorage.setItem({key: SessionEntities.ACTIVE_CHAT, value: selectedChat});
-                this.setState({selectedChat: selectedChat});
+                this.setState({selectedChat}, _ => {
+                    postMessageToServiceWorker({selectedChat});
+                });
             }
         });
 
         CustomEvents.register({
-            eventName: Events.MESSAGE.ADD,
+            eventName: ApplicationEvents.MESSAGE.ADD,
             callback: event => {
                 const {chatsMap} = this.state, {message} = event.detail, {relation, date} = message;
                 if (chatsMap.has(relation.id)) {
                     const chat = chatsMap.get(relation.id);
-                    if (!this.isSelectedChat(chat)) {
-                        NOTIFICATION_BLUEPRINTS.onIncomingMessage(chat, message);
-                    }
                     chatsMap.set(chat.id, Object.assign(chat, {latestMessageDate: date}));
                     this.setState({chatsMap: ChattingService.sortChatsMap(chatsMap)});
                 }
@@ -110,33 +109,34 @@ class ChatsTab extends React.Component {
             eventName: 'keydown', handler: event => {
                 event = event || window.event;
                 if (event.keyCode === 27) {
-                    CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: null}});
+                    CustomEvents.fire({eventName: ApplicationEvents.CHAT.SELECT, detail: {selectedChat: null}});
                 }
             }
         });
     }
 
     componentDidMount() {
-        CustomEvents.fire({eventName: Events.CHAT.LOAD_ALL});
-
-        requestPermission();
-
+        CustomEvents.fire({eventName: ApplicationEvents.CHAT.LOAD_ALL});
         const activeChat = SessionStorage.getItem(SessionEntities.ACTIVE_CHAT);
         if (!!activeChat) {
-            CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: activeChat}});
+            CustomEvents.fire({eventName: ApplicationEvents.CHAT.SELECT, detail: {selectedChat: activeChat}});
         }
     }
 
     handleLoadChats = _ => {
         ChattingService.loadChatsMap()
-            .then(chatsMap => this.setState({chatsMap: chatsMap}, _ => {
-                CustomEvents.fire({eventName: Events.CHAT.CALCULATE, detail: chatsMap.size || 0});
-            }));
+            .then(chatsMap => {
+                this.setState({chatsMap}, () => {
+                    postMessageToServiceWorker({chatsArray: [...chatsMap.values()]}, 5000);
+                });
+                return chatsMap.size || 0;
+            })
+            .then(chatsAmount => CustomEvents.fire({eventName: ApplicationEvents.CHAT.CALCULATE, detail: chatsAmount}));
     };
 
     handleSelectChat = (event, chatData) => {
         if (event.target.nodeName === "BUTTON") return;
-        CustomEvents.fire({eventName: Events.CHAT.SELECT, detail: {selectedChat: chatData}});
+        CustomEvents.fire({eventName: ApplicationEvents.CHAT.SELECT, detail: {selectedChat: chatData}});
     };
 
     isSelectedChat = chat => {

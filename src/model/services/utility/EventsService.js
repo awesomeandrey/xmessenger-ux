@@ -7,7 +7,8 @@ export const CustomEvents = {
     },
     fire: ({eventName, detail = {}, callback}) => {
         if (!eventName) {
-            throw "'eventName' cannot be null!";
+            console.error("'eventName' cannot be null!");
+            return;
         }
         let evt = new CustomEvent(eventName, {detail: detail});
         // Fire custom event;

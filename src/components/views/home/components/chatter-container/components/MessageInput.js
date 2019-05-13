@@ -1,9 +1,11 @@
 import React from "react";
 import DynamicInput from "../../../../../common/components/inputs/DynamicInput";
 import Button from "@salesforce/design-system-react/module/components/button";
+import ApplicationEvents from "../../../../../../model/application-events";
 
 import {ChattingService} from "../../../../../../model/services/core/ChattingService";
 import {Utility, InputPatterns} from "../../../../../../model/services/utility/UtilityService";
+import {CustomEvents} from "../../../../../../model/services/utility/EventsService";
 
 const pattern = InputPatterns.MESSAGE_BODY;
 
@@ -38,10 +40,12 @@ class MessageInput extends React.Component {
         const {messageBody} = this.state, {chat} = this.props;
         if (Utility.matches(messageBody, pattern)) {
             this.setState({loading: true}, _ => {
-                ChattingService.sendMessage({chat, messageBody}).then(_ => {
-                    this._dynamicInputComponent.clear();
-                    this.setState({messageBody: "", loading: false, error: ""});
-                });
+                ChattingService.sendMessage({chat, messageBody})
+                    .then(message => CustomEvents.fire({eventName: ApplicationEvents.MESSAGE.ADD, detail: {message}}))
+                    .then(_ => {
+                        this._dynamicInputComponent.clear();
+                        this.setState({messageBody: "", loading: false, error: ""});
+                    });
             });
         } else {
             this.setState({error: pattern.errorMessage});

@@ -27,6 +27,14 @@ export const Utility = {
     decorateUsername: p => "@".concat(p),
     join: (...classNames) => classNames.join(" "),
     generateUniqueId: _ => Math.random().toString(36).substr(2, 9),
+    hashString: str => {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash += Math.pow(str.charCodeAt(i) * 31, str.length - i);
+            hash = hash & hash; // Convert to 32bit integer
+        }
+        return hash;
+    },
     matches: (value, patternObj) => {
         if (patternObj === undefined || value === undefined) {
             throw "'value' and 'patternObj' parameters shouldn't be empty.";

@@ -1,9 +1,9 @@
-import {API_SERVER_URL} from "../../api/rest/client-util";
+import {API_SERVER_URL} from "../../constants";
 import {performRequest} from "../../api/rest/secureApi";
 import {API_BASE_PATH as OPEN_API_PATH} from "../../api/rest/openApi";
 
 export const UserService = {
-    getCurrentUser: _ => performRequest({
+    getUserInfo: _ => performRequest({
         method: "GET",
         path: "/user/info"
     }),
@@ -25,7 +25,11 @@ export const UserService = {
             method: "GET",
             path: `/user/search?nameOrLogin=${criteria}&searchByLogin=${searchByLogin}`
         });
-    }
+    },
+    getUserIndicators: _ => performRequest({
+        method: "GET",
+        path: "/user/indicators"
+    })
 };
 
 export const Settings = {

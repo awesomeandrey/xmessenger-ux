@@ -1,5 +1,5 @@
 import React from "react";
-import Events from "../../../../../../../model/events/application-events";
+import Events from "../../../../../../../model/application-events";
 import SettingsModal from "./settings/SettingsModal";
 import ScalableImage from "../../../../../../common/components/images/scalable/ScalableImage";
 import PropsLoader from "../../../../../../common/components/loader/PropsLoader";
@@ -9,13 +9,11 @@ import MediaObject from "@salesforce/design-system-react/module/components/media
 
 import {LoginService} from "../../../../../../../model/services/core/AuthenticationService";
 import {Utility} from "../../../../../../../model/services/utility/UtilityService";
-import {Navigation} from "../../../../../../../model/services/utility/NavigationService";
 import {CustomEvents} from "../../../../../../../model/services/utility/EventsService";
-import {SessionStorage} from "../../../../../../../model/services/utility/StorageService";
 import {UserService} from "../../../../../../../model/services/core/UserService";
 
 const _onOpenSettings = _ => CustomEvents.fire({eventName: Events.SETTINGS.OPEN}),
-    _onLogout = _ => LoginService.logout().then(SessionStorage.clear).then(_ => Navigation.toLogin({})),
+    _onLogout = _ => LoginService.logoutUser(),
     _onSelectOption = (option) => {
         switch (option.value) {
             case 1:

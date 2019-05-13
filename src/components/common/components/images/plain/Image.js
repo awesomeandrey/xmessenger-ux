@@ -1,4 +1,5 @@
 import React from "react";
+import {Utility} from "../../../../../model/services/utility/UtilityService";
 
 const LAZY_LOAD_PICTURE = "public/pictures/slds-brand-spinner.gif";
 
@@ -50,7 +51,7 @@ class Image extends React.Component {
         return (
             <img title={title}
                  style={{borderRadius: "5px", maxHeight: "50vh"}}
-                 className={className}
+                 className={Utility.join("slds-m-bottom--none", className)}
                  alt={title}
                  src={this.state.src}
                  ref={this.handleRef}

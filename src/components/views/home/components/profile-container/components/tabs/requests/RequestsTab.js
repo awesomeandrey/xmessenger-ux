@@ -1,7 +1,7 @@
 import React from "react";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
-import Events from "../../../../../../../../model/events/application-events";
-import ToastEvents from "../../../../../../../common/components/toasts/events";
+import Events from "../../../../../../../../model/application-events";
+import ToastEvents from "../../../../../../../common/components/toasts/toasts-events";
 import RequestService from "../../../../../../../../model/services/core/RequestService";
 import RequestItem from "./RequestItem";
 

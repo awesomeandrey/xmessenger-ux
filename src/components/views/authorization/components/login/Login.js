@@ -1,7 +1,7 @@
 import React from "react";
 import MaskedInput from "../../../../common/components/inputs/MaskedInput";
 import PasswordInput from "../../../../common/components/inputs/PasswordInput";
-import ToastEvents from "../../../../common/components/toasts/events";
+import ToastEvents from "../../../../common/components/toasts/toasts-events";
 import GmailService from "../../../../../model/services/core/GmailService";
 import Button from "@salesforce/design-system-react/module/components/button";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";
@@ -29,10 +29,10 @@ class Login extends React.Component {
         if (this.isFormFulfilled()) {
             this.setState({loading: true, error: ""}, _ => {
                 const {inputs} = this.state;
-                LoginService.login({
+                LoginService.loginUser({
                     username: inputs.username,
                     password: inputs.password
-                }).then(_ => Navigation.toHome({}), errorMessage => {
+                }).catch(errorMessage => {
                     inputs.password = "";
                     this.setState({loading: false, inputs: inputs, error: errorMessage}, _ => {
                         CustomEvents.fire({

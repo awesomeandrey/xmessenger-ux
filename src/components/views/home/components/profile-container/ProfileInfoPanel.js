@@ -3,7 +3,7 @@ import ProfileCard from "./components/profile-card/ProfileCard";
 import ChatsTab from "./components/tabs/chats/ChatsTab";
 import RequestsTab from "./components/tabs/requests/RequestsTab";
 import SearchTab from "./components/tabs/search/SearchTab";
-import Events from "../../../../../model/events/application-events";
+import Events from "../../../../../model/application-events";
 import GitHubLink from "../../../../common/components/github-link/GitHubLink";
 import AppContext from "../../../../../model/services/context/AppContext";
 import Tabs from "@salesforce/design-system-react/module/components/tabs";
@@ -58,7 +58,7 @@ class ProfileInfoPanel extends React.Component {
                             <Tabs onSelect={this.handleSelectTab} selectedIndex={activeTabKey}
                                   className="height-percent-100">
                                 <TabsPanel label={<TabItem title="chats" amount={chatsAmount}/>}>
-                                    <ChatsTab user={context.user}/>
+                                    <ChatsTab {...context}/>
                                 </TabsPanel>
                                 <TabsPanel label={<TabItem title="requests" amount={requestsAmount}/>}>
                                     <RequestsTab user={context.user}/>

@@ -2,7 +2,7 @@ import React from "react";
 import Icon from "@salesforce/design-system-react/module/components/icon";
 
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
-import {ON_APPLY_THEME, getCurrentTheme, THEMES} from "../model/themes";
+import {ON_APPLY_THEME, getCurrentTheme, THEMES} from "../model/themes-manager";
 
 class ThemePicker extends React.Component {
     constructor(props) {
