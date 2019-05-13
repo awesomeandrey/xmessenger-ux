@@ -16,7 +16,7 @@ const HeaderPanel = props => {
                                  <span className="slds-truncate">
                                     <span className="slds-text-heading_small">{fellow.name}</span>
                                 </span>
-                                 <div className="slds-text-color_weak">
+                                 <div className="slds-text-color_weak theme-inherit">
                                      {!!lastLoginDate && `Last login: ${lastLoginDate}`}
                                  </div>
                              </h2>

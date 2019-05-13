@@ -49,10 +49,10 @@ export const registerServiceWorker = _ => {
     }
 };
 
-export const postMessageToServiceWorker = (data, timeout = 0) => {
+export const postMessageToServiceWorker = (dataObj, timeout = 0) => {
     if ("serviceWorker" in navigator) {
         setTimeout(_ => {
-            _postMessage({command: "changeState", data});
+            _postMessage({command: "changeState", data: dataObj});
         }, timeout);
     }
 };

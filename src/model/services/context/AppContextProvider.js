@@ -6,6 +6,7 @@ import {subscribeFromClient} from "../../api/streaming/services/TopicsManager";
 import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
 import {postMessageToServiceWorker} from "../../api/streaming/services/ServiceWorkerRegistrator";
+import {LocalEntities, LocalStorage} from "../utility/StorageService";
 
 class AppContextProvider extends Component {
     constructor(props) {
@@ -28,6 +29,7 @@ class AppContextProvider extends Component {
                     }
                 }
             });
+            CustomEvents.register({eventName: ApplicationEvents.CHAT.LOAD_ALL, callback: this.loadIndicators});
         }
         CustomEvents.register({eventName: ApplicationEvents.USER.RELOAD, callback: this.loadUser});
     }
@@ -41,7 +43,7 @@ class AppContextProvider extends Component {
              */
             subscribeFromClient();
         } else {
-            this.loadIndicators();
+            postMessageToServiceWorker({richNotificationsEnabled: LocalStorage.getItem(LocalEntities.RICH_NOTIFICATIONS)}, 5);
         }
         this.loadUser();
     }

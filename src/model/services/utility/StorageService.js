@@ -49,5 +49,6 @@ export const SessionEntities = {
 export const LocalStorage = Storage(localStorage);
 
 export const LocalEntities = {
-    ACTIVE_THEME: "activeTheme"
+    ACTIVE_THEME: "activeTheme",
+    RICH_NOTIFICATIONS: "richNotifications"
 };

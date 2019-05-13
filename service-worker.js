@@ -1,7 +1,8 @@
 const NOTIFICATION_ICON = "/public/pictures/xmessenger-logo.jpg", EMPTY_STORAGE = {
     user: null,
     selectedChat: null,
-    chatsArray: []
+    chatsArray: [],
+    richNotificationsEnabled: true
 };
 
 /**
@@ -31,6 +32,7 @@ const _isMessageRelated = message => {
 };
 
 const _notify = ({itemId, title, options}) => {
+    if (!storage.richNotificationsEnabled) return;
     self.registration.showNotification(title, {icon: NOTIFICATION_ICON, ...options})
         .then(_ => setTimeout(_ => itemsToNotifyAbout.delete(itemId), 5000));
 };
@@ -71,7 +73,7 @@ const _notifyOnIncomingRequest = eventDetails => {
 
 const _switchUserStatus = (loggedIn = true) => {
     if (!storage.user) return;
-    fetch("/status", {
+    return fetch("/status", {
         method: "POST",
         body: JSON.stringify({user: storage.user, loggedIn}),
         headers: {"Content-Type": "application/json"}
@@ -118,8 +120,8 @@ self.addEventListener("message", event => {
             storage = {...storage, ...data};
             break;
         case "reset":
-            _switchUserStatus(false);
-            storage = {...EMPTY_STORAGE};
+            _switchUserStatus(false)
+                .then(_ => storage = {...EMPTY_STORAGE});
             break;
         default:
             console.warn("Unknown message.");
