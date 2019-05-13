@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import AppContext from './AppContext';
-import ApplicationEvents from "../../events/application-events";
+import ApplicationEvents from "../../application-events";
 
 import {subscribeFromClient} from "../../api/streaming/services/TopicsManager";
 import {UserService} from "../core/UserService";

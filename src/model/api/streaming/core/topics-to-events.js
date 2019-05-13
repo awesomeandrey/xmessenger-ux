@@ -1,5 +1,5 @@
 import Topics from "./topics";
-import ApplicationEvents from "../../../events/application-events";
+import ApplicationEvents from "../../../application-events";
 
 import {parsePayload} from "./topics-manager";
 

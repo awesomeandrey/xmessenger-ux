@@ -1,7 +1,7 @@
 import React from "react";
 import DynamicInput from "../../../../../common/components/inputs/DynamicInput";
 import Button from "@salesforce/design-system-react/module/components/button";
-import ApplicationEvents from "../../../../../../model/events/application-events";
+import ApplicationEvents from "../../../../../../model/application-events";
 
 import {ChattingService} from "../../../../../../model/services/core/ChattingService";
 import {Utility, InputPatterns} from "../../../../../../model/services/utility/UtilityService";

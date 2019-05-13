@@ -1,5 +1,5 @@
 import React from "react";
-import ApplicationEvents from "../../../../../../model/events/application-events";
+import ApplicationEvents from "../../../../../../model/application-events";
 import AppContext from "../../../../../../model/services/context/AppContext";
 
 import {CustomEvents} from "../../../../../../model/services/utility/EventsService";

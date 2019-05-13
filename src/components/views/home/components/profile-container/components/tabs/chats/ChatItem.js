@@ -3,7 +3,7 @@ import ModalEvents from "../../../../../../../common/components/modals/modals-ev
 import UserPicture from "../../../../../../../common/components/images/user-picture/UserPicture";
 import MediaObject from "@salesforce/design-system-react/module/components/media-object";
 import Dropdown from "@salesforce/design-system-react/module/components/menu-dropdown";
-import ApplicationEvents from "../../../../../../../../model/events/application-events";
+import ApplicationEvents from "../../../../../../../../model/application-events";
 
 import {ChattingService} from "../../../../../../../../model/services/core/ChattingService";
 import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";

@@ -15,6 +15,15 @@ const NOTIFICATION_ICON = "/public/pictures/xmessenger-logo.jpg", EMPTY_STORAGE 
  */
 let storage = {...EMPTY_STORAGE}, itemsToNotifyAbout = new Map();
 
+const _parseEventData = event => {
+    try {
+        return Promise.resolve(event.data.json());
+    } catch (e) {
+        console.error(e);
+        return Promise.reject(`Push data: ${event.data.text()}`);
+    }
+};
+
 const _isMessageRelated = message => {
     if (storage.chatsArray.length === 0) return false;
     let relationId = message.relation.id;
@@ -80,21 +89,17 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("push", event => {
     event.waitUntil(
-        Promise.resolve().then(_ => {
-            try {
-                const eventDetails = event.data.json();
-                _postEvent(eventDetails).then(_ => {
-                    let {eventName} = eventDetails;
-                    if (eventName.includes("Message")) {
-                        _notifyOnIncomingMessage(eventDetails);
-                    } else if (eventName.includes("Request")) {
-                        _notifyOnIncomingRequest(eventDetails);
-                    }
-                });
-            } catch (e) {
-                console.warn(`Push notification: ${event.data.text()}`);
+        _parseEventData(event).then(eventData => {
+            _postEvent(eventData);
+            return eventData;
+        }).then(eventDetails => {
+            let {eventName} = eventDetails;
+            if (eventName.includes("Message")) {
+                _notifyOnIncomingMessage(eventDetails);
+            } else if (eventName.includes("Request")) {
+                _notifyOnIncomingRequest(eventDetails);
             }
-        })
+        }).catch(error => console.warn(error))
     );
 });
 

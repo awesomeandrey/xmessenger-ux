@@ -1,5 +1,5 @@
 import React from "react";
-import Events from "../../../../../../../../../model/events/application-events";
+import Events from "../../../../../../../../../model/application-events";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";
 import Input from "@salesforce/design-system-react/module/components/input";
 import InputIcon from "@salesforce/design-system-react/module/components/icon/input-icon";

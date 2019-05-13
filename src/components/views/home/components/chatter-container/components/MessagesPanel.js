@@ -1,5 +1,5 @@
 import React from "react";
-import ApplicationEvents from "../../../../../../model/events/application-events";
+import ApplicationEvents from "../../../../../../model/application-events";
 import Icon from "@salesforce/design-system-react/module/components/icon";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";
 

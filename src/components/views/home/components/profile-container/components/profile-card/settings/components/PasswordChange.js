@@ -1,5 +1,5 @@
 import React from "react";
-import Events from "../../../../../../../../../model/events/application-events";
+import Events from "../../../../../../../../../model/application-events";
 import PasswordInput from "../../../../../../../../common/components/inputs/PasswordInput";
 import MediaObject from "@salesforce/design-system-react/module/components/media-object";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";

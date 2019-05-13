@@ -3,7 +3,7 @@ import HeaderPanel from "./components/HeaderPanel";
 import MessagesPanel from "./components/MessagesPanel";
 import MessageInput from "./components/MessageInput";
 import EmptyArea from "../../../../common/components/utils/EmptyArea";
-import Events from "../../../../../model/events/application-events";
+import Events from "../../../../../model/application-events";
 import AppContext from "../../../../../model/services/context/AppContext";
 
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
