@@ -6,7 +6,7 @@ Also, it's free cloud based browser messenger hosted on <i>Heroku</i> platform.
 
 ### Used technologies
 
-`websockets`, `reactjs`, `jsx`, `javascript`, `slds`, `travis`, `heroku`, `oauth`, `webpack`, `nodejs`
+`reactjs`, `jsx`, `javascript`, `slds`, `travis`, `heroku`, `websockets`, `oauth`, `webpack`, `nodejs`, `service_worker`
 
 ### Built With
 
