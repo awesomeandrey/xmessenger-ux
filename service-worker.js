@@ -45,7 +45,7 @@ const _notifyOnIncomingMessage = eventDetails => {
     const {detail} = eventDetails, {message} = detail, {selectedChat} = storage;
     if (_isMessageRelated(message)
         && (!selectedChat || selectedChat.id !== message.relation.id)
-        && !itemsToNotifyAbout.has(message.id)// avoid duplicate notifications;
+        && !itemsToNotifyAbout.has(message.id) // avoid duplicate notifications;
     ) {
         itemsToNotifyAbout.set(message.id, message);
         _notify({itemId: message.id, title: message.author.name, options: {body: message.body}});

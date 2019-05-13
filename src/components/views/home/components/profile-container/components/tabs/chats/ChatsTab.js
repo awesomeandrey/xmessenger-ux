@@ -86,7 +86,7 @@ class ChatsTab extends React.Component {
             callback: event => {
                 const {selectedChat} = event.detail;
                 SessionStorage.setItem({key: SessionEntities.ACTIVE_CHAT, value: selectedChat});
-                this.setState({selectedChat: selectedChat}, _ => {
+                this.setState({selectedChat}, _ => {
                     postMessageToServiceWorker({selectedChat});
                 });
             }
