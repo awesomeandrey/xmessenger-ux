@@ -39,6 +39,10 @@
     .mobile-visible-only {
         display: block;
     }
+
+    .height-percent-100 {
+        height: 95%;
+    }
 }
 
 /*Scrollbar*/
@@ -67,6 +71,10 @@
 
 .flex-container__stretch {
     align-items: stretch;
+}
+
+.flex-container__space-between {
+    justify-content: space-between;
 }
 
 .flex-item__grow {

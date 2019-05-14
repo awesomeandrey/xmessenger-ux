@@ -71,14 +71,13 @@ const _notifyOnIncomingRequest = eventDetails => {
     }
 };
 
-const _switchUserStatus = (loggedIn = true) => {
-    if (!storage.user) return Promise.reject("No user specified.");
-    return fetch("/status", {
-        method: "POST",
-        body: JSON.stringify({user: storage.user, loggedIn}),
-        headers: {"Content-Type": "application/json"}
-    });
-};
+const _logoutUser = token => fetch("/logout", {
+    method: "POST",
+    body: JSON.stringify({token}),
+    headers: {
+        "Content-Type": "application/json",
+    }
+});
 
 self.addEventListener("install", event => {
 });
@@ -117,17 +116,13 @@ self.addEventListener("message", event => {
     switch (command) {
         case "changeState":
             storage = {...storage, ...data};
-            _switchUserStatus(true);
             break;
         case "reset":
-            _switchUserStatus(false)
-                .then(_ => storage = {...EMPTY_STORAGE})
-                .catch(e => console.warn(e));
+            storage = {...EMPTY_STORAGE};
+            event.waitUntil(_logoutUser(data.token));
             break;
         default:
             console.warn("Unknown message.");
             break;
     }
-
-    setTimeout(_ => console.log("Storage", storage), 3000);
 });

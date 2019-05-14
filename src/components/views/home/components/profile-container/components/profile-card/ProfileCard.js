@@ -35,7 +35,7 @@ const ProfileCard = props => {
                 </div>
             }
             body={
-                <div className="slds-clearfix">
+                <div className="flex-container flex-container__space-between">
                     <SettingsModal {...props}/>
                     <p className="slds-float_left">
                         <span className="slds-text-title_caps theme-inherit">{user.name}</span><br/>
