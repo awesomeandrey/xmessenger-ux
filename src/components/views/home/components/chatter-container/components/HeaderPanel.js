@@ -12,11 +12,9 @@ const HeaderPanel = props => {
     return (
         <MediaObject figure={<UserPicture user={fellow}/>}
                      body={
-                         <div className="slds-clearfix">
+                         <div className="flex-container flex-container__space-between">
                              <h2 className="slds-float--left">
-                                 <span className="slds-truncate">
-                                    <span className="slds-text-heading_small">{fellow.name}</span>
-                                 </span>
+                                 <span className="slds-text-heading_small">{fellow.name}</span>
                                  <div className="slds-text-color_weak theme-inherit">
                                      {!!lastLoginDate && `Last login: ${lastLoginDate}`}
                                  </div>
