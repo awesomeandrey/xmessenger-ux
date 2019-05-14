@@ -52,7 +52,7 @@ class AppContextProvider extends Component {
 
     loadUser = _ => UserService.getUserInfo()
         .then(user => this.setState({user}, _ => {
-            postMessageToServiceWorker({user}, 1);
+            postMessageToServiceWorker({user});
         }));
 
     loadIndicators = _ => UserService.getUserIndicators()
