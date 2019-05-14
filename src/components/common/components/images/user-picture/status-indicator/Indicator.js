@@ -1,5 +1,6 @@
 import React from "react";
-import AppContext from "../../../../../../model/services/context/AppContext";
+
+import {Utility} from "../../../../../../model/services/utility/UtilityService";
 
 import "./styles.css";
 
@@ -12,16 +13,13 @@ const _isOnline = (user, indicatorsMap) => {
 };
 
 const Indicator = props => {
-    const {user, children} = props;
+    const {user, indicatorsMap, richOnlineExperienceMode, children} = props;
+    if (Utility.isObjectEmpty(user)) return <span/>;
     return (
-        <AppContext.Consumer>
-            {context => (
-                <div className={`slds-is-relative ${context.richOnlineExperienceMode && "indicator"}`}>
-                    {children}
-                    <span className={`${_isOnline(user, context.indicatorsMap) && "online"}`}/>
-                </div>
-            )}
-        </AppContext.Consumer>
+        <div className={`slds-is-relative ${richOnlineExperienceMode && "indicator"}`}>
+            {children}
+            <span className={`${richOnlineExperienceMode && _isOnline(user, indicatorsMap) && "online"}`}/>
+        </div>
     );
 };
 

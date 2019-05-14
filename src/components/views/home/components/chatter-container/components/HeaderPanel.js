@@ -7,15 +7,16 @@ import MediaObject from "@salesforce/design-system-react/module/components/media
 import {Utility} from "../../../../../../model/services/utility/UtilityService";
 
 const HeaderPanel = props => {
-    const {chat} = props, {fellow} = chat, lastLoginDate = Utility.formatDate({dateNum: fellow.lastLogin});
+    const {chat} = props, {fellow} = chat,
+        lastLoginDate = Utility.formatDate({dateNum: fellow.lastLogin, showTimestamp: false});
     return (
-        <MediaObject figure={<div className="slds-avatar slds-avatar_large"><UserPicture user={fellow}/></div>}
+        <MediaObject figure={<UserPicture user={fellow}/>}
                      body={
-                         <div className="slds-clearfix flex-container">
+                         <div className="slds-clearfix">
                              <h2 className="slds-float--left">
                                  <span className="slds-truncate">
                                     <span className="slds-text-heading_small">{fellow.name}</span>
-                                </span>
+                                 </span>
                                  <div className="slds-text-color_weak theme-inherit">
                                      {!!lastLoginDate && `Last login: ${lastLoginDate}`}
                                  </div>

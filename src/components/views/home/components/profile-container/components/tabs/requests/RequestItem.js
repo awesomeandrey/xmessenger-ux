@@ -10,7 +10,7 @@ export default props => {
     const {request, onProcess} = props, {sender} = request, {name, username} = sender;
     return (
         <MediaObject className="slds-box slds-box_x-small"
-                     figure={<div className="slds-avatar slds-avatar_large"><UserPicture user={sender}/></div>}
+                     figure={<UserPicture user={sender}/>}
                      body={
                          <div className="slds-clearfix">
                              <p className="slds-float_left">

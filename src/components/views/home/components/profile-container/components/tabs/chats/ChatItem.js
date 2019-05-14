@@ -62,9 +62,7 @@ export default props => {
     const {chatData, selected} = props, {fellow} = chatData;
     return (
         <MediaObject className="slds-box slds-box_x-small"
-                     figure={<div className="slds-avatar slds-avatar_large">
-                         <UserPicture user={fellow} scalable={false}/>
-                     </div>}
+                     figure={<UserPicture user={fellow} scalable={false}/>}
                      body={
                          <div className="slds-clearfix">
                              <p className="slds-float_left">

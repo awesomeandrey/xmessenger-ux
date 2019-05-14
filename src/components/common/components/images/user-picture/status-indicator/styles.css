@@ -1,6 +1,8 @@
 .indicator {
     padding-bottom: 5px;
     padding-right: 5px;
+    height: 110%;
+    position: sticky;
 }
 
 .indicator .online {
