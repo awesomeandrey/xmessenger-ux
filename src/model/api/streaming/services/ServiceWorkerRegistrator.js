@@ -2,6 +2,7 @@ import {performRequestLocally} from "../../rest/client-util";
 import {CustomEvents} from "../../../services/utility/EventsService";
 import {PUBLIC_VAPID_KEY} from "../../../constants";
 import {Utility} from "../../../services/utility/UtilityService";
+import {getToken} from "../../rest/secureApi";
 
 const _serviceWorkerUrlPath = "service-worker.js"
     , _urlBase64ToUint8Array = (base64String) => {
@@ -61,7 +62,7 @@ export const postMessageToServiceWorker = (dataObj, timeout = 5000) => {
 
 export const dropState = _ => {
     if ("serviceWorker" in navigator) {
-        return _postMessage({command: "reset"});
+        return _postMessage({command: "reset", data: {token: getToken()}});
     } else {
         return Promise.resolve(null);
     }
