@@ -15,10 +15,11 @@ const _isOnline = (user, indicatorsMap) => {
 const Indicator = props => {
     const {user, indicatorsMap, richOnlineExperienceMode, children} = props;
     if (Utility.isObjectEmpty(user)) return <span/>;
+    let isOnline = richOnlineExperienceMode && _isOnline(user, indicatorsMap);
     return (
         <div className={`slds-is-relative ${richOnlineExperienceMode && "indicator"}`}>
             {children}
-            <span className={`${richOnlineExperienceMode && _isOnline(user, indicatorsMap) && "online"}`}/>
+            <span className={`${isOnline && "online"}`}/>
         </div>
     );
 };

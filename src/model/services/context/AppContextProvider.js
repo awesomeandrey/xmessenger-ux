@@ -7,6 +7,7 @@ import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
 import {postMessageToServiceWorker} from "../../api/streaming/services/ServiceWorkerRegistrator";
 import {LocalEntities, LocalStorage} from "../utility/StorageService";
+import {Utility} from "../utility/UtilityService";
 
 class AppContextProvider extends Component {
     constructor(props) {
@@ -36,21 +37,22 @@ class AppContextProvider extends Component {
 
     componentDidMount() {
         const {richOnlineExperienceMode} = this.state;
-        if (!richOnlineExperienceMode) {
+        if (Utility.isMobileDevice() || !richOnlineExperienceMode) {
             /**
-             * If 'service worker' is not supported/allowed then client is directly subscribed to topics.
-             * Intended for browsers/devices which do not support service workers.
+             * If 'service worker' is not supported/allowed OR it's a mobile client
+             * then client is directly subscribed to topics.
+             * Intended for browsers which do not support service workers and mobile devices.
              */
             subscribeFromClient();
         } else {
-            postMessageToServiceWorker({richNotificationsEnabled: LocalStorage.getItem(LocalEntities.RICH_NOTIFICATIONS)}, 5);
+            postMessageToServiceWorker({richNotificationsEnabled: LocalStorage.getItem(LocalEntities.RICH_NOTIFICATIONS)});
         }
         this.loadUser();
     }
 
     loadUser = _ => UserService.getUserInfo()
         .then(user => this.setState({user}, _ => {
-            postMessageToServiceWorker({user});
+            postMessageToServiceWorker({user}, 1);
         }));
 
     loadIndicators = _ => UserService.getUserIndicators()

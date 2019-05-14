@@ -72,7 +72,7 @@ const _notifyOnIncomingRequest = eventDetails => {
 };
 
 const _switchUserStatus = (loggedIn = true) => {
-    if (!storage.user) return;
+    if (!storage.user) return Promise.reject("No user specified.");
     return fetch("/status", {
         method: "POST",
         body: JSON.stringify({user: storage.user, loggedIn}),
@@ -116,15 +116,18 @@ self.addEventListener("message", event => {
     const {command, data} = JSON.parse(event.data);
     switch (command) {
         case "changeState":
-            _switchUserStatus(true);
             storage = {...storage, ...data};
+            _switchUserStatus(true);
             break;
         case "reset":
             _switchUserStatus(false)
-                .then(_ => storage = {...EMPTY_STORAGE});
+                .then(_ => storage = {...EMPTY_STORAGE})
+                .catch(e => console.warn(e));
             break;
         default:
             console.warn("Unknown message.");
             break;
     }
+
+    setTimeout(_ => console.log("Storage", storage), 3000);
 });

@@ -127,7 +127,7 @@ class ChatsTab extends React.Component {
         ChattingService.loadChatsMap()
             .then(chatsMap => {
                 this.setState({chatsMap}, () => {
-                    postMessageToServiceWorker({chatsArray: [...chatsMap.values()]}, 5000);
+                    postMessageToServiceWorker({chatsArray: [...chatsMap.values()]});
                 });
                 return chatsMap.size || 0;
             })

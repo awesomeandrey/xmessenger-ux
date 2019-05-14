@@ -11,7 +11,7 @@ const UserPicture = props => {
     return (
         <AppContext.Consumer>
             {context => (
-                <Indicator user={user} {...context}>
+                <Indicator {...context} user={user}>
                     <div className="slds-avatar slds-avatar_large">
                         {scalable ? <ScalableImage title={title} src={pictureUrl}/> :
                             <Image title={title} src={pictureUrl}/>}

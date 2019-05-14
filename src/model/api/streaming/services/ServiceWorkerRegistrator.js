@@ -1,6 +1,7 @@
 import {performRequestLocally} from "../../rest/client-util";
 import {CustomEvents} from "../../../services/utility/EventsService";
 import {PUBLIC_VAPID_KEY} from "../../../constants";
+import {Utility} from "../../../services/utility/UtilityService";
 
 const _serviceWorkerUrlPath = "service-worker.js"
     , _urlBase64ToUint8Array = (base64String) => {
@@ -22,7 +23,11 @@ const _serviceWorkerUrlPath = "service-worker.js"
 
 export const registerServiceWorker = _ => {
     if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register(_serviceWorkerUrlPath, {scope: "/"});
+        navigator.serviceWorker.getRegistrations().then(registrations => {
+            if (Utility.isObjectEmpty(registrations)) {
+                navigator.serviceWorker.register(_serviceWorkerUrlPath, {scope: "/"});
+            }
+        });
         navigator.serviceWorker.ready.then(registration => registration.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: _urlBase64ToUint8Array(PUBLIC_VAPID_KEY)
@@ -37,7 +42,7 @@ export const registerServiceWorker = _ => {
             };
             return Notification.requestPermission();
         }).then(result => {
-            console.log(`Notifications permission - ${result}`);
+            console.log(`Notifications permission - ${result}.`);
         }).catch(error => {
             console.error("Error when registering service worker.", error);
         });
@@ -46,7 +51,7 @@ export const registerServiceWorker = _ => {
     }
 };
 
-export const postMessageToServiceWorker = (dataObj, timeout = 0) => {
+export const postMessageToServiceWorker = (dataObj, timeout = 5000) => {
     if ("serviceWorker" in navigator) {
         setTimeout(_ => {
             _postMessage({command: "changeState", data: dataObj});
