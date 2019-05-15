@@ -6,14 +6,12 @@ import {subscribeFromClient} from "../../api/streaming/services/TopicsManager";
 import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
 import {serviceWorkerAllowed, postMessageToServiceWorker} from "../../api/streaming/services/ServiceWorkerRegistrator";
-import {LocalEntities, LocalStorage} from "../utility/StorageService";
 
 class AppContextProvider extends Component {
     constructor(props) {
         super(props);
         this.state = {
             user: null,
-            richNotificationsEnabled: LocalStorage.getItem(LocalEntities.RICH_NOTIFICATIONS),
             indicatorsMap: new Map()
         };
     }
@@ -39,9 +37,6 @@ class AppContextProvider extends Component {
              * Intended for browsers which do not support service workers and mobile devices.
              */
             subscribeFromClient();
-        } else {
-            const {richNotificationsEnabled} = this.state;
-            postMessageToServiceWorker({richNotificationsEnabled});
         }
         this.loadUser();
     }

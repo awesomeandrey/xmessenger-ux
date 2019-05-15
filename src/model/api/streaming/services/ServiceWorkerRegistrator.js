@@ -3,6 +3,7 @@ import {CustomEvents} from "../../../services/utility/EventsService";
 import {PUBLIC_VAPID_KEY} from "../../../constants";
 import {Utility} from "../../../services/utility/UtilityService";
 import {getToken} from "../../rest/secureApi";
+import {LocalEntities, LocalStorage} from "../../../services/utility/StorageService";
 
 const _serviceWorkerUrlPath = "service-worker.js"
     , _urlBase64ToUint8Array = (base64String) => {
@@ -50,6 +51,8 @@ export const registerServiceWorker = _ => {
             return Notification.requestPermission();
         }).then(result => {
             console.log(`Notifications permission - ${result}.`);
+            const richNotificationsEnabled = LocalStorage.getItem(LocalEntities.RICH_NOTIFICATIONS);
+            postMessageToServiceWorker({richNotificationsEnabled});
         }).catch(error => {
             console.error("Error when registering service worker.", error);
         });

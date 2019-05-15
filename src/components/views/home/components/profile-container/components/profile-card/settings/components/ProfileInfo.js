@@ -1,5 +1,4 @@
 import React from "react";
-import AppContext from "../../../../../../../../../model/services/context/AppContext";
 import ApplicationEvents from "../../../../../../../../../model/application-events";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";
 import Input from "@salesforce/design-system-react/module/components/input";
@@ -54,30 +53,27 @@ class ProfileInfo extends React.Component {
     };
 
     render() {
-        const {user} = this.props, {loading, name} = this.state;
+        const {user} = this.props, {loading, name} = this.state,
+            richNotificationsEnabled = LocalStorage.getItem(LocalEntities.RICH_NOTIFICATIONS);
         return (
-            <AppContext.Consumer>
-                {context => (
-                    <div className="slds-form--stacked slds-p-horizontal--small">
-                        <MaskedInput label="Name" placeholder="Enter your name"
-                                     iconRight={<InputIcon name="user" category="utility"/>}
-                                     disabled={loading} required
-                                     value={name} pattern={InputPatterns.NAME}
-                                     onChange={name => this.setState({name})}
-                                     onBlur={this.handleChangeName}/>
-                        <Input label="Username" disabled
-                               value={Utility.decorateUsername(user.username)}
-                               iconRight={<InputIcon name="fallback" category="utility"/>}/>
-                        {serviceWorkerAllowed && <Checkbox label="Rich notifications"
-                                                           className="slds-m-top_small"
-                                                           defaultChecked={context.richNotificationsEnabled}
-                                                           onChange={this.handleChangeNotifications}/>}
-                        {loading && <div className="slds-float_left slds-is-relative slds-p-vertical--large slds-p-left_large">
-                            <Spinner variant="brand" size="small"/>
-                        </div>}
-                    </div>
-                )}
-            </AppContext.Consumer>
+            <div className="slds-form--stacked slds-p-horizontal--small">
+                <MaskedInput label="Name" placeholder="Enter your name"
+                             iconRight={<InputIcon name="user" category="utility"/>}
+                             disabled={loading} required
+                             value={name} pattern={InputPatterns.NAME}
+                             onChange={name => this.setState({name})}
+                             onBlur={this.handleChangeName}/>
+                <Input label="Username" disabled
+                       value={Utility.decorateUsername(user.username)}
+                       iconRight={<InputIcon name="fallback" category="utility"/>}/>
+                {serviceWorkerAllowed && <Checkbox label="Rich notifications"
+                                                   className="slds-m-top_small"
+                                                   defaultChecked={richNotificationsEnabled}
+                                                   onChange={this.handleChangeNotifications}/>}
+                {loading && <div className="slds-float_left slds-is-relative slds-p-vertical--large slds-p-left_large">
+                    <Spinner variant="brand" size="small"/>
+                </div>}
+            </div>
         );
     }
 }
