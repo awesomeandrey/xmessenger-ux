@@ -62,8 +62,8 @@ export const postMessageToServiceWorker = (dataObj, timeout = 5000) => {
     }
 };
 
-export const dropState = _ => {
-    if ("serviceWorker" in navigator) {
+export const dropServiceWorkerState = _ => {
+    if (!Utility.isMobileDevice() && "serviceWorker" in navigator) {
         return _postMessage({command: "reset", data: {token: getToken()}});
     } else {
         return Promise.resolve(null);
