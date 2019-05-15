@@ -45,7 +45,7 @@ class ChatsTab extends React.Component {
                 const {user} = this.props, {chatsMap} = this.state, {clearedChat} = event.detail;
                 if (chatsMap.has(clearedChat.id)) {
                     const localChat = chatsMap.get(clearedChat.id), {updatedBy} = clearedChat;
-                    if (user.id !== updatedBy.id) {
+                    if (!!updatedBy && user.id !== updatedBy.id) {
                         NOTIFICATION_BLUEPRINTS.onChatCleared(updatedBy.name);
                     }
                     chatsMap.set(localChat.id, Object.assign(localChat, {latestMessageDate: null}));

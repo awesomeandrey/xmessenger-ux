@@ -11,7 +11,9 @@ import {Settings} from "../../../../../../../../../model/services/core/UserServi
 import {CustomEvents} from "../../../../../../../../../model/services/utility/EventsService";
 import {InputPatterns, Utility} from "../../../../../../../../../model/services/utility/UtilityService";
 import {LocalStorage, LocalEntities} from "../../../../../../../../../model/services/utility/StorageService";
-import {postMessageToServiceWorker} from "../../../../../../../../../model/api/streaming/services/ServiceWorkerRegistrator";
+import {
+    postMessageToServiceWorker, serviceWorkerAllowed
+} from "../../../../../../../../../model/api/streaming/services/ServiceWorkerRegistrator";
 
 class ProfileInfo extends React.Component {
     constructor(props) {
@@ -66,12 +68,11 @@ class ProfileInfo extends React.Component {
                         <Input label="Username" disabled
                                value={Utility.decorateUsername(user.username)}
                                iconRight={<InputIcon name="fallback" category="utility"/>}/>
-                        {context.richOnlineExperienceMode && <Checkbox label="Rich notifications"
-                                                                       className="slds-m-top_small"
-                                                                       defaultChecked={LocalStorage.getItem(LocalEntities.RICH_NOTIFICATIONS)}
-                                                                       onChange={this.handleChangeNotifications}/>}
-                        {loading &&
-                        <div className="slds-float_left slds-is-relative slds-p-vertical--large slds-p-left_large">
+                        {serviceWorkerAllowed && <Checkbox label="Rich notifications"
+                                                           className="slds-m-top_small"
+                                                           defaultChecked={context.richNotificationsEnabled}
+                                                           onChange={this.handleChangeNotifications}/>}
+                        {loading && <div className="slds-float_left slds-is-relative slds-p-vertical--large slds-p-left_large">
                             <Spinner variant="brand" size="small"/>
                         </div>}
                     </div>

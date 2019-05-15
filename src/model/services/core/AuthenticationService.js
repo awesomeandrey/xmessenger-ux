@@ -1,16 +1,23 @@
-import {API_BASE_PATH, authenticateClient} from "../../api/rest/secureApi";
+import {API_BASE_PATH, authenticateClient, performRequest as performSecureRequest} from "../../api/rest/secureApi";
 import {performRequest} from "../../api/rest/openApi";
 import {SessionStorage} from "../utility/StorageService";
 import {Navigation} from "../utility/NavigationService";
-import {dropServiceWorkerState} from "../../api/streaming/services/ServiceWorkerRegistrator";
+import {dropServiceWorkerState, serviceWorkerAllowed} from "../../api/streaming/services/ServiceWorkerRegistrator";
 
 export const LoginService = {
     loginUser: rawCredentials => authenticateClient({url: `${API_BASE_PATH}/login`, body: rawCredentials})
         .then(_ => Navigation.toHome({})),
-    logoutUser: sessionExpired => dropServiceWorkerState().then(_ => {
-        SessionStorage.clear();
-        Navigation.toLogin({jwtExpired: sessionExpired});
-    })
+    logoutUser: sessionExpired => {
+        Promise.resolve(serviceWorkerAllowed).then(allowed => {
+            return allowed ? dropServiceWorkerState() : performSecureRequest({
+                method: "POST",
+                path: "/user/logout"
+            });
+        }).finally(_ => {
+            SessionStorage.clear();
+            Navigation.toLogin({jwtExpired: sessionExpired});
+        });
+    }
 };
 
 export const RegistrationService = {

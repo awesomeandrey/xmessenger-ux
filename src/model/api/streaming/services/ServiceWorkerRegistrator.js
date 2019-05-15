@@ -18,14 +18,18 @@ const _serviceWorkerUrlPath = "service-worker.js"
         outputArray[i] = rawData.charCodeAt(i);
     }
     return outputArray;
-}, _postMessage = data => navigator.serviceWorker.ready.then(_ => {
+};
+
+const _postMessage = data => navigator.serviceWorker.ready.then(_ => {
     navigator.serviceWorker.controller.postMessage(JSON.stringify(data));
 }).catch(error => {
     console.error("Could not post message to SW.", error);
 });
 
+export const serviceWorkerAllowed = ("serviceWorker" in navigator) && !Utility.isMobileDevice();
+
 export const registerServiceWorker = _ => {
-    if ("serviceWorker" in navigator) {
+    if (serviceWorkerAllowed) {
         navigator.serviceWorker.getRegistrations().then(registrations => {
             if (Utility.isObjectEmpty(registrations)) {
                 navigator.serviceWorker.register(_serviceWorkerUrlPath, {scope: "/"});
@@ -55,15 +59,13 @@ export const registerServiceWorker = _ => {
 };
 
 export const postMessageToServiceWorker = (dataObj, timeout = 5000) => {
-    if ("serviceWorker" in navigator) {
-        setTimeout(_ => {
-            _postMessage({command: "changeState", data: dataObj});
-        }, timeout);
+    if (serviceWorkerAllowed) {
+        setTimeout(_ => _postMessage({command: "changeState", data: dataObj}), timeout);
     }
 };
 
 export const dropServiceWorkerState = _ => {
-    if (!Utility.isMobileDevice() && "serviceWorker" in navigator) {
+    if (serviceWorkerAllowed) {
         return _postMessage({command: "reset", data: {token: getToken()}});
     } else {
         return Promise.resolve(null);
