@@ -7,18 +7,32 @@ import AppContext from "../../../../../model/services/context/AppContext";
 import {UserService} from "../../../../../model/services/core/UserService";
 
 const UserPicture = props => {
-    const {user, scalable = true} = props, title = user.name, pictureUrl = UserService.composeUserPictureUrl(user);
+    const {hasIndicator = true} = props;
+    return (
+        hasIndicator
+            ? <UserPictureWithIndicator {...props}/>
+            : <UserPictureWithoutIndicator {...props}/>
+    );
+};
+
+const UserPictureWithIndicator = props => {
     return (
         <AppContext.Consumer>
             {context => (
-                <Indicator {...context} user={user}>
-                    <div className="slds-avatar slds-avatar_large">
-                        {scalable ? <ScalableImage title={title} src={pictureUrl}/> :
-                            <Image title={title} src={pictureUrl}/>}
-                    </div>
+                <Indicator {...context} user={props.user}>
+                    <UserPictureWithoutIndicator {...props}/>
                 </Indicator>
             )}
         </AppContext.Consumer>
+    );
+};
+
+const UserPictureWithoutIndicator = props => {
+    const {user, scalable = true} = props, pictureUrl = UserService.composeUserPictureUrl(user), title = user.name;
+    return (
+        <div className="slds-avatar slds-avatar_large">
+            {scalable ? <ScalableImage title={title} src={pictureUrl}/> : <Image title={title} src={pictureUrl}/>}
+        </div>
     );
 };
 

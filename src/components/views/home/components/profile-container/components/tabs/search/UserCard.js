@@ -10,7 +10,7 @@ export default props => {
     return (
         <figure className="slds-image slds-image--card slds-m-top_medium">
             <div className="slds-image__crop slds-image__crop--16-by-9 stretch">
-                <UserPicture user={user}/>
+                <UserPicture user={user} hasIndicator={false}/>
             </div>
             <figcaption className="slds-image__title slds-image__title--card">
                 <div className="slds-clearfix width-stretch">
