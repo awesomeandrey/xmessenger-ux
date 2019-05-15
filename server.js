@@ -22,7 +22,7 @@ app.get("*", function (req, res) {
     res.sendFile(path.resolve("public/index.html"));
 });
 
-app.post("/push-topics/subscribe", (req, res) => {
+app.post("/subscribe", (req, res) => {
     res.status(201).json({});
     const subscriptionDetails = req.body;
     if (!!subscriptionDetails) {

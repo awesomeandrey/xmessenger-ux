@@ -35,7 +35,7 @@ export const registerServiceWorker = _ => {
             userVisibleOnly: true,
             applicationServerKey: _urlBase64ToUint8Array(PUBLIC_VAPID_KEY)
         })).then(subscription => performRequestLocally({
-            url: "/push-topics/subscribe",
+            url: "/subscribe",
             method: "POST",
             body: subscription
         })).then(_ => {
