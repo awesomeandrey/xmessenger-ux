@@ -13,7 +13,7 @@ import {CustomEvents} from "../../../../../../../model/services/utility/EventsSe
 import {UserService} from "../../../../../../../model/services/core/UserService";
 
 const _onOpenSettings = _ => CustomEvents.fire({eventName: Events.SETTINGS.OPEN}),
-    _onLogout = LoginService.logoutUser,
+    _onLogout = _ => LoginService.logoutUser(),
     _onSelectOption = (option) => {
         switch (option.value) {
             case 1:
