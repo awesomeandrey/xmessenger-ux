@@ -20,6 +20,8 @@ const _serviceWorkerUrlPath = "service-worker.js"
     return outputArray;
 }, _postMessage = data => navigator.serviceWorker.ready.then(_ => {
     navigator.serviceWorker.controller.postMessage(JSON.stringify(data));
+}).catch(error => {
+    console.error("Could not post message to SW.", error);
 });
 
 export const registerServiceWorker = _ => {
