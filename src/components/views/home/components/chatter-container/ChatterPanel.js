@@ -29,7 +29,8 @@ class ChatterPanel extends React.Component {
     }
 
     render() {
-        const {selectedChat} = this.state, hasSelectedChat = !!selectedChat;
+        const {selectedChat} = this.state, hasSelectedChat = !!selectedChat,
+            placeholder = hasSelectedChat && `Message ${selectedChat.fellow.name}`;
         return (
             <div className="height-inherit">
                 <EmptyArea title="Select chat from the list" icon="comments"
@@ -45,7 +46,7 @@ class ChatterPanel extends React.Component {
                                 <MessagesPanel user={context.user}/>
                             </div>
                             <div className="message-input theme-marker position-bottom">
-                                <MessageInput chat={selectedChat}/>
+                                <MessageInput chat={selectedChat} placeholder={placeholder}/>
                             </div>
                         </div>
                     )}

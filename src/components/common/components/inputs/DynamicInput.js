@@ -43,18 +43,18 @@ class DynamicInput extends React.Component {
     }
 
     render() {
-        const {value, multiModeEnabled} = this.state, {loading = false, error} = this.props;
+        const {value, multiModeEnabled} = this.state, {loading = false, error, placeholder} = this.props;
         return (
             <div className="slds-form-element">
                 <div className="slds-form-element__control slds-input-has-icon slds-text-title">
-                    {!multiModeEnabled && <Input placeholder="Type here..."
+                    {!multiModeEnabled && <Input placeholder={placeholder || "Type here..."}
                                                  inputRef={el => this._inputElement = el}
                                                  value={value}
                                                  disabled={loading}
                                                  errorText={error}
                                                  onKeyDown={this.handleKeyDown}
                                                  onChange={this.handleChange}/>}
-                    {multiModeEnabled && <Textarea placeholder="Type here..."
+                    {multiModeEnabled && <Textarea placeholder={placeholder || "Type here..."}
                                                    textareaRef={el => this._textareaElement = el}
                                                    value={value}
                                                    disabled={loading}

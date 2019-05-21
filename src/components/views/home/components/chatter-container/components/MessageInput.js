@@ -53,13 +53,13 @@ class MessageInput extends React.Component {
     };
 
     render() {
-        const {loading, error} = this.state;
+        const {loading, error} = this.state, {placeholder} = this.props;
         return (
             <form onSubmit={this.handleSendMessage}
                   className="slds-p-around_small flex-container flex-container__stretch">
                 <div className="flex-item__grow">
-                    <DynamicInput loading={loading} error={error} onChange={this.handleTypeIn}
-                                  ref={component => this._dynamicInputComponent = component}/>
+                    <DynamicInput loading={loading} onChange={this.handleTypeIn} placeholder={placeholder}
+                                  error={error} ref={component => this._dynamicInputComponent = component}/>
                 </div>
                 <div className="slds-is-relative">
                     <Button variant="neutral" disabled={loading} onClick={this.handleSendMessage}
