@@ -4,7 +4,7 @@ This project is part of <b>xMessenger</b> application ecosystem. Written on Node
 with Salesforce Lightning Design System applied.<br/>
 Also, it's free cloud based browser messenger hosted on <i>Heroku</i> platform.
 
-### Used technologies
+### Keywords
 
 `reactjs`, `jsx`, `javascript`, `slds`, `travis`, `heroku`, `websockets`, `oauth`, `webpack`, `nodejs`, `service_worker`
 
