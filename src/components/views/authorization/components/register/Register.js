@@ -71,38 +71,40 @@ class Register extends React.Component {
     render() {
         const {loading, inputs, error} = this.state, {onSwitchForm} = this.props;
         return (
-            <div className={`register-form slds-form--horizontal ${!!error && "slds-has-error"}`}>
-                <MaskedInput label="Your Name"
-                             iconRight={<InputIcon name="user" category="utility"/>}
-                             value={inputs.name}
-                             disabled={loading} required
-                             pattern={InputPatterns.NAME}
-                             onChange={val => {
-                                 inputs.name = val;
-                                 this.setState({name});
-                             }}/>
-                <StatefulInput label="Choose username"
-                               iconRight={<InputIcon name="activity" category="utility"/>}
-                               disabled={loading} required
-                               promiseFunc={RegistrationService.checkUsername}
-                               pattern={InputPatterns.LOGIN}
-                               onChange={val => {
-                                   inputs.username = val;
-                                   this.setState({name});
-                               }}/>
-                <PasswordInput disabled={loading}
-                               value={inputs.password}
-                               onChange={val => {
-                                   inputs.password = val;
-                                   this.setState({inputs});
-                               }}/>
-                <PasswordInput label="Confirm password"
-                               disabled={loading}
-                               value={inputs.repeatedPassword}
-                               onChange={val => {
-                                   inputs.repeatedPassword = val;
-                                   this.setState({inputs});
-                               }}/>
+            <div className="register-form slds-form--horizontal">
+                <div className={`${!!error && "slds-has-error"}`}>
+                    <MaskedInput label="Your Name"
+                                 iconRight={<InputIcon name="user" category="utility"/>}
+                                 value={inputs.name}
+                                 disabled={loading} required
+                                 pattern={InputPatterns.NAME}
+                                 onChange={val => {
+                                     inputs.name = val;
+                                     this.setState({name});
+                                 }}/>
+                    <StatefulInput label="Choose username"
+                                   iconRight={<InputIcon name="activity" category="utility"/>}
+                                   disabled={loading} required
+                                   promiseFunc={RegistrationService.checkUsername}
+                                   pattern={InputPatterns.LOGIN}
+                                   onChange={val => {
+                                       inputs.username = val;
+                                       this.setState({name});
+                                   }}/>
+                    <PasswordInput disabled={loading}
+                                   value={inputs.password}
+                                   onChange={val => {
+                                       inputs.password = val;
+                                       this.setState({inputs});
+                                   }}/>
+                    <PasswordInput label="Confirm password"
+                                   disabled={loading}
+                                   value={inputs.repeatedPassword}
+                                   onChange={val => {
+                                       inputs.repeatedPassword = val;
+                                       this.setState({inputs});
+                                   }}/>
+                </div>
                 <EmailInput label="Email address (optional)"
                             disabled={loading}
                             value={inputs.email}
