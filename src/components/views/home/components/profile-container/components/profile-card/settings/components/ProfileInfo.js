@@ -5,6 +5,7 @@ import Input from "@salesforce/design-system-react/module/components/input";
 import InputIcon from "@salesforce/design-system-react/module/components/icon/input-icon";
 import MaskedInput from "../../../../../../../../common/components/inputs/MaskedInput";
 import Checkbox from "@salesforce/design-system-react/module/components/checkbox";
+import EmailInput from "../../../../../../../../common/components/inputs/EmailInput";
 
 import {Settings} from "../../../../../../../../../model/services/core/UserService";
 import {CustomEvents} from "../../../../../../../../../model/services/utility/EventsService";
@@ -19,30 +20,30 @@ class ProfileInfo extends React.Component {
         super(props);
         this.state = {
             loading: false,
-            name: ""
+            name: "",
+            email: ""
         };
     }
 
-    componentDidMount() {
-        const {user} = this.props;
-        this.setState({name: user.name});
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        const {user: prevUser, reset: prevReset} = prevProps, {user, reset} = this.props;
-        if ((prevUser.name !== user.name) || (!prevReset && reset)) {
-            this.setState({loading: false, name: user.name});
-        }
-    }
+    _updateUserInfo = updatedUser => {
+        this.setState({loading: true}, _ => {
+            Settings.changeProfileInfo(updatedUser)
+                .then(_ => CustomEvents.fire({eventName: ApplicationEvents.USER.RELOAD}))
+                .then(_ => this.setState({loading: false}));
+        });
+    };
 
     handleChangeName = _ => {
         const {user} = this.props, {name} = this.state, pattern = InputPatterns.NAME;
         if (!!name && Utility.matches(name, pattern) && user.name !== name) {
-            this.setState({loading: true}, _ => {
-                Settings.changeProfileInfo({...user, name})
-                    .then(_ => CustomEvents.fire({eventName: ApplicationEvents.USER.RELOAD}))
-                    .then(_ => this.setState({loading: false}));
-            });
+            this._updateUserInfo({...user, name});
+        }
+    };
+
+    handleChangeEmail = _ => {
+        const {user} = this.props, {email} = this.state, pattern = InputPatterns.EMAIL;
+        if (!!email && Utility.matches(email, pattern) && user.email !== email) {
+            this._updateUserInfo({...user, email});
         }
     };
 
@@ -53,19 +54,23 @@ class ProfileInfo extends React.Component {
     };
 
     render() {
-        const {user} = this.props, {loading, name} = this.state,
+        const {user} = this.props, {loading, name, email} = this.state,
             richNotificationsEnabled = LocalStorage.getItem(LocalEntities.RICH_NOTIFICATIONS);
         return (
             <div className="slds-form--stacked slds-p-horizontal--small">
                 <MaskedInput label="Name" placeholder="Enter your name"
                              iconRight={<InputIcon name="user" category="utility"/>}
                              disabled={loading} required
-                             value={name} pattern={InputPatterns.NAME}
+                             value={name || user.name} pattern={InputPatterns.NAME}
                              onChange={name => this.setState({name})}
                              onBlur={this.handleChangeName}/>
                 <Input label="Username" disabled
                        value={Utility.decorateUsername(user.username)}
                        iconRight={<InputIcon name="fallback" category="utility"/>}/>
+                <EmailInput label="Email address" disabled={loading}
+                            value={email} placeholder={user.email || "Type here..."}
+                            onChange={email => this.setState({email})}
+                            onBlur={this.handleChangeEmail}/>
                 {serviceWorkerAllowed && <Checkbox label="Rich notifications"
                                                    className="slds-m-top_small"
                                                    defaultChecked={richNotificationsEnabled}

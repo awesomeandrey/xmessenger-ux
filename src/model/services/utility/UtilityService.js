@@ -54,5 +54,6 @@ export const InputPatterns = {
     NAME: {exp: "^[a-zA-Z ]{2,20}$", errorMessage: "Invalid Name"},
     LOGIN: {exp: "^[a-zA-Z0-9]{4,10}", errorMessage: "Invalid Login"},
     PASSWORD: {exp: "[^ ]{4,30}", errorMessage: "Invalid Password"},
+    EMAIL: {exp: "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", errorMessage: "Invalid Email address"},
     MESSAGE_BODY: {exp: "^[a-zA-Z0-9А-Яа-яєі]{1,400}", errorMessage: "Invalid message body"}
 };
