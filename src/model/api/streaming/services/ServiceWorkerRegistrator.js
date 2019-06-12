@@ -61,7 +61,7 @@ export const registerServiceWorker = _ => {
     }
 };
 
-export const postMessageToServiceWorker = (dataObj, timeout = 5000) => {
+export const postMessageToServiceWorker = (dataObj, timeout = 0) => {
     if (serviceWorkerAllowed) {
         setTimeout(_ => _postMessage({command: "changeState", data: dataObj}), timeout);
     }

@@ -94,12 +94,14 @@ self.addEventListener("push", event => {
             _postEvent(eventData);
             return eventData;
         }).then(eventDetails => {
-            let {eventName} = eventDetails;
-            if (eventName.includes("Message")) {
-                _notifyOnIncomingMessage(eventDetails);
-            } else if (eventName.includes("Request")) {
-                _notifyOnIncomingRequest(eventDetails);
-            }
+            setTimeout(_ => {
+                let {eventName} = eventDetails;
+                if (eventName.includes("Message")) {
+                    _notifyOnIncomingMessage(eventDetails);
+                } else if (eventName.includes("Request")) {
+                    _notifyOnIncomingRequest(eventDetails);
+                }
+            }, 2000);
         }).catch(error => console.warn(error))
     );
 });
