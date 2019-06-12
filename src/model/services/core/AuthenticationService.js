@@ -13,8 +13,7 @@ export const LoginService = {
     logoutUser: sessionExpired => {
         CustomEvents.fire({eventName: ApplicationEvents.APP_DEFAULT.LOADING, detail: {loading: true}})
             .then(_ => serviceWorkerAllowed ? dropServiceWorkerState() : performSecureRequest({
-                method: "POST",
-                path: "/user/logout"
+                method: "POST", path: "/user/logout"
             }))
             .finally(_ => {
                 SessionStorage.clear();
