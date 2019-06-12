@@ -121,6 +121,12 @@
     height: 100vh;
 }
 
+@media (hover: none) and (pointer: coarse) {
+    body {
+        font-size: 0.8125rem;
+    }
+}
+
 /*For iPhone and SmartPhones*/
 @media only screen
 and (min-device-width: 315px)
