@@ -36,16 +36,14 @@ class Login extends React.Component {
                     inputs.password = "";
                     this.setState({loading: false, inputs: inputs, error: errorMessage}, _ => {
                         CustomEvents.fire({
-                            eventName: ToastEvents.SHOW,
-                            detail: {level: "error", message: errorMessage}
+                            eventName: ToastEvents.SHOW, detail: {level: "error", message: errorMessage}
                         });
                     });
                 });
             });
         } else {
             CustomEvents.fire({
-                eventName: ToastEvents.SHOW,
-                detail: {level: "warning", message: "Credentials required."}
+                eventName: ToastEvents.SHOW, detail: {level: "warning", message: "Credentials required."}
             });
         }
     };
@@ -96,7 +94,8 @@ class Login extends React.Component {
                         <Button variant="base" onClick={onSwitchForm}
                                 className={`${loading && "slds-hide"}`}>Register</Button>
                     </div>
-                    <div className={loading ? "slds-float_left slds-is-relative slds-p-vertical--medium slds-p-left_large" : "slds-hide"}>
+                    <div
+                        className={loading ? "slds-float_left slds-is-relative slds-p-vertical--medium slds-p-left_large" : "slds-hide"}>
                         <Spinner variant="brand" size="small"/>
                     </div>
                 </div>

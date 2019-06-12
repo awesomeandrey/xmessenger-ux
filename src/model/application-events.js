@@ -1,5 +1,8 @@
 // Constant names on custom events;
 export default {
+    APP_DEFAULT: {
+        LOADING: "onLoading"
+    },
     USER: {
         RELOAD: "onReloadUserInfo",
         INDICATOR_CHANGE: "onIndicatorChange"

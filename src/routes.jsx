@@ -14,6 +14,8 @@ import {Route, IndexRoute} from "react-router";
 import {CustomEvents} from "./model/services/utility/EventsService";
 import {Utility} from "./model/services/utility/UtilityService";
 
+// todo - Utilize react hooks;
+
 const App = props => {
     if (!Utility.isMobileDevice()) {
         CustomEvents.register({eventName: "load", callback: registerServiceWorker});

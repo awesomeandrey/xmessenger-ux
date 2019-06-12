@@ -3,20 +3,23 @@ import {performRequest} from "../../api/rest/openApi";
 import {SessionStorage} from "../utility/StorageService";
 import {Navigation} from "../utility/NavigationService";
 import {dropServiceWorkerState, serviceWorkerAllowed} from "../../api/streaming/services/ServiceWorkerRegistrator";
+import {CustomEvents} from "../utility/EventsService";
+
+import ApplicationEvents from "../../application-events";
 
 export const LoginService = {
     loginUser: rawCredentials => authenticateClient({url: `${API_BASE_PATH}/login`, body: rawCredentials})
         .then(_ => Navigation.toHome({})),
     logoutUser: sessionExpired => {
-        Promise.resolve(serviceWorkerAllowed).then(allowed => {
-            return allowed ? dropServiceWorkerState() : performSecureRequest({
+        CustomEvents.fire({eventName: ApplicationEvents.APP_DEFAULT.LOADING, detail: {loading: true}})
+            .then(_ => serviceWorkerAllowed ? dropServiceWorkerState() : performSecureRequest({
                 method: "POST",
                 path: "/user/logout"
+            }))
+            .finally(_ => {
+                SessionStorage.clear();
+                Navigation.toLogin({jwtExpired: sessionExpired});
             });
-        }).finally(_ => {
-            SessionStorage.clear();
-            Navigation.toLogin({jwtExpired: sessionExpired});
-        });
     }
 };
 
