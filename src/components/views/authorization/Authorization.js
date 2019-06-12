@@ -8,7 +8,7 @@ import PageHeader from "@salesforce/design-system-react/module/components/page-h
 
 import {Utility} from "../../../model/services/utility/UtilityService";
 
-const register = Utility.getParamFromUrl({paramName: "register"}) === "true";
+const register = Utility.getParamFromUrl({paramName: "register"}) === "1";
 const jwtExpired = !register && Utility.getParamFromUrl({paramName: "expired"}) === "1";
 
 class Authorization extends React.Component {
