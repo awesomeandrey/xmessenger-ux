@@ -43,13 +43,6 @@ export default [
         })
     },
     {
-        /**
-         * Payload body blueprint:
-         * {
-         *     user: {id:1111,...},
-         *     loggedIn: true | false
-         * }
-         */
         topic: Topics.USER.INDICATOR_CHANGE,
         getEventDetails: payload => ({
             eventName: ApplicationEvents.USER.INDICATOR_CHANGE,

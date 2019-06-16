@@ -20,7 +20,7 @@ class AppContextProvider extends Component {
         CustomEvents.register({
             eventName: ApplicationEvents.USER.INDICATOR_CHANGE, callback: ({detail}) => {
                 const {indicator} = detail, {indicatorsMap} = this.state;
-                if (indicatorsMap.has(indicator.id) && indicatorsMap.get(indicator.id).loggedIn !== indicator.loggedIn) {
+                if (indicatorsMap.has(indicator.id) && indicatorsMap.get(indicator.id).active !== indicator.active) {
                     this.setState({indicatorsMap: indicatorsMap.set(indicator.id, indicator)});
                 }
             }

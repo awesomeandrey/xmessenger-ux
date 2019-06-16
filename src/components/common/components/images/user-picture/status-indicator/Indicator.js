@@ -6,7 +6,7 @@ import "./styles.css";
 
 const _isOnline = (user, indicatorsMap) => {
     if (!!user && indicatorsMap.has(user.id)) {
-        return indicatorsMap.get(user.id).loggedIn;
+        return indicatorsMap.get(user.id).active;
     } else {
         return false;
     }
