@@ -1,8 +1,7 @@
 import React from "react";
 import Image from "../plain/Image";
 import ScalableImage from "../scalable/ScalableImage";
-import Indicator from "./status-indicator/Indicator";
-import AppContext from "../../../../../model/services/context/AppContext";
+import Indicator from "../../indicator/Indicator";
 
 import {UserService} from "../../../../../model/services/core/UserService";
 
@@ -17,13 +16,9 @@ const UserPicture = props => {
 
 const UserPictureWithIndicator = props => {
     return (
-        <AppContext.Consumer>
-            {context => (
-                <Indicator {...context} user={props.user}>
-                    <UserPictureWithoutIndicator {...props}/>
-                </Indicator>
-            )}
-        </AppContext.Consumer>
+        <Indicator user={props.user}>
+            <UserPictureWithoutIndicator {...props}/>
+        </Indicator>
     );
 };
 

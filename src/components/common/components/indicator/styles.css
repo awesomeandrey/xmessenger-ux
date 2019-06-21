@@ -1,11 +1,11 @@
-.indicator {
+.indicator-container {
     padding-bottom: 5px;
     padding-right: 5px;
     height: 110%;
     position: sticky;
 }
 
-.indicator .online {
+.indicator-container .indicator-status__online {
     height: .6rem;
     width: .6rem;
     background-color: #4bca81;
