@@ -60,7 +60,7 @@ class SettingsModal extends React.Component {
                         </div>
                     </TabsPanel>
                     <TabsPanel label="Change Password">
-                        {user["loggedExternally"]
+                        {user["external"]
                             ? <EmptyArea title="No password change." icon="announcement"/>
                             : <PasswordChange user={user} reset={reset}/>}
                     </TabsPanel>
