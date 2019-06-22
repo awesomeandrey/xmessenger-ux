@@ -31,16 +31,16 @@ const Indicator = props => {
 };
 
 const IndicatorText = props => {
-    const {online, onlinePlaceholder = "Online", offlinePlaceholder = "Offline"} = props;
+    const {online, className, onlinePlaceholder = "Online", offlinePlaceholder = "Offline"} = props;
     return (
-        <span className="slds-text-color_weak">{online ? onlinePlaceholder : offlinePlaceholder}</span>
+        <span className={className}>{online ? onlinePlaceholder : offlinePlaceholder}</span>
     );
 };
 
 const IndicatorPicture = props => {
-    const {online, children} = props;
+    const {online, className, children} = props;
     return (
-        <div className="slds-is-relative indicator-container">
+        <div className={Utility.join("slds-is-relative indicator-container", className)}>
             {children}
             <span className={`${online && "indicator-status__online"}`}/>
         </div>

@@ -17,10 +17,9 @@ const HeaderPanel = props => {
                      body={
                          <div className="flex-container flex-container__space-between">
                              <h2 className="slds-float--left">
-                                 <span className="slds-text-heading_small">{fellow.name}</span>
-                                 <div className="slds-text-color_weak theme-inherit">
-                                     <Indicator user={fellow} offlinePlaceholder={`Last login: ${lastLoginDate}`}/>
-                                 </div>
+                                 <span className="slds-text-heading_small">{fellow.name}</span><br/>
+                                 <Indicator className="slds-text-color_weak theme-inherit" user={fellow}
+                                            offlinePlaceholder={`Last login: ${lastLoginDate}`}/>
                              </h2>
                              <div className="slds-float--right">
                                  <Button variant="neutral" onClick={_ => {
