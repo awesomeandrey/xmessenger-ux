@@ -4,8 +4,10 @@ import PropsLoader from "../../../../../common/components/loader/PropsLoader";
 import Button from "@salesforce/design-system-react/module/components/button";
 import MediaObject from "@salesforce/design-system-react/module/components/media-object";
 import Indicator from "../../../../../common/components/indicator/Indicator";
+import ApplicationEvents from "../../../../../../model/application-events";
 
 import {Utility} from "../../../../../../model/services/utility/UtilityService";
+import {CustomEvents} from "../../../../../../model/services/utility/EventsService";
 
 const HeaderPanel = props => {
     const {chat} = props, {fellow} = chat,
@@ -22,8 +24,12 @@ const HeaderPanel = props => {
                              </h2>
                              <div className="slds-float--right">
                                  <Button variant="neutral" onClick={_ => {
-                                     document.body.scrollTop = 0; // For Safari
-                                     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+                                     document.body.scrollTop = 0; // For Safari;
+                                     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera;
+                                     CustomEvents.fire({
+                                         eventName: ApplicationEvents.CHAT.SELECT,
+                                         detail: {selectedChat: null}
+                                     });
                                  }} className="mobile-visible-only">Back</Button>
                              </div>
                          </div>
