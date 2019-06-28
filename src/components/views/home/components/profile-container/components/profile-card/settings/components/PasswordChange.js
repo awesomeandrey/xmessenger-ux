@@ -73,6 +73,7 @@ class PasswordChange extends React.Component {
         if (reset) return <span/>;
         return (
             <MediaObject figure={<Icon category="action" name="password_unlock" size="large"/>}
+                         className="slds-m-horizontal--medium"
                          body={
                              <form className="slds-form_stacked" onSubmit={e => e.preventDefault()}>
                                  <PasswordInput className="slds-m-bottom--small"
