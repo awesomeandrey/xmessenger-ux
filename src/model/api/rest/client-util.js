@@ -1,14 +1,17 @@
+import fetch from "node-fetch";
+import FormData from "form-data";
+
 import {API_SERVER_URL} from "../../constants";
 
 const _parseJSON = response => response.text().then(rawText => rawText ? JSON.parse(rawText) : {});
 const _handleSuccess = response => _parseJSON(response).then(data => Promise.resolve(data));
 const _handleError = response => _parseJSON(response).then(error => Promise.reject(error));
 const _performRequest = endpoint => parameters => {
-    const {url, method = "GET", body = "", headers = DEFAULT_HEADERS} = parameters,
+    const {url, method = "GET", body = "", headers = {}} = parameters,
         isBinaryData = body instanceof FormData, requestBody = {
             method: method,
             body: method === "GET" ? undefined : isBinaryData ? body : JSON.stringify(body),
-            headers: headers
+            headers: Object.assign(DEFAULT_HEADERS, headers)
         };
     return fetch(endpoint.concat(url), requestBody).then(response => {
         if (response.ok) {

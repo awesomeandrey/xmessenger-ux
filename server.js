@@ -1,11 +1,10 @@
 import path from "path";
 import express from "express";
 import bodyParser from "body-parser";
-import fetch from "node-fetch";
 
 import {subscribeFromServer} from "./src/model/api/streaming/services/TopicsManager";
 import {pushNotification} from "./src/model/api/streaming/core/web-push-manager";
-import {API_SERVER_URL} from "./src/model/constants";
+import {performRequest} from "./src/model/api/rest/client-util";
 
 const app = express(), PORT = process.env.PORT || 80,
     cacheControl = process.env.NODE_ENV === "production" ? {maxAge: "1h"} : {};
@@ -36,13 +35,10 @@ app.post("/subscribe", (req, res) => {
 app.post("/logout", (req, res) => {
     res.status(200).json({});
     const {token} = req.body;
-    fetch(API_SERVER_URL + "/api/user/logout", {
+    performRequest({
+        url: "/api/user/logout",
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
-        }
-    }).then(res => {
+        headers: {"Authorization": "Bearer " + token}
     });
 });
 
