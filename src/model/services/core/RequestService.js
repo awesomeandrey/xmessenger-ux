@@ -3,7 +3,7 @@ import {performRequest} from "../../api/rest/secureApi";
 export default {
     getRequests: _ => performRequest({
         method: "GET",
-        path: "/requests/"
+        path: "/requests"
     }),
     respondToRequest: request => performRequest({
         method: "PUT",

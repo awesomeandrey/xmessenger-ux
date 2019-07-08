@@ -6,6 +6,7 @@ import {subscribeFromClient} from "../../api/streaming/services/TopicsManager";
 import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
 import {serviceWorkerAllowed, postMessageToServiceWorker} from "../../api/streaming/services/ServiceWorkerRegistrator";
+import {SessionEntities, SessionStorage} from "../utility/StorageService";
 
 class AppContextProvider extends Component {
     constructor(props) {
@@ -38,7 +39,15 @@ class AppContextProvider extends Component {
              */
             subscribeFromClient();
         }
+
+        // Retrieve current user info;
         this.loadUser();
+
+        // Initialize active chat (if present);
+        const activeChat = SessionStorage.getItem(SessionEntities.ACTIVE_CHAT);
+        if (!!activeChat) {
+            CustomEvents.fire({eventName: ApplicationEvents.CHAT.SELECT, detail: {selectedChat: activeChat}});
+        }
     }
 
     loadUser = _ => UserService.getUserInfo()

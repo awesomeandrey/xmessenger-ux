@@ -14,7 +14,7 @@ const _sortChatsByLatestMessageDate = chatsArray => {
 export const ChattingService = {
     loadChatsMap: _ => performRequest({
         method: "GET",
-        path: "/chats/"
+        path: "/chats"
     }).then(chatsArray => {
         const chatsMap = _parseChatItems(chatsArray);
         return Promise.resolve(chatsMap)

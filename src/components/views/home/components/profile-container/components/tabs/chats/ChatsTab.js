@@ -114,14 +114,6 @@ class ChatsTab extends React.Component {
         });
     }
 
-    componentDidMount() {
-        // TODO -- move to separate component;
-        const activeChat = SessionStorage.getItem(SessionEntities.ACTIVE_CHAT);
-        if (!!activeChat) {
-            CustomEvents.fire({eventName: ApplicationEvents.CHAT.SELECT, detail: {selectedChat: activeChat}});
-        }
-    }
-
     handleLoadChats = _ => {
         ChattingService.loadChatsMap()
             .then(chatsMap => {
