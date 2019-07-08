@@ -5,6 +5,13 @@ export const CustomEvents = {
         }
         window.addEventListener(eventName, callback, capture);
     },
+    registerOneTime: function ({eventName, callback, capture = false}) {
+        const listenerFunc = event => {
+            callback(event);
+            window.removeEventListener(eventName, listenerFunc);
+        };
+        this.register({eventName, callback: listenerFunc, capture});
+    },
     fire: ({eventName, detail = {}, callback}) => {
         if (!eventName) {
             console.error("'eventName' cannot be null!");

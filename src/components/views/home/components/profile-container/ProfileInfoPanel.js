@@ -3,7 +3,7 @@ import ProfileCard from "./components/profile-card/ProfileCard";
 import ChatsTab from "./components/tabs/chats/ChatsTab";
 import RequestsTab from "./components/tabs/requests/RequestsTab";
 import SearchTab from "./components/tabs/search/SearchTab";
-import Events from "../../../../../model/application-events";
+import ApplicationEvents from "../../../../../model/application-events";
 import GitHubLink from "../../../../common/components/github-link/GitHubLink";
 import AppContext from "../../../../../model/services/context/AppContext";
 import Tabs from "@salesforce/design-system-react/module/components/tabs";
@@ -27,22 +27,31 @@ class ProfileInfoPanel extends React.Component {
 
     componentDidMount() {
         CustomEvents.register({
-            eventName: Events.CHAT.CALCULATE,
+            eventName: ApplicationEvents.CHAT.CALCULATE,
             callback: event => this.setState({chatsAmount: event.detail})
         });
         CustomEvents.register({
-            eventName: Events.REQUEST.CALCULATE,
+            eventName: ApplicationEvents.REQUEST.CALCULATE,
             callback: event => this.setState({requestsAmount: event.detail})
         });
         const activeTabKey = SessionStorage.getItem(SessionEntities.ACTIVE_TAB_KEY);
-        if (!!activeTabKey) {
-            this.handleSelectTab(activeTabKey);
-        }
+        this.handleSelectTab(activeTabKey || 0);
     }
 
     handleSelectTab(activeTabKey) {
         SessionStorage.setItem({key: SessionEntities.ACTIVE_TAB_KEY, value: activeTabKey});
-        this.setState({activeTabKey: activeTabKey});
+        this.setState({activeTabKey}, _ => {
+            switch (activeTabKey) {
+                case 0:
+                    CustomEvents.fire({eventName: ApplicationEvents.CHAT.INIT_LOAD_ALL});
+                    break;
+                case 1:
+                    CustomEvents.fire({eventName: ApplicationEvents.REQUEST.INIT_LOAD_ALL});
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
     render() {

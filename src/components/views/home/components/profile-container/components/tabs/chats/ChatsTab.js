@@ -8,7 +8,6 @@ import {ChattingService} from "../../../../../../../../model/services/core/Chatt
 import {CustomEvents, KeyEvents} from "../../../../../../../../model/services/utility/EventsService";
 import {SessionEntities, SessionStorage} from "../../../../../../../../model/services/utility/StorageService";
 import {postMessageToServiceWorker} from "../../../../../../../../model/api/streaming/services/ServiceWorkerRegistrator";
-import {UserService} from "../../../../../../../../model/services/core/UserService";
 
 import "./styles.css";
 
@@ -37,8 +36,12 @@ class ChatsTab extends React.Component {
     }
 
     componentWillMount() {
+        CustomEvents.registerOneTime({
+            eventName: ApplicationEvents.CHAT.INIT_LOAD_ALL, callback: _ => {
+                CustomEvents.fire({eventName: ApplicationEvents.CHAT.LOAD_ALL});
+            }
+        });
         CustomEvents.register({eventName: ApplicationEvents.CHAT.LOAD_ALL, callback: this.handleLoadChats});
-
         CustomEvents.register({
             eventName: ApplicationEvents.CHAT.CLEAR,
             callback: event => {
@@ -53,7 +56,6 @@ class ChatsTab extends React.Component {
                 }
             }
         });
-
         CustomEvents.register({
             eventName: ApplicationEvents.CHAT.DELETE,
             callback: event => {
@@ -80,7 +82,6 @@ class ChatsTab extends React.Component {
                 }
             }
         });
-
         CustomEvents.register({
             eventName: ApplicationEvents.CHAT.SELECT,
             callback: event => {
@@ -91,7 +92,6 @@ class ChatsTab extends React.Component {
                 });
             }
         });
-
         CustomEvents.register({
             eventName: ApplicationEvents.MESSAGE.ADD,
             callback: event => {
@@ -103,7 +103,6 @@ class ChatsTab extends React.Component {
                 }
             }
         });
-
         // 'Escape' button;
         KeyEvents.register({
             eventName: 'keydown', handler: event => {
@@ -116,7 +115,7 @@ class ChatsTab extends React.Component {
     }
 
     componentDidMount() {
-        CustomEvents.fire({eventName: ApplicationEvents.CHAT.LOAD_ALL});
+        // TODO -- move to separate component;
         const activeChat = SessionStorage.getItem(SessionEntities.ACTIVE_CHAT);
         if (!!activeChat) {
             CustomEvents.fire({eventName: ApplicationEvents.CHAT.SELECT, detail: {selectedChat: activeChat}});

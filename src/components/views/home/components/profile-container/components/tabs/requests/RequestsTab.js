@@ -1,6 +1,6 @@
 import React from "react";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
-import Events from "../../../../../../../../model/application-events";
+import ApplicationEvents from "../../../../../../../../model/application-events";
 import ToastEvents from "../../../../../../../common/components/toasts/toasts-events";
 import RequestService from "../../../../../../../../model/services/core/RequestService";
 import RequestItem from "./RequestItem";
@@ -13,7 +13,8 @@ const NOTIFICATION_BLUEPRINTS = {
             eventName: ToastEvents.SHOW,
             detail: {
                 level: "success",
-                message: <span>Friendship request from <b>{request.sender.name}</b> was <b>{request.approved ? "accepted" : "declined"}</b>.</span>
+                message:
+                    <span>Friendship request from <b>{request.sender.name}</b> was <b>{request.approved ? "accepted" : "declined"}</b>.</span>
             }
         });
     },
@@ -49,8 +50,13 @@ class RequestsTab extends React.Component {
     }
 
     componentWillMount() {
+        CustomEvents.registerOneTime({
+            eventName: ApplicationEvents.REQUEST.INIT_LOAD_ALL, callback: _ => {
+                CustomEvents.fire({eventName: ApplicationEvents.REQUEST.LOAD_ALL});
+            }
+        });
         CustomEvents.register({
-            eventName: Events.REQUEST.SEND,
+            eventName: ApplicationEvents.REQUEST.SEND,
             callback: event => {
                 const {user} = this.props, {request} = event.detail;
                 if (user.id === request.recipient.id) {
@@ -58,34 +64,33 @@ class RequestsTab extends React.Component {
                 }
             }
         });
-
         CustomEvents.register({
-            eventName: Events.REQUEST.PROCESS,
+            eventName: ApplicationEvents.REQUEST.PROCESS,
             callback: event => {
                 const {user} = this.props, {request} = event.detail;
                 if (user.id === request.recipient.id) {
                     if (request.approved) {
-                        CustomEvents.fire({eventName: Events.CHAT.LOAD_ALL});
+                        CustomEvents.fire({eventName: ApplicationEvents.CHAT.LOAD_ALL});
                     }
                     this.loadRequests();
                 } else if (user.id === request.sender.id) {
                     NOTIFICATION_BLUEPRINTS.onProcessRequest(request);
                     if (request.approved) {
-                        CustomEvents.fire({eventName: Events.CHAT.LOAD_ALL});
+                        CustomEvents.fire({eventName: ApplicationEvents.CHAT.LOAD_ALL});
                     }
                 }
             }
         });
-    }
-
-    componentDidMount() {
-        this.loadRequests();
+        CustomEvents.register({eventName: ApplicationEvents.REQUEST.LOAD_ALL, callback: this.loadRequests});
     }
 
     loadRequests = _ => {
         RequestService.getRequests()
             .then(requests => this.setState({requests: requests || []}, _ => {
-                CustomEvents.fire({eventName: Events.REQUEST.CALCULATE, detail: this.state.requests.length || 0});
+                CustomEvents.fire({
+                    eventName: ApplicationEvents.REQUEST.CALCULATE,
+                    detail: this.state.requests.length || 0
+                });
             }));
     };
 

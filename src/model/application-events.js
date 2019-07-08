@@ -8,6 +8,7 @@ export default {
         INDICATOR_CHANGE: "onIndicatorChange"
     },
     CHAT: {
+        INIT_LOAD_ALL: "onInitLoadChats",
         LOAD_ALL: "onLoadChats",
         SELECT: "onSelectChat",
         CLEAR: "onClearChat",
@@ -15,6 +16,8 @@ export default {
         CALCULATE: "onCalculateChats",
     },
     REQUEST: {
+        INIT_LOAD_ALL: "onInitLoadRequests",
+        LOAD_ALL: "onLoadRequests",
         SEND: "onSendRequest",
         PROCESS: "onProcessRequest",
         CALCULATE: "onCalculateRequests",
