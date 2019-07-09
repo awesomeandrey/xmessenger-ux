@@ -21,12 +21,7 @@ const _performRequest = endpoint => parameters => {
         } else {
             return _handleError(response);
         }
-    }).catch(error => {
-        let errorText = "Couldn't perform request due to network issues.";
-        console.warn(errorText, JSON.stringify(error));
-        CustomEvents.fire({eventName: ToastEvents.SHOW, detail: {message: errorText}});
-        return Promise.reject(error);
-    });
+    }).catch(handleFetchIssue);
 };
 
 export const DEFAULT_HEADERS = {"Content-Type": "application/json;charset=UTF-8"};
@@ -37,4 +32,13 @@ export const performRequest = parameters => {
 
 export const performRequestLocally = parameters => {
     return _performRequest("")(parameters);
+};
+
+export const handleFetchIssue = error => {
+    if (TypeError.prototype.isPrototypeOf(error)) {
+        let errorText = "Couldn't perform request due to network issues.";
+        console.warn(errorText, JSON.stringify(error));
+        CustomEvents.fire({eventName: ToastEvents.SHOW, detail: {message: errorText}});
+    }
+    return Promise.reject(error);
 };

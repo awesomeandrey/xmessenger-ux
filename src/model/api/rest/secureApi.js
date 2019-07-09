@@ -1,5 +1,5 @@
 import {API_SERVER_URL} from "../../constants";
-import {performRequest as callRestApi, DEFAULT_HEADERS} from "./client-util";
+import {performRequest as callRestApi, handleFetchIssue, DEFAULT_HEADERS} from "./client-util";
 import {SessionStorage, SessionEntities} from "../../services/utility/StorageService";
 import {LoginService} from "../../services/core/AuthenticationService";
 
@@ -27,14 +27,14 @@ export const authenticateClient = ({url, method = "POST", body = "", headers = D
         body: JSON.stringify(body),
         headers: headers
     }).then(response => {
+        SessionStorage.removeItem(SessionEntities.JWT_TOKEN);
         if (response.ok) {
             SessionStorage.setItem({key: SessionEntities.JWT_TOKEN, value: _retrieveBearerToken(response.headers)});
             return Promise.resolve(true);
         } else {
-            SessionStorage.removeItem(SessionEntities.JWT_TOKEN);
             return Promise.reject({message: "Bad credentials."});
         }
-    });
+    }).catch(handleFetchIssue);
 };
 
 /**
