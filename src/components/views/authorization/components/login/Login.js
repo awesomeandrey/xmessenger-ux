@@ -28,11 +28,12 @@ class Login extends React.Component {
     handleLogin = _ => {
         if (this.isFormFulfilled()) {
             this.setState({loading: true, error: ""}, _ => {
+                debugger;
                 const {inputs} = this.state;
                 LoginService.loginUser({
-                    username: inputs.username,
-                    password: inputs.password
+                    username: inputs.username, password: inputs.password
                 }).catch(errorMessage => {
+                    debugger;
                     inputs.password = "";
                     this.setState({loading: false, inputs: inputs, error: errorMessage}, _ => {
                         CustomEvents.fire({
@@ -43,7 +44,8 @@ class Login extends React.Component {
             });
         } else {
             CustomEvents.fire({
-                eventName: ToastEvents.SHOW, detail: {level: "warning", message: "Credentials required."}
+                eventName: ToastEvents.SHOW,
+                detail: {level: "warning", message: "Credentials required."}
             });
         }
     };
@@ -52,11 +54,8 @@ class Login extends React.Component {
         // Initiate OAuth flow;
         this.setState({loading: true, error: ""}, _ => {
             GmailService.requestTokenUrl()
-                .then(url => Navigation.toCustom({url: url, replace: true}))
-                .catch(e => {
-                    this.setState({loading: false});
-                    console.error(JSON.stringify(e));
-                });
+                .then(url => Navigation.toCustom({url, replace: true}))
+                .catch(_ => this.setState({loading: false}));
         });
     };
 

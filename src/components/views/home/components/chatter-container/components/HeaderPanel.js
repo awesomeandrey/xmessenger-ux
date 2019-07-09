@@ -16,11 +16,11 @@ const HeaderPanel = props => {
         <MediaObject figure={<UserPicture user={fellow}/>}
                      body={
                          <div className="flex-container flex-container__space-between">
-                             <h2 className="slds-float--left">
-                                 <span className="slds-text-heading_small">{fellow.name}</span><br/>
+                             <p className="slds-float--left">
+                                 <span className="slds-text-title_caps theme-inherit">{fellow.name}</span><br/>
                                  <Indicator className="slds-text-color_weak theme-inherit" user={fellow}
                                             offlinePlaceholder={`Last login: ${lastLoginDate}`}/>
-                             </h2>
+                             </p>
                              <div className="slds-float--right">
                                  <Button variant="neutral" onClick={_ => {
                                      document.body.scrollTop = 0; // For Safari;

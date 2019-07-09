@@ -22,11 +22,10 @@ const _performRequest = endpoint => parameters => {
             return _handleError(response);
         }
     }).catch(error => {
-        console.warn("Couldn't perform request due to network issues.", JSON.stringify(error));
-        CustomEvents.fire({
-            eventName: ToastEvents.SHOW,
-            detail: {message: "Couldn't perform request due to network issues."}
-        });
+        let errorText = "Couldn't perform request due to network issues.";
+        console.warn(errorText, JSON.stringify(error));
+        CustomEvents.fire({eventName: ToastEvents.SHOW, detail: {message: errorText}});
+        return Promise.reject(error);
     });
 };
 
