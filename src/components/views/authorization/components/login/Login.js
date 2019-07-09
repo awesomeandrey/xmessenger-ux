@@ -17,7 +17,7 @@ class Login extends React.Component {
         super(props);
         this.state = {
             loading: false,
-            error: "",
+            errorText: "",
             inputs: {
                 username: "",
                 password: ""
@@ -27,17 +27,13 @@ class Login extends React.Component {
 
     handleLogin = _ => {
         if (this.isFormFulfilled()) {
-            this.setState({loading: true, error: ""}, _ => {
-                debugger;
+            this.setState({loading: true, errorText: ""}, _ => {
                 const {inputs} = this.state;
-                LoginService.loginUser({
-                    username: inputs.username, password: inputs.password
-                }).catch(errorMessage => {
-                    debugger;
+                LoginService.loginUser(inputs).catch(error => {
                     inputs.password = "";
-                    this.setState({loading: false, inputs: inputs, error: errorMessage}, _ => {
+                    this.setState({loading: false, inputs, errorText: error.message}, _ => {
                         CustomEvents.fire({
-                            eventName: ToastEvents.SHOW, detail: {level: "error", message: errorMessage}
+                            eventName: ToastEvents.SHOW, detail: {level: "error", message: error.message}
                         });
                     });
                 });
@@ -52,7 +48,7 @@ class Login extends React.Component {
 
     handleLoginViaGmail = _ => {
         // Initiate OAuth flow;
-        this.setState({loading: true, error: ""}, _ => {
+        this.setState({loading: true, errorText: ""}, _ => {
             GmailService.requestTokenUrl()
                 .then(url => Navigation.toCustom({url, replace: true}))
                 .catch(_ => this.setState({loading: false}));
@@ -66,9 +62,9 @@ class Login extends React.Component {
     };
 
     render() {
-        const {loading, inputs, error} = this.state, {onSwitchForm} = this.props;
+        const {loading, inputs, errorText} = this.state, {onSwitchForm} = this.props;
         return (
-            <form onSubmit={this.handleLogin} className={`slds-form--stacked ${!!error && "slds-has-error"}`}>
+            <form onSubmit={this.handleLogin} className={`slds-form--stacked ${!!errorText && "slds-has-error"}`}>
                 <MaskedInput label="Login" required
                              iconRight={<InputIcon name="user" category="utility"/>}
                              pattern={InputPatterns.LOGIN}

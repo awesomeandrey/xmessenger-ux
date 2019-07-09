@@ -21,7 +21,7 @@ class ProxyPage extends React.Component {
                 CustomEvents.fire({
                     eventName: Events.SHOW,
                     detail: {level: "error", message: "Internal error occurred, please address support."},
-                    callback: _ => console.log(error)
+                    callback: _ => console.log(JSON.stringify(error))
                 });
             });
     }

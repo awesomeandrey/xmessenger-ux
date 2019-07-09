@@ -32,7 +32,7 @@ export const authenticateClient = ({url, method = "POST", body = "", headers = D
             return Promise.resolve(true);
         } else {
             SessionStorage.removeItem(SessionEntities.JWT_TOKEN);
-            return Promise.reject("Bad credentials.");
+            return Promise.reject({message: "Bad credentials."});
         }
     });
 };
