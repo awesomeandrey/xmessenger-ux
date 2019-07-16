@@ -2,10 +2,9 @@ import React, {Component} from 'react';
 import AppContext from './AppContext';
 import ApplicationEvents from "../../application-events";
 
-import {subscribeFromClient} from "../../api/streaming/services/TopicsManager";
 import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
-import {serviceWorkerAllowed, postMessageToServiceWorker} from "../../api/streaming/services/ServiceWorkerRegistrator";
+import {postMessageToServiceWorker} from "../../api/streaming/services/ServiceWorkerRegistrator";
 import {SessionEntities, SessionStorage} from "../utility/StorageService";
 
 class AppContextProvider extends Component {
@@ -31,18 +30,8 @@ class AppContextProvider extends Component {
     }
 
     componentDidMount() {
-        if (!serviceWorkerAllowed) {
-            /**
-             * If 'service worker' is not supported/allowed OR it's a mobile client
-             * then client is directly subscribed to topics.
-             * Intended for browsers which do not support service workers and mobile devices.
-             */
-            subscribeFromClient();
-        }
-
         // Retrieve current user info;
         this.loadUser();
-
         // Initialize active chat (if present);
         const activeChat = SessionStorage.getItem(SessionEntities.ACTIVE_CHAT);
         if (!!activeChat) {

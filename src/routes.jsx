@@ -11,17 +11,24 @@ import IconSettings from "@salesforce/design-system-react/module/components/icon
 import ApplicationEvents from "./model/application-events";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";
 
-import {registerServiceWorker} from "./model/api/streaming/services/ServiceWorkerRegistrator";
+import {registerServiceWorker, serviceWorkerAllowed} from "./model/api/streaming/services/ServiceWorkerRegistrator";
 import {Route, IndexRoute} from "react-router";
 import {CustomEvents} from "./model/services/utility/EventsService";
-import {Utility} from "./model/services/utility/UtilityService";
+import {subscribeFromClient} from "./model/api/streaming/services/TopicsManager";
 
 const AppContainer = props => {
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        if (!Utility.isMobileDevice()) {
+    useEffect(_ => {
+        if (serviceWorkerAllowed) {
             CustomEvents.register({eventName: "load", callback: registerServiceWorker});
+        } else {
+            /**
+             * If 'service worker' is not supported/allowed OR it's a mobile client
+             * then client is directly subscribed to topics.
+             * Intended for browsers which do not support service workers and mobile devices.
+             */
+            subscribeFromClient();
         }
         CustomEvents.register({
             eventName: ApplicationEvents.APP_DEFAULT.LOADING, callback: event => {
