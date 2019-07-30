@@ -9,11 +9,11 @@ const _parseJSON = response => response.text().then(rawText => rawText ? JSON.pa
 const _handleSuccess = response => _parseJSON(response).then(data => Promise.resolve(data));
 const _handleError = response => _parseJSON(response).then(error => Promise.reject(error));
 const _performRequest = endpoint => parameters => {
-    const {url, method = "GET", body = "", headers = {}} = parameters,
+    const defaultMethod = "GET", {url, method = defaultMethod, body = "", headers = {}} = parameters,
         isBinaryData = body instanceof FormData, requestBody = {
             method: method,
-            body: method === "GET" ? undefined : isBinaryData ? body : JSON.stringify(body),
-            headers: Object.assign(DEFAULT_HEADERS, headers)
+            body: method === defaultMethod ? undefined : isBinaryData ? body : JSON.stringify(body),
+            headers
         };
     return fetch(endpoint.concat(url), requestBody).then(response => {
         if (response.ok) {
