@@ -31,7 +31,9 @@
 }
 
 /*For iPhone and smartphones*/
-@media only screen and (min-device-width: 315px) and (max-device-width: 820px) {
+@media only screen
+and (min-device-width: 315px)
+and (max-device-width: 820px) {
     .mobile-hidden {
         display: none;
     }
