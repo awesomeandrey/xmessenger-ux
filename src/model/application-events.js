@@ -5,7 +5,8 @@ export default {
     },
     USER: {
         RELOAD: "onReloadUserInfo",
-        INDICATOR_CHANGE: "onIndicatorChange"
+        INDICATOR_CHANGE: "onIndicatorChange",
+        SESSION_EXPIRED: "onSessionExpired"
     },
     CHAT: {
         INIT_LOAD_ALL: "onInitLoadChats",

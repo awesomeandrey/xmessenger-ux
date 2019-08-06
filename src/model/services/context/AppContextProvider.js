@@ -6,6 +6,7 @@ import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
 import {postMessageToServiceWorker} from "../../api/streaming/services/ServiceWorkerRegistrator";
 import {SessionEntities, SessionStorage} from "../utility/StorageService";
+import {LoginService} from "../core/AuthenticationService";
 
 class AppContextProvider extends Component {
     constructor(props) {
@@ -27,6 +28,9 @@ class AppContextProvider extends Component {
         });
         CustomEvents.register({eventName: ApplicationEvents.CHAT.LOAD_ALL, callback: this.loadIndicators});
         CustomEvents.register({eventName: ApplicationEvents.USER.RELOAD, callback: this.loadUser});
+        CustomEvents.register({
+            eventName: ApplicationEvents.USER.SESSION_EXPIRED, callback: _ => LoginService.logoutUser(true)
+        });
     }
 
     componentDidMount() {

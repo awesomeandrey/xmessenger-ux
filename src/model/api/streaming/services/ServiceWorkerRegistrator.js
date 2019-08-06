@@ -1,4 +1,4 @@
-import {performRequestLocally} from "../../rest/client-util";
+import {performLocalRequest} from "../../rest/client-util";
 import {CustomEvents} from "../../../services/utility/EventsService";
 import {PUBLIC_VAPID_KEY} from "../../../constants";
 import {Utility} from "../../../services/utility/UtilityService";
@@ -39,7 +39,7 @@ export const registerServiceWorker = _ => {
         navigator.serviceWorker.ready.then(registration => registration.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: _urlBase64ToUint8Array(PUBLIC_VAPID_KEY)
-        })).then(subscription => performRequestLocally({
+        })).then(subscription => performLocalRequest({
             url: "/subscribe",
             method: "POST",
             body: subscription

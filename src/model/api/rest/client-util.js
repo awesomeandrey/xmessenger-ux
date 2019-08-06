@@ -2,43 +2,44 @@ import fetch from "node-fetch";
 import FormData from "form-data";
 import ToastEvents from "../../../components/common/components/toasts/toasts-events";
 
-import {API_SERVER_URL} from "../../constants";
 import {CustomEvents} from "../../services/utility/EventsService";
 
 const _parseJSON = response => response.text().then(rawText => rawText ? JSON.parse(rawText) : {});
-const _handleSuccess = response => _parseJSON(response).then(data => Promise.resolve(data));
-const _handleError = response => _parseJSON(response).then(error => Promise.reject(error));
-const _performRequest = endpoint => parameters => {
-    const defaultMethod = "GET", {url, method = defaultMethod, body = "", headers = {}} = parameters,
-        isBinaryData = body instanceof FormData, requestBody = {
-            method: method,
-            body: method === defaultMethod ? undefined : isBinaryData ? body : JSON.stringify(body),
-            headers
-        };
-    return fetch(endpoint.concat(url), requestBody).then(response => {
-        if (response.ok) {
-            return _handleSuccess(response);
-        } else {
-            return _handleError(response);
-        }
-    }).catch(handleFetchIssue);
-};
 
 export const DEFAULT_HEADERS = {"Content-Type": "application/json;charset=UTF-8"};
 
-export const performRequest = parameters => {
-    return _performRequest(API_SERVER_URL)(parameters);
+export const handleSuccess = response => _parseJSON(response).then(data => Promise.resolve(data));
+
+export const handleError = response => _parseJSON(response).then(error => Promise.reject(error));
+
+export const handleConnectionIssue = connectionError => {
+    let errorText = "Couldn't perform request due to network issues.";
+    console.warn(errorText, JSON.stringify(connectionError));
+    CustomEvents.fire({eventName: ToastEvents.SHOW, detail: {message: errorText}});
 };
 
-export const performRequestLocally = parameters => {
-    return _performRequest("")(parameters);
+export const performRequest = endpoint => parameters => {
+    return performRawRequest(endpoint)(parameters).then(response => {
+        if (response.ok) {
+            // HTTP codes [200, 201];
+            return handleSuccess(response);
+        } else {
+            // Any other HTTP codes;
+            return handleError(response);
+        }
+    }).catch(handleConnectionIssue);
 };
 
-export const handleFetchIssue = error => {
-    if (TypeError.prototype.isPrototypeOf(error)) {
-        let errorText = "Couldn't perform request due to network issues.";
-        console.warn(errorText, JSON.stringify(error));
-        CustomEvents.fire({eventName: ToastEvents.SHOW, detail: {message: errorText}});
-    }
-    return Promise.reject(error);
+export const performLocalRequest = parameters => {
+    return performRequest("")(parameters);
+};
+
+export const performRawRequest = endpoint => parameters => {
+    const defaultMethod = "GET";
+    const {url, method = defaultMethod, body = "", headers = DEFAULT_HEADERS} = parameters;
+    const isBinaryData = body instanceof FormData, requestBody = {
+        method, headers, body: method === defaultMethod ? undefined : isBinaryData ? body : JSON.stringify(body),
+    };
+    // console.log(">>> HTTP Callout", JSON.stringify(requestBody));
+    return fetch(endpoint.concat(url), requestBody).catch(handleConnectionIssue);
 };
