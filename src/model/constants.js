@@ -1,5 +1,5 @@
 /**
- *  This file holds all app specific variables.
+ *  This file holds all app specific environment variables.
  *  Definitions prefixed with 'STATIC_' are provided by webpack bundler (intended for client hosted/downloaded scripts).
  *  In other situations, variables are read from environmental variables (intended for scripts run on server side).
  */

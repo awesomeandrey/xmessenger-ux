@@ -48,11 +48,11 @@ export const authenticateClient = ({url, method = "POST", body = "", headers}) =
  * @param headers
  * @returns In case of non-authorized operation it navigates to auth page.
  */
-export const performRequest = ({method, entity, path, headers = DEFAULT_HEADERS}) => {
+export const performRequest = ({method, entity: body, path, headers = DEFAULT_HEADERS}) => {
     headers[TOKEN_HEADER_NAME] = TOKEN_PREFIX + getToken();
     return callRestApi(API_SERVER_URL)({
         url: API_BASE_PATH + path,
-        method, headers, body: entity,
+        method, headers, body,
     }).then(data => Promise.resolve(data), error => {
         if ([401, 403].includes(error.status)) {
             CustomEvents.fire({eventName: ApplicationEvents.USER.SESSION_EXPIRED});

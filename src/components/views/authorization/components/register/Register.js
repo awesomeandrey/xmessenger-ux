@@ -11,6 +11,7 @@ import InputIcon from "@salesforce/design-system-react/module/components/icon/in
 import {LoginService, RegistrationService} from "../../../../../model/services/core/AuthenticationService";
 import {InputPatterns, Utility} from "../../../../../model/services/utility/UtilityService";
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
+import {Navigation} from "../../../../../model/services/utility/NavigationService";
 
 const INVALID_INPUT = "Incorrect input. Make sure that all fields are populated correctly.";
 
@@ -44,7 +45,8 @@ class Register extends React.Component {
                     userToRegister.email = inputs.email;
                 }
                 RegistrationService.register(userToRegister)
-                    .then(_ => LoginService.loginUser(rawCredentials));
+                    .then(_ => LoginService.loginUser(rawCredentials))
+                    .then(_ => Navigation.toHome({replace: true}));
             });
         } else {
             inputs.password = "";

@@ -8,8 +8,7 @@ import {CustomEvents} from "../utility/EventsService";
 import ApplicationEvents from "../../application-events";
 
 export const LoginService = {
-    loginUser: rawCredentials => authenticateClient({url: `${API_BASE_PATH}/login`, body: rawCredentials})
-        .then(_ => Navigation.toHome({})),
+    loginUser: rawCredentials => authenticateClient({url: `${API_BASE_PATH}/login`, body: rawCredentials}),
     logoutUser: sessionExpired => {
         CustomEvents.fire({eventName: ApplicationEvents.APP_DEFAULT.LOADING, detail: {loading: true}})
             .then(_ => serviceWorkerAllowed ? dropServiceWorkerState() : performSecureRequest({
