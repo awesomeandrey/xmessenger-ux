@@ -36,11 +36,6 @@ class ChatsTab extends React.Component {
     }
 
     componentWillMount() {
-        CustomEvents.registerOneTime({
-            eventName: ApplicationEvents.CHAT.INIT_LOAD_ALL, callback: _ => {
-                CustomEvents.fire({eventName: ApplicationEvents.CHAT.LOAD_ALL});
-            }
-        });
         CustomEvents.register({eventName: ApplicationEvents.CHAT.LOAD_ALL, callback: this.handleLoadChats});
         CustomEvents.register({
             eventName: ApplicationEvents.CHAT.CLEAR,
@@ -112,6 +107,10 @@ class ChatsTab extends React.Component {
                 }
             }
         });
+    }
+
+    componentDidMount() {
+        CustomEvents.fire({eventName: ApplicationEvents.CHAT.LOAD_ALL});
     }
 
     handleLoadChats = _ => {

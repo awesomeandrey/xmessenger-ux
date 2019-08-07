@@ -40,18 +40,7 @@ class ProfileInfoPanel extends React.Component {
 
     handleSelectTab(activeTabKey) {
         SessionStorage.setItem({key: SessionEntities.ACTIVE_TAB_KEY, value: activeTabKey});
-        this.setState({activeTabKey}, _ => {
-            switch (activeTabKey) {
-                case 0:
-                    CustomEvents.fire({eventName: ApplicationEvents.CHAT.INIT_LOAD_ALL});
-                    break;
-                case 1:
-                    CustomEvents.fire({eventName: ApplicationEvents.REQUEST.INIT_LOAD_ALL});
-                    break;
-                default:
-                    break;
-            }
-        });
+        this.setState({activeTabKey});
     }
 
     render() {

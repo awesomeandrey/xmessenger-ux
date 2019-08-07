@@ -50,11 +50,6 @@ class RequestsTab extends React.Component {
     }
 
     componentWillMount() {
-        CustomEvents.registerOneTime({
-            eventName: ApplicationEvents.REQUEST.INIT_LOAD_ALL, callback: _ => {
-                CustomEvents.fire({eventName: ApplicationEvents.REQUEST.LOAD_ALL});
-            }
-        });
         CustomEvents.register({
             eventName: ApplicationEvents.REQUEST.SEND,
             callback: event => {
@@ -82,6 +77,10 @@ class RequestsTab extends React.Component {
             }
         });
         CustomEvents.register({eventName: ApplicationEvents.REQUEST.LOAD_ALL, callback: this.loadRequests});
+    }
+
+    componentDidMount() {
+        CustomEvents.fire({eventName: ApplicationEvents.REQUEST.LOAD_ALL});
     }
 
     loadRequests = _ => {

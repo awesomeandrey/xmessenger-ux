@@ -54,7 +54,7 @@ export const performRequest = ({method, entity: body, path, headers = DEFAULT_HE
         url: API_BASE_PATH + path,
         method, headers, body,
     }).then(data => Promise.resolve(data), error => {
-        if ([401, 403].includes(error.status)) {
+        if ([401, 403, 500].includes(error.status)) {
             CustomEvents.fire({eventName: ApplicationEvents.USER.SESSION_EXPIRED});
         }
         return Promise.reject(error);
