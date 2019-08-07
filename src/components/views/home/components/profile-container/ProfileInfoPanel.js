@@ -32,7 +32,10 @@ class ProfileInfoPanel extends React.Component {
         });
         CustomEvents.register({
             eventName: ApplicationEvents.REQUEST.CALCULATE,
-            callback: event => this.setState({requestsAmount: event.detail})
+            callback: event => {
+                let requestsAmount = event.detail;
+                this.setState({requestsAmount: requestsAmount > 5 ? "5+" : requestsAmount});
+            }
         });
         const activeTabKey = SessionStorage.getItem(SessionEntities.ACTIVE_TAB_KEY);
         this.handleSelectTab(activeTabKey || 0);

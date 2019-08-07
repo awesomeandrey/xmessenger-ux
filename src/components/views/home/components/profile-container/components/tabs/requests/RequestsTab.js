@@ -85,11 +85,8 @@ class RequestsTab extends React.Component {
 
     loadRequests = _ => {
         RequestService.getRequests()
-            .then(requests => this.setState({requests: requests || []}, _ => {
-                CustomEvents.fire({
-                    eventName: ApplicationEvents.REQUEST.CALCULATE,
-                    detail: this.state.requests.length || 0
-                });
+            .then((requests = []) => this.setState({requests}, _ => {
+                CustomEvents.fire({eventName: ApplicationEvents.REQUEST.CALCULATE, detail: requests.length});
             }));
     };
 
