@@ -10,6 +10,7 @@ import BrandBand from "@salesforce/design-system-react/module/components/brand-b
 import IconSettings from "@salesforce/design-system-react/module/components/icon-settings";
 import ApplicationEvents from "./model/application-events";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";
+import PageTitleManager from "./components/common/components/page-title/PageTitleManager";
 
 import {registerServiceWorker, serviceWorkerAllowed} from "./model/api/streaming/services/ServiceWorkerRegistrator";
 import {Route, IndexRoute} from "react-router";
@@ -39,16 +40,18 @@ const AppContainer = props => {
     }, []);
 
     return (
-        <IconSettings iconPath="/assets/icons">
-            <ModalsContainer>
-                <ToastContainer>
-                    <BrandBand theme="lightning-blue">
-                        {loading && <Spinner variant="brand" containerClassName="slds-is-fixed slds-spinner_container_overridden slds-spinner_with-text"/>}
-                        {props.children}
-                    </BrandBand>
-                </ToastContainer>
-            </ModalsContainer>
-        </IconSettings>
+        <PageTitleManager>
+            <IconSettings iconPath="/assets/icons">
+                <ModalsContainer>
+                    <ToastContainer>
+                        <BrandBand theme="lightning-blue">
+                            {loading && <Spinner variant="brand" containerClassName="slds-is-fixed slds-spinner_container_overridden slds-spinner_with-text"/>}
+                            {props.children}
+                        </BrandBand>
+                    </ToastContainer>
+                </ModalsContainer>
+            </IconSettings>
+        </PageTitleManager>
     );
 };
 

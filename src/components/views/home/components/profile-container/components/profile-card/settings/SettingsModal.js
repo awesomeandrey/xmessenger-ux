@@ -43,11 +43,16 @@ class SettingsModal extends React.Component {
         }
     };
 
+    onModalClose = () => {
+        CustomEvents.fire({eventName: Events.SETTINGS.OPEN, detail: {isOpen: false}});
+        this.setState({opened: false, activeTabKey: 0});
+    };
+
     render() {
         const {loading, opened, activeTabKey} = this.state, {user} = this.props, reset = !opened;
         return (
             <Modal isOpen={opened} title="Settings" dismissible={!loading} containerClassName="width-stretch"
-                   onRequestClose={_ => this.setState({opened: false, activeTabKey: 0})} ariaHideApp={false}>
+                   onRequestClose={this.onModalClose} ariaHideApp={false}>
                 <Tabs variant="scoped" onSelect={this.handleSelectTab} selectedIndex={activeTabKey}>
                     <TabsPanel label="Profile Info">
                         <div className="slds-grid slds-wrap slds-gutters">
