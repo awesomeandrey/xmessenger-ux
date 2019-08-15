@@ -11,20 +11,35 @@ const _sortChatsByLatestMessageDate = chatsArray => {
     _chatsArrayToMap = chatsArray => Array.isArray(chatsArray) ? new Map(chatsArray.map(chat => [chat.id, chat])) : new Map(),
     _parseChatItems = chatsArray => _chatsArrayToMap(_sortChatsByLatestMessageDate(chatsArray));
 
+
 export const ChattingService = {
-    loadChatsMap: _ => performRequest({
+    /**
+     * Sample response body:
+     * {
+        "content": [],
+        "last": true,
+        "totalElements": 0,
+        "totalPages": 1,
+        "size": 0,
+        "number": 0,
+        "sort": null,
+        "first": true,
+        "numberOfElements": 0
+       }
+     */
+    loadChats: ({size = 5}) => performRequest({
         method: "GET",
-        path: "/chats"
-    }).then(chatsArray => {
-        const chatsMap = _parseChatItems(chatsArray);
-        return Promise.resolve(chatsMap)
+        path: `/chats?size=${size}`
     }),
+
+    // TODO - deprecated;
     sortChatsMap: chatsMap => {
         if (chatsMap instanceof Map && chatsMap.size > 0) {
             return _parseChatItems([...chatsMap.values()]);
         }
         return new Map();
     },
+
     removeChat: chat => performRequest({
         method: "DELETE",
         path: `/chats/${chat.id}/delete`,

@@ -3,10 +3,13 @@ import ApplicationEvents from "../../../../../../../../model/application-events"
 import ToastEvents from "../../../../../../../common/components/toasts/toasts-events";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
 import ChatItem from "./ChatItem";
+import Button from "@salesforce/design-system-react/module/components/button";
+import Spinner from "@salesforce/design-system-react/module/components/spinner";
 
 import {ChattingService} from "../../../../../../../../model/services/core/ChattingService";
 import {CustomEvents, KeyEvents} from "../../../../../../../../model/services/utility/EventsService";
 import {SessionEntities, SessionStorage} from "../../../../../../../../model/services/utility/StorageService";
+import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
 import {postMessageToServiceWorker} from "../../../../../../../../model/api/streaming/services/ServiceWorkerRegistrator";
 
 import "./styles.css";
@@ -30,8 +33,11 @@ class ChatsTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: true,
             selectedChat: null,
-            chatsMap: new Map()
+            chatsMap: new Map(),
+            chatsLimit: 5,
+            chatsLoadedAll: false
         };
     }
 
@@ -113,15 +119,23 @@ class ChatsTab extends React.Component {
         CustomEvents.fire({eventName: ApplicationEvents.CHAT.LOAD_ALL});
     }
 
-    handleLoadChats = _ => {
-        ChattingService.loadChatsMap()
-            .then(chatsMap => {
-                this.setState({chatsMap}, () => {
-                    postMessageToServiceWorker({chatsArray: [...chatsMap.values()]});
-                });
-                return chatsMap.size || 0;
+    handleLoadChats = (loadMore = false) => {
+        let {chatsLimit, chatsLoadedAll} = this.state;
+        if (typeof loadMore === "boolean" && loadMore && !chatsLoadedAll) {
+            chatsLimit += 5;
+        }
+        this.setState({loading: true});
+        ChattingService.loadChats({size: Math.min(chatsLimit, 100)})
+            .then(pageResult => {
+                const chatsArray = pageResult["content"];
+                this.setState({
+                    chatsMap: new Map(chatsArray.map(_ => [_.id, _])),
+                    chatsLoadedAll: pageResult["last"], chatsLimit
+                }, () => postMessageToServiceWorker({chatsArray}));
+                return pageResult["totalElements"];
             })
-            .then(chatsAmount => CustomEvents.fire({eventName: ApplicationEvents.CHAT.CALCULATE, detail: chatsAmount}));
+            .then(chatsAmount => CustomEvents.fire({eventName: ApplicationEvents.CHAT.CALCULATE, detail: chatsAmount}))
+            .then(_ => this.setState({loading: false}));
     };
 
     handleSelectChat = (event, chatData) => {
@@ -135,7 +149,7 @@ class ChatsTab extends React.Component {
     };
 
     render() {
-        const {chatsMap} = this.state, chatItems = [...chatsMap.values()].map(chatData => {
+        const {chatsMap, chatsLoadedAll, loading} = this.state, chatItems = [...chatsMap.values()].map(chatData => {
             let selected = this.isSelectedChat(chatData);
             return (<div key={chatData["id"]} onClick={event => this.handleSelectChat(event, chatData)}
                          className={`chat-item ${selected && "theme-marker"}`}>
@@ -144,9 +158,13 @@ class ChatsTab extends React.Component {
         });
         return (
             <div className="slds-scrollable_y">
-                {chatItems.length === 0
-                    ? <EmptyArea title="There are no chats for now." icon="comments"/>
-                    : <div className="slds-text-longform">{chatItems}</div>}
+                {Utility.isObjectEmpty(chatItems) && <EmptyArea title="There are no chats for now." icon="comments"/>}
+                {!Utility.isObjectEmpty(chatItems) && <div className="slds-text-longform">{chatItems}</div>}
+                {!Utility.isObjectEmpty(chatItems) && !chatsLoadedAll && !loading &&
+                    <Button label="Load More..." className="slds-align_absolute-center"
+                            onClick={_ => this.handleLoadChats(true)} variant="base"/>}
+                {loading && <Spinner variant="brand" size="small"
+                                     containerClassName="slds-p-vertical--small slds-spinner_container_overridden slds-is-relative"/>}
             </div>
         );
     }
