@@ -23,9 +23,9 @@ class MessagesPanel extends React.Component {
             callback: event => {
                 const {selectedChat} = event.detail, {selectedChat: localChat} = this.state;
                 if ((!!selectedChat && !localChat) || (!!selectedChat && !!localChat && selectedChat.id !== localChat.id)) {
-                    this.setState({selectedChat: selectedChat, loading: true}, _ => {
+                    this.setState({selectedChat, loading: true}, _ => {
                         ChattingService.loadMessagesMap(selectedChat)
-                            .then(messagesMap => this.setState({messagesMap: messagesMap, loading: false}));
+                            .then(messagesMap => this.setState({messagesMap, loading: false}));
                     });
                 }
             }

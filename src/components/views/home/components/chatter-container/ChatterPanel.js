@@ -23,7 +23,7 @@ class ChatterPanel extends React.Component {
             eventName: Events.CHAT.SELECT,
             callback: event => {
                 const {selectedChat} = event.detail;
-                this.setState({selectedChat: selectedChat});
+                this.setState({selectedChat});
             }
         });
     }

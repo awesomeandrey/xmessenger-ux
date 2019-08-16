@@ -19,7 +19,7 @@ const Home = props => {
                         <ProfileInfoPanel/>
                     </div>
                     <div className={Utility.join(commonClass, "slds-medium-size_7-of-12", "slds-large-size_8-of-12")}>
-                        <ChatterPanel/>
+                        {/*<ChatterPanel/>*/}
                     </div>
                 </div>
             </ThemingContainer>

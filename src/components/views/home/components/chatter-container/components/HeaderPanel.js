@@ -26,8 +26,7 @@ const HeaderPanel = props => {
                                      document.body.scrollTop = 0; // For Safari;
                                      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera;
                                      CustomEvents.fire({
-                                         eventName: ApplicationEvents.CHAT.SELECT,
-                                         detail: {selectedChat: null}
+                                         eventName: ApplicationEvents.CHAT.SELECT, detail: {selectedChat: null}
                                      });
                                  }} className="mobile-visible-only">Back</Button>
                              </div>
