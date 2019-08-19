@@ -2,10 +2,8 @@ import path from "path";
 import express from "express";
 import bodyParser from "body-parser";
 
-import {API_SERVER_URL} from "./src/model/constants";
 import {subscribeFromServer} from "./src/model/api/streaming/services/TopicsManager";
 import {pushNotification} from "./src/model/api/streaming/core/web-push-manager";
-import {performRequest} from "./src/model/api/rest/client-util";
 
 const app = express(), PORT = process.env.PORT || 80,
     cacheControl = process.env.NODE_ENV === "production" ? {maxAge: "1h"} : {};
@@ -31,15 +29,6 @@ app.post("/subscribe", (req, res) => {
     } else {
         console.error("No subscription details provided!");
     }
-});
-
-app.post("/logout", (req, res) => {
-    res.status(200).json({});
-    const {token} = req.body;
-    performRequest(API_SERVER_URL)({
-        url: "/api/user/logout", method: "POST",
-        headers: {"Authorization": "Bearer " + token}
-    });
 });
 
 app.listen(PORT, function (err) {

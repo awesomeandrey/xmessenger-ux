@@ -4,14 +4,11 @@ import Spinner from "@salesforce/design-system-react/module/components/spinner";
 import Input from "@salesforce/design-system-react/module/components/input";
 import InputIcon from "@salesforce/design-system-react/module/components/icon/input-icon";
 import MaskedInput from "../../../../../../../../common/components/inputs/MaskedInput";
-import Checkbox from "@salesforce/design-system-react/module/components/checkbox";
 import EmailInput from "../../../../../../../../common/components/inputs/EmailInput";
 
 import {Settings} from "../../../../../../../../../model/services/core/UserService";
 import {CustomEvents} from "../../../../../../../../../model/services/utility/EventsService";
 import {InputPatterns, Utility} from "../../../../../../../../../model/services/utility/UtilityService";
-import {LocalStorage, LocalEntities} from "../../../../../../../../../model/services/utility/StorageService";
-import {serviceWorkerAllowed} from "../../../../../../../../../model/api/streaming/services/ServiceWorkerRegistrator";
 
 class ProfileInfo extends React.Component {
     constructor(props) {
@@ -45,14 +42,8 @@ class ProfileInfo extends React.Component {
         }
     };
 
-    handleChangeNotifications = event => {
-        const richNotificationsEnabled = event.target.checked;
-        LocalStorage.setItem({key: LocalEntities.RICH_NOTIFICATIONS, value: richNotificationsEnabled});
-    };
-
     render() {
-        const {user} = this.props, {loading, name, email} = this.state,
-            richNotificationsEnabled = LocalStorage.getItem(LocalEntities.RICH_NOTIFICATIONS);
+        const {user} = this.props, {loading, name, email} = this.state;
         return (
             <div className="slds-form--stacked slds-p-horizontal--small">
                 <MaskedInput label="Name" placeholder="Enter your name"
@@ -68,10 +59,6 @@ class ProfileInfo extends React.Component {
                             value={email} placeholder={user["email"] || "Type here..."}
                             onChange={email => this.setState({email})}
                             onBlur={this.handleChangeEmail}/>
-                {serviceWorkerAllowed && <Checkbox label="Rich notifications"
-                                                   className="slds-m-top_small"
-                                                   defaultChecked={richNotificationsEnabled}
-                                                   onChange={this.handleChangeNotifications}/>}
                 {loading && <div className="slds-float_left slds-is-relative slds-p-vertical--large slds-p-left_large">
                     <Spinner variant="brand" size="small"/>
                 </div>}

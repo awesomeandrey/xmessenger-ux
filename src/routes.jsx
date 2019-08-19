@@ -15,6 +15,7 @@ import PageTitleManager from "./components/common/components/page-title/PageTitl
 import {Route, IndexRoute} from "react-router";
 import {CustomEvents} from "./model/services/utility/EventsService";
 import {subscribeFromClient} from "./model/api/streaming/services/TopicsManager";
+import {serviceWorkerAllowed, registerServiceWorker} from "./model/api/streaming/services/ServiceWorkerRegistrator";
 
 const AppContainer = props => {
     const [loading, setLoading] = useState(false);
@@ -22,11 +23,14 @@ const AppContainer = props => {
     useEffect(_ => {
         // Subscribe to server events via Websocket API;
         subscribeFromClient();
+
+        // Register service worker for rich notifications;
+        if (serviceWorkerAllowed) {
+            CustomEvents.register({eventName: "load", callback: registerServiceWorker});
+        }
+
         CustomEvents.register({
-            eventName: ApplicationEvents.APP_DEFAULT.LOADING, callback: event => {
-                const {loading: loadingParam} = event.detail;
-                setLoading(loadingParam);
-            }
+            eventName: ApplicationEvents.APP_DEFAULT.LOADING, callback: event => setLoading(event.detail.loading)
         });
     }, []);
 
@@ -36,7 +40,8 @@ const AppContainer = props => {
                 <ModalsContainer>
                     <ToastContainer>
                         <BrandBand theme="lightning-blue">
-                            {loading && <Spinner variant="brand" containerClassName="slds-is-fixed slds-spinner_container_overridden slds-spinner_with-text"/>}
+                            {loading && <Spinner variant="brand"
+                                                 containerClassName="slds-is-fixed slds-spinner_container_overridden slds-spinner_with-text"/>}
                             {props.children}
                         </BrandBand>
                     </ToastContainer>

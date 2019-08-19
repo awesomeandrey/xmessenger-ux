@@ -1,11 +1,11 @@
-const ERROR_MSG = "'Key' parameter should be of 'string' type when operating with storage!";
+const ERROR_MSG = "'Key' parameter should be of 'string' type when operating with swState!";
 
 const Storage = storageObj => ({
     setItem: ({key, value = null}) => {
         if (typeof key !== "string") {
             throw ERROR_MSG;
         } else if (value == null) {
-            // remove item from storage, so that when it's fetched it'll be 'null';
+            // remove item from swState, so that when it's fetched it'll be 'null';
             storageObj.removeItem(key);
         } else if (typeof value !== "string") {
             value = JSON.stringify(value);

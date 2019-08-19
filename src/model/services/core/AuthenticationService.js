@@ -5,12 +5,14 @@ import {Navigation} from "../utility/NavigationService";
 import {CustomEvents} from "../utility/EventsService";
 
 import ApplicationEvents from "../../application-events";
+import {dropServiceWorkerState} from "../../api/streaming/services/ServiceWorkerRegistrator";
 
 export const LoginService = {
     loginUser: rawCredentials => authenticateClient({url: `${API_BASE_PATH}/login`, body: rawCredentials}),
     logoutUser: sessionExpired => {
         CustomEvents.fire({eventName: ApplicationEvents.APP_DEFAULT.LOADING, detail: {loading: true}})
             .then(_ => performSecureRequest({method: "POST", path: "/user/logout"}))
+            .then(dropServiceWorkerState)
             .finally(_ => {
                 SessionStorage.clear();
                 Navigation.toLogin({jwtExpired: sessionExpired});

@@ -6,6 +6,7 @@ import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
 import {SessionEntities, SessionStorage} from "../utility/StorageService";
 import {LoginService} from "../core/AuthenticationService";
+import {postMessageToServiceWorker} from "../../api/streaming/services/ServiceWorkerRegistrator";
 
 class AppContextProvider extends Component {
     constructor(props) {
@@ -42,8 +43,10 @@ class AppContextProvider extends Component {
         }
     }
 
-    loadUser = _ => UserService.getUserInfo()
-        .then(user => this.setState({user}));
+    loadUser = _ => UserService.getUserInfo().then(user => {
+        postMessageToServiceWorker({user});
+        this.setState({user});
+    });
 
     loadIndicators = _ => UserService.getUserIndicators()
         .then(indicators => this.setState({indicatorsMap: new Map(indicators.map(_ => [_.id, _]))}));
