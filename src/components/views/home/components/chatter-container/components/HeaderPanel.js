@@ -17,7 +17,7 @@ const HeaderPanel = props => {
                      body={
                          <div className="flex-container flex-container__space-between">
                              <p className="slds-float--left">
-                                 <span className="slds-text-title_caps theme-inherit">{fellow.name}</span><br/>
+                                 <span className="slds-text-title_caps theme-inherit">{fellow["name"]}</span><br/>
                                  <Indicator className="slds-text-color_weak theme-inherit" user={fellow}
                                             offlinePlaceholder={`Last login: ${lastLoginDate}`}/>
                              </p>

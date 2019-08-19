@@ -22,7 +22,7 @@ class MessagesPanel extends React.Component {
             eventName: ApplicationEvents.CHAT.SELECT,
             callback: event => {
                 const {selectedChat} = event.detail, {selectedChat: localChat} = this.state;
-                if ((!!selectedChat && !localChat) || (!!selectedChat && !!localChat && selectedChat.id !== localChat.id)) {
+                if ((!!selectedChat && !localChat) || (!!selectedChat && !!localChat && selectedChat["chatId"] !== localChat["chatId"])) {
                     this.setState({selectedChat, loading: true}, _ => {
                         ChattingService.loadMessagesMap(selectedChat)
                             .then(messagesMap => this.setState({messagesMap, loading: false}));
@@ -30,24 +30,22 @@ class MessagesPanel extends React.Component {
                 }
             }
         });
-
         CustomEvents.register({
             eventName: ApplicationEvents.CHAT.CLEAR,
             callback: event => {
                 let {clearedChat} = event.detail, {selectedChat} = this.state;
-                if (!!clearedChat && !!selectedChat && clearedChat.id === selectedChat.id) {
+                if (!!clearedChat && !!selectedChat && clearedChat["chatId"] === selectedChat["chatId"]) {
                     this.setState({messagesMap: new Map()});
                 }
             }
         });
-
         CustomEvents.register({
             eventName: ApplicationEvents.MESSAGE.ADD,
             callback: event => {
                 const {message} = event.detail, {selectedChat, messagesMap} = this.state;
-                if (!!selectedChat && selectedChat.id === message.relation.id && !messagesMap.has(message.id)) {
-                    messagesMap.set(message.id, message);
-                    this.setState({messagesMap: messagesMap});
+                debugger;
+                if (!!selectedChat && selectedChat["chatId"] === message["relation"]["id"] && !messagesMap.has(message["id"])) {
+                    this.setState({messagesMap: messagesMap.set(message["id"], message)});
                 }
             }
         });
@@ -60,12 +58,13 @@ class MessagesPanel extends React.Component {
     }
 
     render() {
-        const {selectedChat, messagesMap, loading} = this.state, {user} = this.props,
+        debugger;
+        const {selectedChat, messagesMap, loading} = this.state, {user: currentUser} = this.props,
             messageItems = Array.from(messagesMap.values()).map(message => {
-                message.formattedDate = Utility.formatDate({dateNum: message.date});
-                return message.author.id !== user.id
-                    ? <InboundMessage key={message.id} message={message}/>
-                    : <OutboundMessage key={message.id} message={message}/>;
+                message.formattedDate = Utility.formatDate({dateNum: message["date"]});
+                return message["author"]["id"] !== currentUser["id"]
+                    ? <InboundMessage key={message["id"]} message={message}/>
+                    : <OutboundMessage key={message["id"]} message={message}/>;
             });
         return (
             <section role="log" className="slds-chat height-percent-100">
@@ -87,7 +86,7 @@ const ChatTitle = ({chat}) => {
                 <span className="slds-icon_container slds-icon-utility-chat slds-chat-icon">
                     <Icon category="utility" name="chat" size="small"/>
                 </span>
-                <p>Chat started by <b>{!!chat && chat.startedBy.name}</b></p>
+                <p>Chat started by <b>{!!chat && chat["startedBy"]["name"]}</b></p>
             </div>
         </li>
     );
@@ -99,10 +98,9 @@ const OutboundMessage = ({message}) => {
             <div className="slds-chat-message">
                 <div className="slds-chat-message__body">
                     <div className="slds-chat-message__text slds-chat-message__text_outbound">
-                        <span>{message.body}</span>
+                        <span>{message["body"]}</span>
                     </div>
-                    <div className="slds-chat-message__meta slds-float_right"
-                         aria-label={message.formattedDate}>{message.formattedDate}</div>
+                    <div className="slds-chat-message__meta slds-float_right">{message.formattedDate}</div>
                 </div>
             </div>
         </li>
@@ -115,10 +113,9 @@ const InboundMessage = ({message}) => {
             <div className="slds-chat-message">
                 <div className="slds-chat-message__body">
                     <div className="slds-chat-message__text slds-chat-message__text_inbound">
-                        <span>{message.body}</span>
+                        <span>{message["body"]}</span>
                     </div>
-                    <div className="slds-chat-message__meta slds-float_left"
-                         aria-label={message.formattedDate}>{message.formattedDate}</div>
+                    <div className="slds-chat-message__meta slds-float_left">{message.formattedDate}</div>
                 </div>
             </div>
         </li>

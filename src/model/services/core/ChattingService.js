@@ -54,10 +54,20 @@ export const ChattingService = {
         method: "GET",
         path: `/chats/${chatId}/messages`
     }).then(messages => {
-        const messagesMap = new Map(messages.reverse().map(message => [message.id, message]));
+        const messagesMap = new Map(messages.reverse().map(_ => [_["id"], _]));
         return Promise.resolve(messagesMap);
     }),
     //TODO - review implementation;
+
+    /**
+     * {
+     *     author: {}
+           body: "hello"
+           date: 1566200766054
+           id: 1514
+           relation: {id: 1513}
+     * }
+     */
     sendMessage: ({chat, messageBody}) => performRequest({
         method: "POST",
         path: `/chats/${chat["chatId"]}/messages`,
