@@ -1,54 +1,13 @@
 import React from "react";
-import ApplicationEvents from "../../../../../../model/application-events";
 import Icon from "@salesforce/design-system-react/module/components/icon";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";
 
-import {CustomEvents} from "../../../../../../model/services/utility/EventsService";
-import {ChattingService} from "../../../../../../model/services/core/ChattingService";
 import {Utility} from "../../../../../../model/services/utility/UtilityService";
 
 class MessagesPanel extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            selectedChat: null,
-            messagesMap: new Map(),
-            loading: false
-        };
-    }
-
-    componentWillMount() {
-        CustomEvents.register({
-            eventName: ApplicationEvents.CHAT.SELECT,
-            callback: event => {
-                const {selectedChat} = event.detail, {selectedChat: localChat} = this.state;
-                if ((!!selectedChat && !localChat) || (!!selectedChat && !!localChat && selectedChat["chatId"] !== localChat["chatId"])) {
-                    this.setState({selectedChat, loading: true}, _ => {
-                        ChattingService.loadMessagesMap(selectedChat)
-                            .then(messagesMap => this.setState({messagesMap, loading: false}));
-                    });
-                }
-            }
-        });
-        CustomEvents.register({
-            eventName: ApplicationEvents.CHAT.CLEAR,
-            callback: event => {
-                let {clearedChat} = event.detail, {selectedChat} = this.state;
-                if (!!clearedChat && !!selectedChat && clearedChat["chatId"] === selectedChat["chatId"]) {
-                    this.setState({messagesMap: new Map()});
-                }
-            }
-        });
-        CustomEvents.register({
-            eventName: ApplicationEvents.MESSAGE.ADD,
-            callback: event => {
-                const {message} = event.detail, {selectedChat, messagesMap} = this.state;
-                debugger;
-                if (!!selectedChat && selectedChat["chatId"] === message["relation"]["id"] && !messagesMap.has(message["id"])) {
-                    this.setState({messagesMap: messagesMap.set(message["id"], message)});
-                }
-            }
-        });
+        this.state = {};
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -58,8 +17,7 @@ class MessagesPanel extends React.Component {
     }
 
     render() {
-        debugger;
-        const {selectedChat, messagesMap, loading} = this.state, {user: currentUser} = this.props,
+        const {chat: selectedChat, messagesMap, loading, user: currentUser} = this.props,
             messageItems = Array.from(messagesMap.values()).map(message => {
                 message.formattedDate = Utility.formatDate({dateNum: message["date"]});
                 return message["author"]["id"] !== currentUser["id"]
