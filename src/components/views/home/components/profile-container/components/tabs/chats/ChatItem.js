@@ -9,77 +9,77 @@ import {ChattingService} from "../../../../../../../../model/services/core/Chatt
 import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";
 import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
 
-const _formatChatTitle = (username, dateNum) => {
+const _formatDateStamp = dateNum => {
         const dateString = Utility.formatDate({dateNum, showTimestamp: false});
-        return (
-            <span className="slds-text-color_weak theme-inherit">
-                {Utility.decorateUsername(username) + (!!dateString ? (" • " + dateString) : "")}
-            </span>
-        );
+        return !!dateString ? (" • " + dateString) : "";
     },
-    _onRemoveChat = chatData => {
+    _onRemoveChat = chat => {
         const modalDetails = {
             title: "Remove chat",
-            body: `Do you want to remove chat with ${chatData.fellow.name}?`,
+            body: `Do you want to remove chat with ${chat["fellow"]["name"]}?`,
             actionButton: {
                 type: "destructive",
                 label: "Remove",
                 callback: _ => {
-                    CustomEvents.fire({eventName: ApplicationEvents.CHAT.DELETE, detail: {removedChat: chatData}})
-                        .then(_ => ChattingService.removeChat(chatData));
+                    CustomEvents.fire({eventName: ApplicationEvents.CHAT.DELETE, detail: {removedChat: chat}})
+                        .then(_ => ChattingService.removeChat(chat));
                 }
             }
         };
         CustomEvents.fire({eventName: ModalEvents.SHOW_DIALOG, detail: modalDetails});
     },
-    _onClearChat = chatData => {
+    _onClearChat = chat => {
         const modalDetails = {
             title: "Clear chat history",
-            body: `Do you want to delete all messages with ${chatData.fellow.name}?`,
+            body: `Do you want to delete all messages with ${chat["fellow"]["name"]}?`,
             actionButton: {
                 type: "destructive",
                 label: "Clear",
                 callback: _ => {
-                    CustomEvents.fire({eventName: ApplicationEvents.CHAT.CLEAR, detail: {clearedChat: chatData}})
-                        .then(_ => ChattingService.clearChat(chatData));
+                    CustomEvents.fire({eventName: ApplicationEvents.CHAT.CLEAR, detail: {clearedChat: chat}})
+                        .then(_ => ChattingService.clearChat(chat));
                 }
             }
         };
         CustomEvents.fire({eventName: ModalEvents.SHOW_DIALOG, detail: modalDetails});
-    },
-    _onSelectOption = (option, chatData) => {
-        switch (option.value) {
-            case 1:
-                _onClearChat(chatData);
-                break;
-            case 2:
-                _onRemoveChat(chatData);
-                break;
-        }
     };
 
 export default props => {
-    const {chatData, selected} = props, {fellow} = chatData;
+    const {chat, selected, onClick} = props, {fellow} = chat;
     return (
-        <MediaObject className="slds-box slds-box_x-small"
-                     figure={<UserPicture user={fellow} scalable={false}/>}
-                     body={
-                         <div className="slds-clearfix">
-                             <p className="slds-float_left">
-                                 <span className="slds-text-body_regular">{fellow.name}</span><br/>
-                                 {_formatChatTitle(fellow.username, selected ? null : chatData.latestMessageDate)}
-                             </p>
-                             <div className="slds-float_right">
-                                 <Dropdown iconCategory="utility"
-                                           iconVariant="border-filled"
-                                           iconName="down"
-                                           onSelect={opt => _onSelectOption(opt, chatData)}
-                                           options={[
-                                               {label: "Clear history", value: 1},
-                                               {label: "Remove", value: 2},
-                                           ]}/>
+        <div className={`chat-item ${selected && "theme-marker"}`} onClick={onClick}>
+            <MediaObject className="slds-box slds-box_x-small"
+                         figure={<UserPicture user={fellow} scalable={false}/>}
+                         body={
+                             <div className="slds-clearfix">
+                                 <p className="slds-float_left">
+                                     <span className="slds-text-body_regular">{fellow["name"]}</span><br/>
+                                     <span className="slds-text-color_weak theme-inherit">
+                                        <span>{Utility.decorateUsername(fellow["username"])}</span>
+                                        <span>{!selected && _formatDateStamp(chat["lastActivityDate"])}</span>
+                                    </span>
+                                 </p>
+                                 <div className="slds-float_right">
+                                     <Dropdown iconCategory="utility"
+                                               iconVariant="border-filled"
+                                               iconName="down"
+                                               onSelect={option => {
+                                                   switch (option.value) {
+                                                       case 1:
+                                                           _onClearChat(chat);
+                                                           break;
+                                                       case 2:
+                                                           _onRemoveChat(chat);
+                                                           break;
+                                                   }
+                                               }}
+                                               options={[
+                                                   {label: "Clear history", value: 1},
+                                                   {label: "Remove", value: 2},
+                                               ]}/>
+                                 </div>
                              </div>
-                         </div>
-                     }/>
+                         }/>
+        </div>
     );
 };

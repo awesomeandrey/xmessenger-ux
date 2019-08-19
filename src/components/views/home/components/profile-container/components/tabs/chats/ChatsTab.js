@@ -14,20 +14,20 @@ import {postMessageToServiceWorker} from "../../../../../../../../model/api/stre
 
 import "./styles.css";
 
-const NOTIFICATION_BLUEPRINTS = {
-    onChatCleared: userName => {
-        CustomEvents.fire({
-            eventName: ToastEvents.SHOW,
-            detail: {message: <span><b>{userName}</b> has just cleared chat history.</span>}
-        });
-    },
-    onChatDeleted: userName => {
-        CustomEvents.fire({
-            eventName: ToastEvents.SHOW,
-            detail: {level: "error", message: <span><b>{userName}</b> removed chat with you.</span>}
-        });
-    }
-};
+// const NOTIFICATION_BLUEPRINTS = {
+//     onChatCleared: userName => {
+//         CustomEvents.fire({
+//             eventName: ToastEvents.SHOW,
+//             detail: {message: <span><b>{userName}</b> has just cleared chat history.</span>}
+//         });
+//     },
+//     onChatDeleted: userName => {
+//         CustomEvents.fire({
+//             eventName: ToastEvents.SHOW,
+//             detail: {level: "error", message: <span><b>{userName}</b> removed chat with you.</span>}
+//         });
+//     }
+// };
 
 class ChatsTab extends React.Component {
     constructor(props) {
@@ -44,64 +44,28 @@ class ChatsTab extends React.Component {
     componentWillMount() {
         CustomEvents.register({eventName: ApplicationEvents.CHAT.LOAD_ALL, callback: this.handleLoadChats});
         CustomEvents.register({
-            eventName: ApplicationEvents.CHAT.CLEAR,
-            callback: event => {
-                const {user} = this.props, {chatsMap} = this.state, {clearedChat} = event.detail;
-                if (chatsMap.has(clearedChat.id)) {
-                    const localChat = chatsMap.get(clearedChat.id), {updatedBy} = clearedChat;
-                    if (!!updatedBy && user.id !== updatedBy.id) {
-                        NOTIFICATION_BLUEPRINTS.onChatCleared(updatedBy.name);
-                    }
-                    chatsMap.set(localChat.id, Object.assign(localChat, {latestMessageDate: null}));
-                    this.setState({chatsMap: chatsMap});
-                }
+            eventName: ApplicationEvents.CHAT.CLEAR, callback: event => {
+                const {clearedChat} = event.detail;
+                // TODO - re-implement (fire toast message);
             }
         });
         CustomEvents.register({
-            eventName: ApplicationEvents.CHAT.DELETE,
-            callback: event => {
-                const {user} = this.props, {chatsMap} = this.state, {removedChat} = event.detail;
-                if (chatsMap.has(removedChat.id)) {
-                    const {updatedBy} = removedChat;
-                    if (!!updatedBy && user.id !== updatedBy.id) {
-                        NOTIFICATION_BLUEPRINTS.onChatDeleted(updatedBy.name);
-                    }
-                    if (chatsMap.delete(removedChat.id)) {
-                        this.setState({chatsMap: chatsMap}, _ => {
-                            CustomEvents.fire({
-                                eventName: ApplicationEvents.CHAT.CALCULATE,
-                                detail: chatsMap.size || 0
-                            });
-                            if (this.isSelectedChat(removedChat)) {
-                                CustomEvents.fire({
-                                    eventName: ApplicationEvents.CHAT.SELECT,
-                                    detail: {selectedChat: null}
-                                });
-                            }
-                        });
-                    }
-                }
+            eventName: ApplicationEvents.CHAT.DELETE, callback: event => {
+                const {removedChat} = event.detail;
+                // TODO - re-implement (fire toast message + recalculate chats size + if selected then re-fire event);
             }
         });
         CustomEvents.register({
-            eventName: ApplicationEvents.CHAT.SELECT,
-            callback: event => {
+            eventName: ApplicationEvents.CHAT.SELECT, callback: event => {
                 const {selectedChat} = event.detail;
                 SessionStorage.setItem({key: SessionEntities.ACTIVE_CHAT, value: selectedChat});
-                this.setState({selectedChat}, _ => {
-                    postMessageToServiceWorker({selectedChat});
-                });
+                this.setState({selectedChat});
             }
         });
         CustomEvents.register({
-            eventName: ApplicationEvents.MESSAGE.ADD,
-            callback: event => {
-                const {chatsMap} = this.state, {message} = event.detail, {relation, date} = message;
-                if (chatsMap.has(relation.id)) {
-                    const chat = chatsMap.get(relation.id);
-                    chatsMap.set(chat.id, Object.assign(chat, {latestMessageDate: date}));
-                    this.setState({chatsMap: ChattingService.sortChatsMap(chatsMap)});
-                }
+            eventName: ApplicationEvents.MESSAGE.ADD, callback: event => {
+                const {message} = event.detail;
+                // TODO - re-implement (re-sort chats);
             }
         });
         // 'Escape' button;
@@ -128,8 +92,9 @@ class ChatsTab extends React.Component {
         ChattingService.loadChats({size: Math.min(chatsLimit, 100)})
             .then(pageResult => {
                 const chatsArray = pageResult["content"];
+                console.log("chatsArray", chatsArray);
                 this.setState({
-                    chatsMap: new Map(chatsArray.map(_ => [_.id, _])),
+                    chatsMap: new Map(chatsArray.map(_ => [_["chatId"], _])),
                     chatsLoadedAll: pageResult["last"], chatsLimit
                 }, () => postMessageToServiceWorker({chatsArray}));
                 return pageResult["totalElements"];
@@ -138,31 +103,30 @@ class ChatsTab extends React.Component {
             .then(_ => this.setState({loading: false}));
     };
 
-    handleSelectChat = (event, chatData) => {
+    handleSelectChat = (event, chatItem) => {
         if (event.target.nodeName === "BUTTON") return;
-        CustomEvents.fire({eventName: ApplicationEvents.CHAT.SELECT, detail: {selectedChat: chatData}});
+        CustomEvents.fire({eventName: ApplicationEvents.CHAT.SELECT, detail: {selectedChat: chatItem}});
     };
 
-    isSelectedChat = chat => {
+    isSelectedChat = chatItem => {
         const {selectedChat} = this.state;
-        return !!selectedChat && !!chat && selectedChat.id === chat.id;
+        return !!selectedChat && !!chatItem && selectedChat["chatId"] === chatItem["chatId"];
     };
 
     render() {
-        const {chatsMap, chatsLoadedAll, loading} = this.state, chatItems = [...chatsMap.values()].map(chatData => {
-            let selected = this.isSelectedChat(chatData);
-            return (<div key={chatData["id"]} onClick={event => this.handleSelectChat(event, chatData)}
-                         className={`chat-item ${selected && "theme-marker"}`}>
-                <ChatItem chatData={chatData} selected={selected}/>
-            </div>);
+        const {chatsMap, chatsLoadedAll, loading} = this.state, chatItems = [...chatsMap.values()].map(chatItem => {
+            return <ChatItem key={chatItem["chatId"]} selected={this.isSelectedChat(chatItem)}
+                             chat={chatItem} onClick={e => this.handleSelectChat(e, chatItem)}/>;
         });
+        if (!chatItems.length) {
+            return <EmptyArea title="There are no chats for now." icon="comments"/>;
+        }
         return (
             <div className="slds-scrollable_y">
-                {Utility.isObjectEmpty(chatItems) && <EmptyArea title="There are no chats for now." icon="comments"/>}
-                {!Utility.isObjectEmpty(chatItems) && <div className="slds-text-longform">{chatItems}</div>}
-                {!Utility.isObjectEmpty(chatItems) && !chatsLoadedAll && !loading &&
-                    <Button label="Load More..." className="slds-align_absolute-center"
-                            onClick={_ => this.handleLoadChats(true)} variant="base"/>}
+                <div className="slds-text-longform">{chatItems}</div>
+                {!loading && !chatsLoadedAll && <Button label="Load More..." variant="base"
+                                                        className="slds-align_absolute-center"
+                                                        onClick={_ => this.handleLoadChats(true)}/>}
                 {loading && <Spinner variant="brand" size="small"
                                      containerClassName="slds-p-vertical--small slds-spinner_container_overridden slds-is-relative"/>}
             </div>
