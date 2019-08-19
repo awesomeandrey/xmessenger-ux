@@ -27,7 +27,8 @@ const _postMessage = data => navigator.serviceWorker.ready.then(_ => {
     console.error("Could not post message to SW.", error);
 });
 
-export const serviceWorkerAllowed = ("serviceWorker" in navigator) && !Utility.isMobileDevice();
+// export const serviceWorkerAllowed = ("serviceWorker" in navigator) && !Utility.isMobileDevice();
+export const serviceWorkerAllowed = false;
 
 export const registerServiceWorker = _ => {
     if (serviceWorkerAllowed) {

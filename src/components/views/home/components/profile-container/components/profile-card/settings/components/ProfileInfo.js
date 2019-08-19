@@ -11,9 +11,7 @@ import {Settings} from "../../../../../../../../../model/services/core/UserServi
 import {CustomEvents} from "../../../../../../../../../model/services/utility/EventsService";
 import {InputPatterns, Utility} from "../../../../../../../../../model/services/utility/UtilityService";
 import {LocalStorage, LocalEntities} from "../../../../../../../../../model/services/utility/StorageService";
-import {
-    postMessageToServiceWorker, serviceWorkerAllowed
-} from "../../../../../../../../../model/api/streaming/services/ServiceWorkerRegistrator";
+import {serviceWorkerAllowed} from "../../../../../../../../../model/api/streaming/services/ServiceWorkerRegistrator";
 
 class ProfileInfo extends React.Component {
     constructor(props) {
@@ -50,7 +48,6 @@ class ProfileInfo extends React.Component {
     handleChangeNotifications = event => {
         const richNotificationsEnabled = event.target.checked;
         LocalStorage.setItem({key: LocalEntities.RICH_NOTIFICATIONS, value: richNotificationsEnabled});
-        postMessageToServiceWorker({richNotificationsEnabled});
     };
 
     render() {

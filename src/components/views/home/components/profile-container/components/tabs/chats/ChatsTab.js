@@ -10,7 +10,6 @@ import {ChattingService} from "../../../../../../../../model/services/core/Chatt
 import {CustomEvents, KeyEvents} from "../../../../../../../../model/services/utility/EventsService";
 import {SessionEntities, SessionStorage} from "../../../../../../../../model/services/utility/StorageService";
 import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
-import {postMessageToServiceWorker} from "../../../../../../../../model/api/streaming/services/ServiceWorkerRegistrator";
 
 import "./styles.css";
 
@@ -92,11 +91,10 @@ class ChatsTab extends React.Component {
         ChattingService.loadChats({size: Math.min(chatsLimit, 100)})
             .then(pageResult => {
                 const chatsArray = pageResult["content"];
-                console.log("chatsArray", chatsArray);
                 this.setState({
                     chatsMap: new Map(chatsArray.map(_ => [_["chatId"], _])),
                     chatsLoadedAll: pageResult["last"], chatsLimit
-                }, () => postMessageToServiceWorker({chatsArray}));
+                });
                 return pageResult["totalElements"];
             })
             .then(chatsAmount => CustomEvents.fire({eventName: ApplicationEvents.CHAT.CALCULATE, detail: chatsAmount}))

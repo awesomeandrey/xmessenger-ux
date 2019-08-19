@@ -12,7 +12,6 @@ import ApplicationEvents from "./model/application-events";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";
 import PageTitleManager from "./components/common/components/page-title/PageTitleManager";
 
-import {registerServiceWorker, serviceWorkerAllowed} from "./model/api/streaming/services/ServiceWorkerRegistrator";
 import {Route, IndexRoute} from "react-router";
 import {CustomEvents} from "./model/services/utility/EventsService";
 import {subscribeFromClient} from "./model/api/streaming/services/TopicsManager";
@@ -21,16 +20,18 @@ const AppContainer = props => {
     const [loading, setLoading] = useState(false);
 
     useEffect(_ => {
-        if (serviceWorkerAllowed) {
-            CustomEvents.register({eventName: "load", callback: registerServiceWorker});
-        } else {
-            /**
-             * If 'service worker' is not supported/allowed OR it's a mobile client
-             * then client is directly subscribed to topics.
-             * Intended for browsers which do not support service workers and mobile devices.
-             */
-            subscribeFromClient();
-        }
+        // if (serviceWorkerAllowed) {
+        //     CustomEvents.register({eventName: "load", callback: registerServiceWorker});
+        // } else {
+        //     /**
+        //      * If 'service worker' is not supported/allowed OR it's a mobile client
+        //      * then client is directly subscribed to topics.
+        //      * Intended for browsers which do not support service workers and mobile devices.
+        //      */
+        //     subscribeFromClient();
+        // }
+        subscribeFromClient();
+
         CustomEvents.register({
             eventName: ApplicationEvents.APP_DEFAULT.LOADING, callback: event => {
                 const {loading: loadingParam} = event.detail;

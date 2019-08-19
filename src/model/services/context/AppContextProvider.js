@@ -4,7 +4,6 @@ import ApplicationEvents from "../../application-events";
 
 import {UserService} from "../core/UserService";
 import {CustomEvents} from "../utility/EventsService";
-import {postMessageToServiceWorker} from "../../api/streaming/services/ServiceWorkerRegistrator";
 import {SessionEntities, SessionStorage} from "../utility/StorageService";
 import {LoginService} from "../core/AuthenticationService";
 
@@ -44,9 +43,7 @@ class AppContextProvider extends Component {
     }
 
     loadUser = _ => UserService.getUserInfo()
-        .then(user => this.setState({user}, _ => {
-            postMessageToServiceWorker({user});
-        }));
+        .then(user => this.setState({user}));
 
     loadIndicators = _ => UserService.getUserIndicators()
         .then(indicators => this.setState({indicatorsMap: new Map(indicators.map(_ => [_.id, _]))}));
