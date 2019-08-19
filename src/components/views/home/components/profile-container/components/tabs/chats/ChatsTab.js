@@ -13,21 +13,6 @@ import {Utility} from "../../../../../../../../model/services/utility/UtilitySer
 
 import "./styles.css";
 
-// const NOTIFICATION_BLUEPRINTS = {
-//     onChatCleared: userName => {
-//         CustomEvents.fire({
-//             eventName: ToastEvents.SHOW,
-//             detail: {message: <span><b>{userName}</b> has just cleared chat history.</span>}
-//         });
-//     },
-//     onChatDeleted: userName => {
-//         CustomEvents.fire({
-//             eventName: ToastEvents.SHOW,
-//             detail: {level: "error", message: <span><b>{userName}</b> removed chat with you.</span>}
-//         });
-//     }
-// };
-
 class ChatsTab extends React.Component {
     constructor(props) {
         super(props);
@@ -44,14 +29,36 @@ class ChatsTab extends React.Component {
         CustomEvents.register({eventName: ApplicationEvents.CHAT.LOAD_ALL, callback: this.handleLoadChats});
         CustomEvents.register({
             eventName: ApplicationEvents.CHAT.CLEAR, callback: event => {
-                const {clearedChat} = event.detail;
-                // TODO - re-implement (fire toast message);
+                const {clearedChat} = event.detail, {user: currentUser} = this.props;
+                const lastUpdatedBy = clearedChat["lastUpdatedBy"];
+                if (lastUpdatedBy && lastUpdatedBy["id"] !== currentUser["id"]) {
+                    CustomEvents.fire({
+                        eventName: ToastEvents.SHOW,
+                        detail: {message: <span><b>{lastUpdatedBy["name"]}</b> has just cleared chat history.</span>}
+                    });
+                }
             }
         });
         CustomEvents.register({
             eventName: ApplicationEvents.CHAT.DELETE, callback: event => {
-                const {removedChat} = event.detail;
-                // TODO - re-implement (fire toast message + recalculate chats size + if selected then re-fire event);
+                const {removedChat} = event.detail, {user: currentUser} = this.props, {chatsMap} = this.state;
+                const lastUpdatedBy = removedChat["lastUpdatedBy"];
+                if (chatsMap.delete(removedChat["chatId"])) {
+                    if (lastUpdatedBy && lastUpdatedBy["id"] !== currentUser["id"]) {
+                        CustomEvents.fire({
+                            eventName: ToastEvents.SHOW,
+                            detail: {
+                                level: "error",
+                                message: <span><b>{lastUpdatedBy["name"]}</b> removed chat with you.</span>
+                            }
+                        });
+                    }
+                    if (this.isSelectedChat(removedChat)) {
+                        CustomEvents.fire({eventName: ApplicationEvents.CHAT.SELECT, detail: {selectedChat: null}});
+                    }
+                    CustomEvents.fire({eventName: ApplicationEvents.CHAT.CALCULATE, detail: chatsMap.size})
+                        .then(() => this.setState({chatsMap}));
+                }
             }
         });
         CustomEvents.register({
