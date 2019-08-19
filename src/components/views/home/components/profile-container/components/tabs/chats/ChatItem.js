@@ -9,40 +9,35 @@ import {ChattingService} from "../../../../../../../../model/services/core/Chatt
 import {CustomEvents} from "../../../../../../../../model/services/utility/EventsService";
 import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
 
-const _formatDateStamp = dateNum => {
-        const dateString = Utility.formatDate({dateNum, showTimestamp: false});
-        return !!dateString ? (" • " + dateString) : "";
-    },
-    _onRemoveChat = chat => {
-        const modalDetails = {
-            title: "Remove chat",
-            body: `Do you want to remove chat with ${chat["fellow"]["name"]}?`,
-            actionButton: {
-                type: "destructive",
-                label: "Remove",
-                callback: _ => {
-                    CustomEvents.fire({eventName: ApplicationEvents.CHAT.DELETE, detail: {removedChat: chat}})
-                        .then(_ => ChattingService.removeChat(chat));
-                }
+const _onRemoveChat = chat => {
+    const modalDetails = {
+        title: "Remove chat",
+        body: `Do you want to remove chat with ${chat["fellow"]["name"]}?`,
+        actionButton: {
+            type: "destructive",
+            label: "Remove",
+            callback: _ => {
+                CustomEvents.fire({eventName: ApplicationEvents.CHAT.DELETE, detail: {removedChat: chat}})
+                    .then(_ => ChattingService.removeChat(chat));
             }
-        };
-        CustomEvents.fire({eventName: ModalEvents.SHOW_DIALOG, detail: modalDetails});
-    },
-    _onClearChat = chat => {
-        const modalDetails = {
-            title: "Clear chat history",
-            body: `Do you want to delete all messages with ${chat["fellow"]["name"]}?`,
-            actionButton: {
-                type: "destructive",
-                label: "Clear",
-                callback: _ => {
-                    CustomEvents.fire({eventName: ApplicationEvents.CHAT.CLEAR, detail: {clearedChat: chat}})
-                        .then(_ => ChattingService.clearChat(chat));
-                }
-            }
-        };
-        CustomEvents.fire({eventName: ModalEvents.SHOW_DIALOG, detail: modalDetails});
+        }
     };
+    CustomEvents.fire({eventName: ModalEvents.SHOW_DIALOG, detail: modalDetails});
+}, _onClearChat = chat => {
+    const modalDetails = {
+        title: "Clear chat history",
+        body: `Do you want to delete all messages with ${chat["fellow"]["name"]}?`,
+        actionButton: {
+            type: "destructive",
+            label: "Clear",
+            callback: _ => {
+                CustomEvents.fire({eventName: ApplicationEvents.CHAT.CLEAR, detail: {clearedChat: chat}})
+                    .then(_ => ChattingService.clearChat(chat));
+            }
+        }
+    };
+    CustomEvents.fire({eventName: ModalEvents.SHOW_DIALOG, detail: modalDetails});
+};
 
 export default props => {
     const {chat, selected, onClick} = props, {fellow} = chat;
@@ -56,7 +51,7 @@ export default props => {
                                      <span className="slds-text-body_regular">{fellow["name"]}</span><br/>
                                      <span className="slds-text-color_weak theme-inherit">
                                         <span>{Utility.decorateUsername(fellow["username"])}</span>
-                                        <span>{!selected && _formatDateStamp(chat["lastActivityDate"])}</span>
+                                        <span>{!selected && Utility.appendDateStamp(chat["lastActivityDate"])}</span>
                                     </span>
                                  </p>
                                  <div className="slds-float_right">

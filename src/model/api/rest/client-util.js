@@ -18,7 +18,6 @@ export const performLocalRequest = parameters => {
 
 export const performRequest = endpoint => parameters => {
     return performRawRequest(endpoint)(parameters).then(response => {
-        debugger;
         if (response.ok) {
             // HTTP codes [200, 201];
             return handleSuccess(response);

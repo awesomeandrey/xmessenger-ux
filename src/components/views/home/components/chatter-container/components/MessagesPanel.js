@@ -44,7 +44,7 @@ const ChatTitle = ({chat}) => {
                 <span className="slds-icon_container slds-icon-utility-chat slds-chat-icon">
                     <Icon category="utility" name="chat" size="small"/>
                 </span>
-                <p>Chat started by <b>{!!chat && chat["startedBy"]["name"]}</b></p>
+                <p>Chat started by <b>{chat["startedBy"]["name"]}</b></p>
             </div>
         </li>
     );

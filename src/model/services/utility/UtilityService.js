@@ -47,6 +47,10 @@ export const Utility = {
     getParamFromUrl: ({paramName, rawUrl = window.location.href}) => {
         const match = rawUrl.match("[?&#]" + paramName + "=([^&]+)");
         return match ? decodeURIComponent(match[1]) : null;
+    },
+    appendDateStamp: dateNum => {
+        const dateString = Utility.formatDate({dateNum, showTimestamp: false});
+        return !!dateString ? (" • " + dateString) : "";
     }
 };
 

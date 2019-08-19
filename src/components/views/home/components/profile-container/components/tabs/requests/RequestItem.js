@@ -7,22 +7,30 @@ import Button from "@salesforce/design-system-react/module/components/button";
 import {Utility} from "../../../../../../../../model/services/utility/UtilityService";
 
 export default props => {
-    const {request, onProcess} = props, {sender} = request, {name, username} = sender;
+    const {request, onProcess} = props, {sender} = request;
     return (
         <MediaObject className="slds-box slds-box_x-small"
                      figure={<UserPicture user={sender}/>}
                      body={
                          <div className="slds-clearfix">
                              <p className="slds-float_left">
-                                 <span className="slds-text-body_regular">{name}</span><br/>
-                                 <span className="slds-text-body_small slds-text-color_weak">
-                                 {Utility.decorateUsername(username)}</span>
+                                 <span className="slds-text-body_regular">{sender["name"]}</span><br/>
+                                 <span className="slds-text-color_weak theme-inherit">
+                                     <span>{Utility.decorateUsername(sender["username"])}</span>
+                                     <span>{Utility.appendDateStamp(request["createdDate"])}</span>
+                                 </span>
                              </p>
                              <ButtonGroup className="slds-float_right">
-                                 <Button variant="brand"
-                                         onClick={_ => onProcess(request, true)}>Accept</Button>
-                                 <Button variant="destructive"
-                                         onClick={_ => onProcess(request, false)}>Reject</Button>
+                                 <Button iconCategory="utility"
+                                         iconName="like"
+                                         onClick={() => onProcess(request, true)}
+                                         iconVariant="border-filled"
+                                 />
+                                 <Button iconCategory="utility"
+                                         iconName="dislike"
+                                         onClick={() => onProcess(request, false)}
+                                         iconVariant="border-filled"
+                                 />
                              </ButtonGroup>
                          </div>
                      }/>
