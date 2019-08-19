@@ -33,14 +33,14 @@ class ProfileInfo extends React.Component {
 
     handleChangeName = _ => {
         const {user} = this.props, {name} = this.state, pattern = InputPatterns.NAME;
-        if (!!name && Utility.matches(name, pattern) && user.name !== name) {
+        if (!!name && Utility.matches(name, pattern) && user["name"] !== name) {
             this._updateUserInfo({...user, name});
         }
     };
 
     handleChangeEmail = _ => {
         const {user} = this.props, {email} = this.state, pattern = InputPatterns.EMAIL;
-        if (!!email && Utility.matches(email, pattern) && user.email !== email) {
+        if (!!email && Utility.matches(email, pattern) && user["email"] !== email) {
             this._updateUserInfo({...user, email});
         }
     };
@@ -58,14 +58,14 @@ class ProfileInfo extends React.Component {
                 <MaskedInput label="Name" placeholder="Enter your name"
                              iconRight={<InputIcon name="user" category="utility"/>}
                              disabled={loading} required
-                             value={name || user.name} pattern={InputPatterns.NAME}
+                             value={name || user["name"]} pattern={InputPatterns.NAME}
                              onChange={name => this.setState({name})}
                              onBlur={this.handleChangeName}/>
                 <Input label="Username" disabled
-                       value={Utility.decorateUsername(user.username)}
+                       value={Utility.decorateUsername(user["username"])}
                        iconRight={<InputIcon name="fallback" category="utility"/>}/>
                 <EmailInput label="Email address" disabled={loading}
-                            value={email} placeholder={user.email || "Type here..."}
+                            value={email} placeholder={user["email"] || "Type here..."}
                             onChange={email => this.setState({email})}
                             onBlur={this.handleChangeEmail}/>
                 {serviceWorkerAllowed && <Checkbox label="Rich notifications"

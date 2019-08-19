@@ -30,12 +30,12 @@ class AccountDeactivation extends React.Component {
 
     handleDeleteAccount = _ => {
         const {user} = this.props, {username} = this.state;
-        if (user.username !== username) {
+        if (user["username"] !== username) {
             this.setState({username: "", error: "Username is not confirmed"});
         } else {
             this.setState({loading: true, error: ""}, _ => {
                 CustomEvents.fire({eventName: Events.SETTINGS.LOCK, detail: {locked: true}})
-                    .then(_ => Settings.changeProfileInfo({id: user.id, active: false}))
+                    .then(_ => Settings.changeProfileInfo({id: user["id"], active: false}))
                     .then(LoginService.logoutUser);
             });
         }
@@ -59,8 +59,7 @@ class AccountDeactivation extends React.Component {
                         </div>}
                         {!loading && <Input
                             iconRight={<InputIcon name="fallback" category="utility"/>}
-                            placeholder="Confirm your login" required
-                            value={username} errorText={error}
+                            placeholder="Confirm your login" required value={username} errorText={error}
                             onChange={event => this.setState({username: event.target.value})}/>}
                     </div>
                     <div className="slds-float--right">

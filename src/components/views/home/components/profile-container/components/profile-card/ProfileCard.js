@@ -12,18 +12,16 @@ import {Utility} from "../../../../../../../model/services/utility/UtilityServic
 import {CustomEvents} from "../../../../../../../model/services/utility/EventsService";
 import {UserService} from "../../../../../../../model/services/core/UserService";
 
-const _onOpenSettings = _ => CustomEvents.fire({eventName: Events.SETTINGS.OPEN, detail: {isOpen: true}}),
-    _onLogout = _ => LoginService.logoutUser(),
-    _onSelectOption = (option) => {
-        switch (option.value) {
-            case 1:
-                _onOpenSettings();
-                break;
-            case 2:
-                _onLogout();
-                break;
-        }
-    };
+const _onSelectOption = (option = {value: 2}) => {
+    switch (option.value) {
+        case 1:
+            CustomEvents.fire({eventName: Events.SETTINGS.OPEN, detail: {isOpen: true}});
+            break;
+        case 2:
+            LoginService.logoutUser();
+            break;
+    }
+};
 
 const ProfileCard = props => {
     const {user} = props;
@@ -38,12 +36,12 @@ const ProfileCard = props => {
                 <div className="flex-container flex-container__space-between">
                     <SettingsModal {...props}/>
                     <p className="slds-float_left">
-                        <span className="slds-text-title_caps theme-inherit">{user.name}</span><br/>
-                        <span
-                            className="slds-text-color_weak theme-inherit">{Utility.decorateUsername(user.username)}</span>
+                        <span className="slds-text-title_caps theme-inherit">{user["name"]}</span><br/>
+                        <span className="slds-text-color_weak theme-inherit">{Utility.decorateUsername(user["username"])}</span>
                     </p>
                     <div className="slds-float_right">
-                        <Button variant="neutral" className="mobile-visible-only" onClick={_onLogout}>Logout</Button>
+                        <Button variant="neutral" className="mobile-visible-only"
+                                onClick={_onSelectOption()}>Logout</Button>
                         <Dropdown buttonClassName="mobile-hidden"
                                   iconCategory="utility"
                                   iconName="settings"
