@@ -46,11 +46,11 @@ class SearchTab extends React.Component {
                 eventName: ToastEvents.SHOW,
                 detail: {
                     level: "success",
-                    message: <span>Sent request to <strong>{targetUser.name}</strong></span>
+                    message: <span>Sent request to <strong>{targetUser["name"]}</strong></span>
                 }
             }))
             .then(_ => this.setState({
-                requestedUsers: this.state.requestedUsers.add(targetUser.username),
+                requestedUsers: this.state.requestedUsers.add(targetUser["username"]),
             }))
             .catch(error => CustomEvents.fire({
                 eventName: ToastEvents.SHOW,

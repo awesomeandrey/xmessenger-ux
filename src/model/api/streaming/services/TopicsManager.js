@@ -14,7 +14,6 @@ export const subscribeFromClient = _ => {
             route: topicToEvent.topic,
             callback: payload => {
                 let eventDetails = topicToEvent.getEventDetails(payload);
-                console.log(">>> Event ", JSON.stringify(eventDetails));
                 CustomEvents.fire(eventDetails); // immediately fire application events;
             }
         };

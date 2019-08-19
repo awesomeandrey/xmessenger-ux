@@ -54,7 +54,7 @@ class RequestsTab extends React.Component {
             eventName: ApplicationEvents.REQUEST.SEND,
             callback: event => {
                 const {user} = this.props, {request} = event.detail;
-                if (user.id === request.recipient.id) {
+                if (user["id"] === request["recipient"]["id"]) {
                     NOTIFICATION_BLUEPRINTS.onSendRequest(this.loadRequests);
                 }
             }
@@ -63,14 +63,14 @@ class RequestsTab extends React.Component {
             eventName: ApplicationEvents.REQUEST.PROCESS,
             callback: event => {
                 const {user} = this.props, {request} = event.detail;
-                if (user.id === request.recipient.id) {
-                    if (request.approved) {
+                if (user["id"] === request["recipient"]["id"]) {
+                    if (request["approved"]) {
                         CustomEvents.fire({eventName: ApplicationEvents.CHAT.LOAD_ALL});
                     }
                     this.loadRequests();
-                } else if (user.id === request.sender.id) {
+                } else if (user["id"] === request["sender"]["id"]) {
                     NOTIFICATION_BLUEPRINTS.onProcessRequest(request);
-                    if (request.approved) {
+                    if (request["approved"]) {
                         CustomEvents.fire({eventName: ApplicationEvents.CHAT.LOAD_ALL});
                     }
                 }
@@ -91,7 +91,7 @@ class RequestsTab extends React.Component {
     };
 
     respondToRequest = (request, isAccepted) => {
-        request.approved = isAccepted;
+        request["approved"] = isAccepted;
         RequestService.respondToRequest(request)
             .then(request => NOTIFICATION_BLUEPRINTS.onRespondToRequest(request),
                 error => NOTIFICATION_BLUEPRINTS.onRespondToRequestError(error));
@@ -99,10 +99,10 @@ class RequestsTab extends React.Component {
 
     render() {
         const {requests} = this.state, requestItems = requests.map(request =>
-            <RequestItem key={request.id} request={request} onProcess={this.respondToRequest}/>);
+            <RequestItem key={request["id"]} request={request} onProcess={this.respondToRequest}/>);
         return (
             <div className="slds-scrollable_y">
-                {requestItems.length === 0
+                {!requestItems.length
                     ? <EmptyArea title="There are no requests for now." icon="announcement"/>
                     : <div className="slds-text-longform">{requestItems}</div>}
             </div>

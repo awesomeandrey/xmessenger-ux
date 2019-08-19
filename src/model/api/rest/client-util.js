@@ -12,14 +12,13 @@ export const handleSuccess = response => _parseJSON(response).then(data => Promi
 
 export const handleError = response => _parseJSON(response).then(error => Promise.reject(error));
 
-export const handleConnectionIssue = connectionError => {
-    let errorText = "Couldn't perform request due to network issues.";
-    console.warn(errorText, JSON.stringify(connectionError));
-    CustomEvents.fire({eventName: ToastEvents.SHOW, detail: {message: errorText}});
+export const performLocalRequest = parameters => {
+    return performRequest("")(parameters);
 };
 
 export const performRequest = endpoint => parameters => {
     return performRawRequest(endpoint)(parameters).then(response => {
+        debugger;
         if (response.ok) {
             // HTTP codes [200, 201];
             return handleSuccess(response);
@@ -27,11 +26,7 @@ export const performRequest = endpoint => parameters => {
             // Any other HTTP codes;
             return handleError(response);
         }
-    }).catch(handleConnectionIssue);
-};
-
-export const performLocalRequest = parameters => {
-    return performRequest("")(parameters);
+    });
 };
 
 export const performRawRequest = endpoint => parameters => {
@@ -40,6 +35,9 @@ export const performRawRequest = endpoint => parameters => {
     const isBinaryData = body instanceof FormData, requestBody = {
         method, headers, body: method === defaultMethod ? undefined : isBinaryData ? body : JSON.stringify(body),
     };
-    // console.log(">>> HTTP Callout", JSON.stringify(requestBody));
-    return fetch(endpoint.concat(url), requestBody).catch(handleConnectionIssue);
+    return fetch(endpoint.concat(url), requestBody).catch(connectionError => {
+        let errorText = "Couldn't perform request due to network issues.";
+        console.warn(errorText, JSON.stringify(connectionError));
+        CustomEvents.fire({eventName: ToastEvents.SHOW, detail: {message: errorText}});
+    });
 };

@@ -15,8 +15,8 @@ export default props => {
             <figcaption className="slds-image__title slds-image__title--card">
                 <div className="slds-clearfix width-stretch">
                     <h3 className="slds-float_left">
-                        {user.name}<br/>
-                        <small>{Utility.decorateUsername(user.username)}</small>
+                        {user["name"]}<br/>
+                        <small>{Utility.decorateUsername(user["username"])}</small>
                     </h3>
                     <div className="slds-float_right">
                         {alreadySent && <Icon category="utility" name="check" size="medium"/>}
