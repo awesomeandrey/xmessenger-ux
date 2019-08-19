@@ -2,15 +2,15 @@ const TOPICS_PREFIX = "/topic";
 
 export default {
     CHAT: {
-        DELETE: `${TOPICS_PREFIX}/chat/delete`,
-        CLEAR: `${TOPICS_PREFIX}/chat/clear`
+        DELETE: `${TOPICS_PREFIX}/chats/delete`,
+        CLEAR: `${TOPICS_PREFIX}/chats/clear`
     },
     MESSAGE: {
-        SEND: `${TOPICS_PREFIX}/message/send`
+        SEND: `${TOPICS_PREFIX}/messages/send`
     },
     REQUEST: {
-        SEND: `${TOPICS_PREFIX}/request/send`,
-        PROCESS: `${TOPICS_PREFIX}/request/process`
+        SEND: `${TOPICS_PREFIX}/requests/send`,
+        PROCESS: `${TOPICS_PREFIX}/requests/process`
     },
     USER: {
         INDICATOR_CHANGE: `${TOPICS_PREFIX}/indicator-change`

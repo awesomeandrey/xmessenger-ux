@@ -12,8 +12,8 @@ import {Utility} from "../../../../../../../model/services/utility/UtilityServic
 import {CustomEvents} from "../../../../../../../model/services/utility/EventsService";
 import {UserService} from "../../../../../../../model/services/core/UserService";
 
-const _onSelectOption = (option = {value: 2}) => {
-    switch (option.value) {
+const _onSelectOption = ({value = 2}) => {
+    switch (value) {
         case 1:
             CustomEvents.fire({eventName: Events.SETTINGS.OPEN, detail: {isOpen: true}});
             break;
@@ -37,11 +37,12 @@ const ProfileCard = props => {
                     <SettingsModal {...props}/>
                     <p className="slds-float_left">
                         <span className="slds-text-title_caps theme-inherit">{user["name"]}</span><br/>
-                        <span className="slds-text-color_weak theme-inherit">{Utility.decorateUsername(user["username"])}</span>
+                        <span
+                            className="slds-text-color_weak theme-inherit">{Utility.decorateUsername(user["username"])}</span>
                     </p>
                     <div className="slds-float_right">
                         <Button variant="neutral" className="mobile-visible-only"
-                                onClick={_onSelectOption()}>Logout</Button>
+                                onClick={_onSelectOption}>Logout</Button>
                         <Dropdown buttonClassName="mobile-hidden"
                                   iconCategory="utility"
                                   iconName="settings"

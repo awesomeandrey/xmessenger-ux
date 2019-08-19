@@ -20,18 +20,8 @@ const AppContainer = props => {
     const [loading, setLoading] = useState(false);
 
     useEffect(_ => {
-        // if (serviceWorkerAllowed) {
-        //     CustomEvents.register({eventName: "load", callback: registerServiceWorker});
-        // } else {
-        //     /**
-        //      * If 'service worker' is not supported/allowed OR it's a mobile client
-        //      * then client is directly subscribed to topics.
-        //      * Intended for browsers which do not support service workers and mobile devices.
-        //      */
-        //     subscribeFromClient();
-        // }
+        // Subscribe to server events via Websocket API;
         subscribeFromClient();
-
         CustomEvents.register({
             eventName: ApplicationEvents.APP_DEFAULT.LOADING, callback: event => {
                 const {loading: loadingParam} = event.detail;
@@ -58,10 +48,11 @@ const AppContainer = props => {
 
 export default (
     <Route path="/" component={AppContainer}>
-        <IndexRoute component={About}/>
+        <IndexRoute component={Authorization}/>
         <Route path="login" component={Authorization}/>
         <Route path="home" component={Home}/>
         <Route path="oauth/gmail/callback" component={ProxyPage}/>
+        <Route path="about" component={About}/>
         <Route path="*" component={Error}/>
     </Route>
 );

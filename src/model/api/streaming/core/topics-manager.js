@@ -20,7 +20,7 @@ const _wsConfigUrlPath = "/ws-configurator", _stompClientClosure = _ => {
 }, _getStompClient = _stompClientClosure();
 
 export const sendMessage = ({destination, body}) => {
-    const PATH_PREFIX = "/message";
+    const PATH_PREFIX = "/ws-message";
     return _getStompClient(stompClient => {
         stompClient.send(PATH_PREFIX.concat(destination), {}, JSON.stringify(body));
     });

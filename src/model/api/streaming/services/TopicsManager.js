@@ -4,9 +4,7 @@ import {subscribe} from "../core/topics-manager";
 import {CustomEvents} from "../../../services/utility/EventsService";
 
 /**
- * Intended for devices which don't support service workers.
- *
- * @param _ none.
+ * Intended for rich online experience mode.
  */
 export const subscribeFromClient = _ => {
     const registrations = TopicsToEvents.map(topicToEvent => {
