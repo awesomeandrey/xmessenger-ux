@@ -70,8 +70,13 @@ class ChatsTab extends React.Component {
         });
         CustomEvents.register({
             eventName: ApplicationEvents.MESSAGE.ADD, callback: event => {
-                const {message} = event.detail;
-                // TODO - re-implement (re-sort chats);
+                const {message} = event.detail, {chatsMap} = this.state;
+                const chatId = message["relation"]["id"];
+                if (chatsMap.has(chatId)) {
+                    let relatedChat = chatsMap.get(chatId);
+                    relatedChat["lastActivityDate"] = message["date"];
+                    this.setState({chatsMap: ChattingService.sortChatsMap(chatsMap.set(chatId, relatedChat))});
+                }
             }
         });
         // 'Escape' button;

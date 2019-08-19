@@ -57,8 +57,6 @@ export const ChattingService = {
         const messagesMap = new Map(messages.reverse().map(_ => [_["id"], _]));
         return Promise.resolve(messagesMap);
     }),
-    //TODO - review implementation;
-
     /**
      * {
      *     author: {}
