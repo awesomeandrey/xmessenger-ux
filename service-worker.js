@@ -1,6 +1,4 @@
-const NOTIFICATION_ICON = "/public/pictures/xmessenger-logo.jpg", EMPTY_STORAGE = {
-    user: null
-};
+const NOTIFICATION_ICON = "/public/pictures/xmessenger-logo.jpg";
 
 /**
  * Runtime swState object. Entries are provided from main thread.
@@ -9,7 +7,7 @@ const NOTIFICATION_ICON = "/public/pictures/xmessenger-logo.jpg", EMPTY_STORAGE 
  * }
  * @type {Object}
  */
-let swState = {...EMPTY_STORAGE}, itemsToNotifyAbout = new Map();
+let swState = {user: null}, itemsToNotifyAbout = new Map();
 
 const parsePushData = event => {
     try {
@@ -20,9 +18,11 @@ const parsePushData = event => {
     }
 };
 
-const showNotification = (title, options) => {
+const showNotification = ({title, options}) => {
     if (Notification.permission !== "granted") return;
-    return self.registration.showNotification(title, {icon: NOTIFICATION_ICON, ...options});
+    return self.registration.showNotification(title, {
+        icon: NOTIFICATION_ICON, ...options
+    });
 };
 
 const notifyOnIncomingRequest = eventDetails => {
@@ -31,29 +31,29 @@ const notifyOnIncomingRequest = eventDetails => {
         if (eventName === "onSendRequest" && request["recipient"]["id"] === user["id"]) {
             itemsToNotifyAbout.set(request["id"], request);
             showNotification({
-                itemId: request["id"], title: "New friendship request!",
+                title: "New friendship request!",
                 options: {body: request["sender"]["name"] + " wants to befriend with you."}
             });
         } else if (eventName === "onProcessRequest" && request["sender"]["id"] === user["id"] && request["approved"]) {
             itemsToNotifyAbout.set(request["id"], request);
             showNotification({
-                itemId: request["id"], title: "Friendship request approved!",
+                title: "Friendship request approved!",
                 options: {body: request["recipient"]["name"] + " accepted your friendship request."}
             });
+        }
+        if (itemsToNotifyAbout.size >= 15) {
+            itemsToNotifyAbout.clear();
         }
     }
 };
 
 self.addEventListener("push", event => {
     parsePushData(event)
-        .then(eventData => {
-            debugger;
-            notifyOnIncomingRequest(eventData)
-        })
+        .then(eventData => notifyOnIncomingRequest(eventData))
         .catch(error => console.warn(error));
 });
 
 self.addEventListener("message", event => {
     const newSwState = JSON.parse(event.data);
-    swState = {...newSwState};
+    swState = Object.assign(swState, newSwState);
 });
