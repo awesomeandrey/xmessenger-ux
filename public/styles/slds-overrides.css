@@ -25,6 +25,10 @@
 }
 
 @media (hover: none) and (pointer: coarse) {
+    body {
+        font-size: 0.8125rem;
+    }
+
     .slds-text-title_caps, .slds-text-title--caps, .slds-text-body_small, .slds-text-body--small {
         font-size: 0.75rem !important;
     }
