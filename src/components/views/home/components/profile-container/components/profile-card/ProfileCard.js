@@ -1,6 +1,6 @@
 import React from "react";
 import Events from "../../../../../../../model/application-events";
-import SettingsModal from "./settings/SettingsModal";
+import SettingsModal from "./user-settings/SettingsModal";
 import ScalableImage from "../../../../../../common/components/images/scalable/ScalableImage";
 import PropsLoader from "../../../../../../common/components/loader/PropsLoader";
 import Dropdown from "@salesforce/design-system-react/module/components/menu-dropdown";
@@ -37,8 +37,7 @@ const ProfileCard = props => {
                     <SettingsModal {...props}/>
                     <p className="slds-float_left">
                         <span className="slds-text-title_caps theme-inherit">{user["name"]}</span><br/>
-                        <span
-                            className="slds-text-color_weak theme-inherit">{Utility.decorateUsername(user["username"])}</span>
+                        <span className="slds-text-color_weak theme-inherit">{Utility.decorateUsername(user["username"])}</span>
                     </p>
                     <div className="slds-float_right">
                         <Button variant="neutral" className="mobile-visible-only"

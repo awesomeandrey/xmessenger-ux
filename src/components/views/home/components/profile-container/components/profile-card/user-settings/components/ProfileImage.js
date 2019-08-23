@@ -27,9 +27,11 @@ class ProfileImage extends React.Component {
         }
     }
 
-    handleLoadImage = event => {
-        const mediaFile = event.target.files[0], fileSize = mediaFile.size / 1024 / 1024, fileSizeLimit = 1;
-        if (fileSize > fileSizeLimit) {
+    handleLoadImage = mediaFile => {
+        const fileSize = mediaFile.size / 1024 / 1024, fileSizeLimit = 1;
+        if (!mediaFile.type.startsWith("image")) {
+            this.setState({error: "The file should be of 'image' type."});
+        } else if (fileSize > fileSizeLimit) {
             this.setState({error: `Profile picture exceed file size limit: maximum ${fileSizeLimit}MB.`});
         } else {
             this.handlePreLoadImage(mediaFile);
@@ -68,22 +70,23 @@ class ProfileImage extends React.Component {
                     <div className="slds-form-element__label">Profile photo</div>
                     <div className="slds-form-element__control">
                         <div className="slds-file-selector slds-file-selector_files">
-                            <div className="slds-file-selector__dropzone">
+                            <FileDropZone onDropFile={f => this.handleLoadImage(f)}>
                                 <input type="file" disabled={loading} accept={"image/*"}
                                        ref={el => this._fileInput = el}
-                                       onChange={this.handleLoadImage}
+                                       onChange={e => this.handleLoadImage(e.target.files[0])}
                                        className="slds-file-selector__input slds-assistive-text"/>
                                 <label className="slds-file-selector__body" onClick={_ => this._fileInput.click()}>
                                     <span className="slds-file-selector__button slds-button slds-button_neutral">
                                         <Icon category="utility" name="upload" size="x-small"/>&nbsp;Upload Files</span>
                                     <span className="slds-file-selector__text slds-medium-show">or Drop Files</span>
                                 </label>
-                            </div>
+                            </FileDropZone>
                         </div>
                     </div>
                     <div className="slds-form-element__help">
                         {!loading && !!error && <span className="slds-text-color_error">{error}</span>}
-                        {loading && <div className="slds-float_left slds-is-relative slds-p-vertical--medium slds-p-left_large">
+                        {loading &&
+                        <div className="slds-float_left slds-is-relative slds-p-vertical--medium slds-p-left_large">
                             <Spinner variant="brand" size="small"/>
                         </div>}
                     </div>
@@ -92,5 +95,25 @@ class ProfileImage extends React.Component {
         );
     }
 }
+
+const FileDropZone = props => {
+    const preventDefaults = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+    };
+
+    return (
+        <div className="slds-file-selector__dropzone"
+             onDragEnter={preventDefaults}
+             onDragOver={preventDefaults}
+             onDragLeave={preventDefaults}
+             onDrop={event => {
+                 preventDefaults(event);
+                 if (!!props["onDropFile"] && typeof props["onDropFile"] === "function") {
+                     props["onDropFile"](event.dataTransfer.files[0]);
+                 }
+             }}>{props.children}</div>
+    );
+};
 
 export default ProfileImage;
