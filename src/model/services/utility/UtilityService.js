@@ -52,11 +52,19 @@ export const Utility = {
         const dateString = Utility.formatDate({dateNum, showTimestamp: false});
         return !!dateString ? (" • " + dateString) : "";
     },
-    scrollToBottom: (element = document.body) => {
-        element["scrollTop"] = element["scrollHeight"];
+    scrollToBottom: (element) => {
+        if (!!element) {
+            element["scrollTop"] = element["scrollHeight"];
+        } else {
+            window.scrollTo(0, document.body.scrollHeight);
+        }
     },
-    scrollToTop: (element = document.body) => {
-        element["scrollTop"] = 0;
+    scrollToTop: (element) => {
+        if (!!element) {
+            element["scrollTop"] = 0;
+        } else {
+            window.scrollTo({top: 0, behavior: "smooth"});
+        }
     }
 };
 

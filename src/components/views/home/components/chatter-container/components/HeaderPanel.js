@@ -4,10 +4,8 @@ import PropsLoader from "../../../../../common/components/loader/PropsLoader";
 import Button from "@salesforce/design-system-react/module/components/button";
 import MediaObject from "@salesforce/design-system-react/module/components/media-object";
 import Indicator from "../../../../../common/components/indicator/Indicator";
-import ApplicationEvents from "../../../../../../model/application-events";
 
 import {Utility} from "../../../../../../model/services/utility/UtilityService";
-import {CustomEvents} from "../../../../../../model/services/utility/EventsService";
 
 const HeaderPanel = props => {
     const {chat} = props, {fellow} = chat,
@@ -22,11 +20,8 @@ const HeaderPanel = props => {
                                             offlinePlaceholder={`Last login: ${lastLoginDate}`}/>
                              </p>
                              <div className="slds-float--right">
-                                 <Button variant="neutral" onClick={_ => {
-                                     CustomEvents.fire({
-                                         eventName: ApplicationEvents.CHAT.SELECT, detail: {selectedChat: null}
-                                     }).then(() => Utility.scrollToTop());
-                                 }} className="mobile-visible-only">Back</Button>
+                                 <Button variant="neutral" onClick={_ => Utility.scrollToTop()}
+                                         className="mobile-visible-only">Back</Button>
                              </div>
                          </div>
                      }/>
