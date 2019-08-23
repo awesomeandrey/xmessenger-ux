@@ -1,41 +1,33 @@
-import React from "react";
+import React, {useRef, useEffect} from "react";
 import Icon from "@salesforce/design-system-react/module/components/icon";
-import Spinner from "@salesforce/design-system-react/module/components/spinner";
 
 import {Utility} from "../../../../../../model/services/utility/UtilityService";
 
-class MessagesPanel extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+const MessagesPanel = props => {
+    const container = useRef(null);
 
-    componentDidUpdate(prevProps, prevState) {
-        if (!!this._container) {
-            this._container.scrollTop = this._container.scrollHeight;
+    useEffect(() => {
+        if (!!container && !!container.current) {
+            container.current["scrollTop"] = container.current["scrollHeight"];
         }
-    }
+    });
 
-    render() {
-        const {chat: selectedChat, messagesMap, loading, user: currentUser} = this.props,
-            messageItems = Array.from(messagesMap.values()).map(message => {
-                message.formattedDate = Utility.formatDate({dateNum: message["date"]});
-                return message["author"]["id"] !== currentUser["id"]
-                    ? <InboundMessage key={message["id"]} message={message}/>
-                    : <OutboundMessage key={message["id"]} message={message}/>;
-            });
-        return (
-            <section role="log" className="slds-chat height-percent-100">
-                {loading && <Spinner variant="brand" size="small"
-                                     containerClassName="slds-spinner_container_overridden"/>}
-                <ul className="slds-chat-list slds-scrollable_y" ref={element => this._container = element}>
-                    <ChatTitle chat={selectedChat}/>
-                    {messageItems}
-                </ul>
-            </section>
-        );
-    }
-}
+    const {chat: selectedChat, messagesMap, user: currentUser} = props,
+        messageItems = Array.from(messagesMap.values()).map(message => {
+            message.formattedDate = Utility.formatDate({dateNum: message["date"]});
+            return message["author"]["id"] !== currentUser["id"]
+                ? <InboundMessage key={message["id"]} message={message}/>
+                : <OutboundMessage key={message["id"]} message={message}/>;
+        });
+    return (
+        <section role="log" className="slds-chat height-percent-100">
+            <ul className="slds-chat-list slds-scrollable_y" ref={container}>
+                <ChatTitle chat={selectedChat}/>
+                {messageItems}
+            </ul>
+        </section>
+    );
+};
 
 const ChatTitle = ({chat}) => {
     return (

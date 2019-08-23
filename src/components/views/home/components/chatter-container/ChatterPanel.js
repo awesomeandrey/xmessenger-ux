@@ -5,6 +5,7 @@ import MessageInput from "./components/MessageInput";
 import EmptyArea from "../../../../common/components/utils/EmptyArea";
 import ApplicationEvents from "../../../../../model/application-events";
 import AppContext from "../../../../../model/services/context/AppContext";
+import Spinner from "@salesforce/design-system-react/module/components/spinner";
 
 import {ChattingService} from "../../../../../model/services/core/ChattingService";
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
@@ -77,8 +78,9 @@ class ChatterPanel extends React.Component {
                                 <HeaderPanel chat={selectedChat}/>
                             </div>
                             <div className="messages-container">
-                                <MessagesPanel chat={selectedChat} user={context.user}
-                                               messagesMap={messagesMap} loading={loading}/>
+                                {loading && <Spinner variant="brand" size="small"
+                                                     containerClassName="slds-spinner_container_overridden"/>}
+                                <MessagesPanel chat={selectedChat} user={context.user} messagesMap={messagesMap}/>
                             </div>
                             <div className="message-input theme-marker position-bottom">
                                 <MessageInput chat={selectedChat}/>

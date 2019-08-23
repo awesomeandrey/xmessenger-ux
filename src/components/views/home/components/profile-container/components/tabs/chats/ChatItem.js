@@ -46,7 +46,7 @@ export default props => {
             <MediaObject className="slds-box slds-box_x-small"
                          figure={<UserPicture user={fellow} scalable={false}/>}
                          body={
-                             <div className="slds-clearfix">
+                             <div className="flex-container flex-container__space-between">
                                  <p className="slds-float_left">
                                      <span className="slds-text-body_regular">{fellow["name"]}</span><br/>
                                      <span className="slds-text-color_weak theme-inherit">
