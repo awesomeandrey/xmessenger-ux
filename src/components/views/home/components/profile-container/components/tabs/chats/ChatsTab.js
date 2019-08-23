@@ -104,7 +104,7 @@ class ChatsTab extends React.Component {
             .then(pageResult => {
                 const chatsArray = pageResult["content"];
                 this.setState({
-                    chatsMap: ChattingService.sortChatsMap(new Map(chatsArray.map(_ => [_["chatId"], _]))),
+                    chatsMap: new Map(chatsArray.map(_ => [_["chatId"], _])),
                     chatsLoadedAll: pageResult["last"], chatsLimit
                 });
                 return pageResult["totalElements"];

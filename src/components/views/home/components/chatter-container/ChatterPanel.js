@@ -9,6 +9,7 @@ import Spinner from "@salesforce/design-system-react/module/components/spinner";
 
 import {ChattingService} from "../../../../../model/services/core/ChattingService";
 import {CustomEvents} from "../../../../../model/services/utility/EventsService";
+import {Utility} from "../../../../../model/services/utility/UtilityService";
 
 import "./styles/styles.css";
 
@@ -29,6 +30,10 @@ class ChatterPanel extends React.Component {
             eventName: ApplicationEvents.CHAT.SELECT,
             callback: event => {
                 const {selectedChat} = event.detail, {selectedChat: localChat} = this.state;
+                if (Utility.isMobileDevice() && !!selectedChat) {
+                    // Adjustment for mobile devices;
+                    Utility.scrollToBottom();
+                }
                 if (!!localChat && !selectedChat) {
                     this.setState(DEFAULT_STATE);
                 } else if ((!!selectedChat && !localChat) || (!!selectedChat && !!localChat && selectedChat["chatId"] !== localChat["chatId"])) {

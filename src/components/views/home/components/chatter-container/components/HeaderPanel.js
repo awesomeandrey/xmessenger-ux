@@ -20,7 +20,7 @@ const HeaderPanel = props => {
                                             offlinePlaceholder={`Last login: ${lastLoginDate}`}/>
                              </p>
                              <div className="slds-float--right">
-                                 <Button variant="neutral" onClick={_ => Utility.scrollToTop()}
+                                 <Button variant="neutral" onClick={() => Utility.scrollToTop()}
                                          className="mobile-visible-only">Back</Button>
                              </div>
                          </div>
