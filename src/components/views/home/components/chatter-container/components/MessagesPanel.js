@@ -7,9 +7,7 @@ const MessagesPanel = props => {
     const container = useRef(null);
 
     useEffect(() => {
-        if (!!container && !!container.current) {
-            container.current["scrollTop"] = container.current["scrollHeight"];
-        }
+        if (!!container && !!container.current) Utility.scrollToBottom(container.current);
     });
 
     const {chat: selectedChat, messagesMap, user: currentUser} = props,

@@ -51,6 +51,12 @@ export const Utility = {
     appendDateStamp: dateNum => {
         const dateString = Utility.formatDate({dateNum, showTimestamp: false});
         return !!dateString ? (" • " + dateString) : "";
+    },
+    scrollToBottom: (element = document.body) => {
+        element["scrollTop"] = element["scrollHeight"];
+    },
+    scrollToTop: (element = document.body) => {
+        element["scrollTop"] = 0;
     }
 };
 
