@@ -14,21 +14,16 @@ import PageTitleManager from "./components/common/components/page-title/PageTitl
 
 import {Route, IndexRoute} from "react-router";
 import {CustomEvents} from "./model/services/utility/EventsService";
-import {subscribeFromClient} from "./model/api/streaming/services/TopicsManager";
 import {serviceWorkerAllowed, registerServiceWorker} from "./model/api/streaming/services/ServiceWorkerRegistrator";
 
 const AppContainer = props => {
     const [loading, setLoading] = useState(false);
 
     useEffect(_ => {
-        // Subscribe to server events via Websocket API;
-        subscribeFromClient();
-
         // Register service worker for rich notifications;
         if (serviceWorkerAllowed) {
             CustomEvents.register({eventName: "load", callback: registerServiceWorker});
         }
-
         CustomEvents.register({
             eventName: ApplicationEvents.APP_DEFAULT.LOADING, callback: event => setLoading(event.detail.loading)
         });

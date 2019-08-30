@@ -7,10 +7,8 @@ const serviceWorkerUrlPath = "service-worker.js", urlBase64ToUint8Array = (base6
     const base64 = (base64String + padding)
         .replace(/\-/g, '+')
         .replace(/_/g, '/');
-
     const rawData = window.atob(base64);
     const outputArray = new Uint8Array(rawData.length);
-
     for (let i = 0; i < rawData.length; ++i) {
         outputArray[i] = rawData.charCodeAt(i);
     }
@@ -36,8 +34,10 @@ export const registerServiceWorker = _ => {
         navigator.serviceWorker.ready.then(registration => registration.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: urlBase64ToUint8Array(PUBLIC_VAPID_KEY)
-        })).then(subscription => performLocalRequest({
-            url: "/subscribe", method: "POST", body: subscription
+        })).then(subscriptionDetails => performLocalRequest({
+            url: "/subscribe",
+            method: "POST",
+            body: subscriptionDetails
         })).then(_ => {
             // Setup connection between main thread and SW;
             // navigator.serviceWorker.onmessage = event => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from "react";
 import SessionValidator from "../../common/model/SessionValidator";
 import ChatterPanel from "./components/chatter-container/ChatterPanel";
 import ProfileInfoPanel from "./components/profile-container/ProfileInfoPanel";
@@ -6,10 +6,17 @@ import AppContextProvider from "../../../model/services/context/AppContextProvid
 import ThemingContainer from "../../common/components/theming/components/ThemingContainer";
 
 import {Utility} from "../../../model/services/utility/UtilityService";
+import {subscribeFromClient} from "../../../model/api/streaming/services/TopicsManager";
 
 import "./styles/styles.css";
 
 const Home = props => {
+
+    useEffect(_ => {
+        // Subscribe to server events via Websocket API;
+        subscribeFromClient();
+    }, []);
+
     const commonClass = "slds-col slds-size_1-of-1 slds-p-around_xxx-small height-screen";
     return (
         <AppContextProvider>
