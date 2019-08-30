@@ -5,8 +5,8 @@ import bodyParser from "body-parser";
 import {subscribeFromServer} from "./src/model/api/streaming/services/TopicsManager";
 import {pushNotification} from "./src/model/api/streaming/core/web-push-manager";
 
-const app = express(), PORT = process.env.PORT || 80,
-    cacheControl = process.env.NODE_ENV === "production" ? {maxAge: "1h"} : {};
+const app = express(), isProduction = process.env.NODE_ENV === "production",
+    cacheControl = isProduction ? {maxAge: "1h"} : {}, PORT = process.env.PORT || 80;
 app.use("/public", express.static("public", cacheControl));
 app.use("/assets", express.static("node_modules/@salesforce-ux/design-system/assets", cacheControl));
 app.use(bodyParser.json());

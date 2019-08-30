@@ -13,11 +13,7 @@ export const API_SERVER_URL = (_ => {
 })();
 
 export const DEV_EMAIL_ADDRESS = (_ => {
-    try {
-        return STATIC_DEV_EMAIL_ADDRESS;
-    } catch (e) {
-        return process.env.XM_DEV_EMAIL_ADDRESS;
-    }
+    return process.env.XM_DEV_EMAIL_ADDRESS;
 })();
 
 export const PUBLIC_VAPID_KEY = (_ => {
@@ -29,9 +25,13 @@ export const PUBLIC_VAPID_KEY = (_ => {
 })();
 
 export const PRIVATE_VAPID_KEY = (_ => {
-    try {
-        return STATIC_PRIVATE_VAPID_KEY;
-    } catch (e) {
-        return process.env.XM_PRIVATE_VAPID_KEY;
-    }
+    return process.env.XM_PRIVATE_VAPID_KEY;
+})();
+
+export const SF_CLIENT_ID = (_ => {
+    return process.env.XM_SF_CLIENT_ID;
+})();
+
+export const SF_USERNAME = (_ => {
+    return process.env.XM_SF_USERNAME;
 })();
