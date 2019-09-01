@@ -1,13 +1,13 @@
 import TopicsToEvents from "../core/topics-to-events";
 import Topics from "../core/topics";
 
-import {subscribe} from "../core/topics-manager";
+import {subscribe as subscribeToTopics} from "../core/topics-manager";
 import {CustomEvents} from "../../../services/utility/EventsService";
 
 /**
  * Intended for rich online experience mode (all streaming events are handled).
  */
-export const subscribeFromClient = _ => {
+const _subscribeFromClient = () => {
     const registrations = TopicsToEvents.map(topicToEvent => {
         return {
             route: topicToEvent.topic,
@@ -17,7 +17,7 @@ export const subscribeFromClient = _ => {
             }
         };
     });
-    subscribe(registrations);
+    subscribeToTopics(registrations);
 };
 
 /**
@@ -25,7 +25,7 @@ export const subscribeFromClient = _ => {
  *
  * @param pushFunc - function responsible for sending push notifications.
  */
-export const subscribeFromServer = pushFunc => {
+const _subscribeForServiceWorker = pushFunc => {
     if (!!pushFunc && typeof pushFunc === "function") {
         const registrations = TopicsToEvents
             .filter(topicToEventEntity => {
@@ -40,8 +40,17 @@ export const subscribeFromServer = pushFunc => {
                     }
                 };
             });
-        subscribe(registrations);
+        subscribeToTopics(registrations);
     } else {
         console.error("'pushFunc' is not defined.");
+    }
+};
+
+export default param => {
+    if (!!param && typeof param === "function") {
+        // push function passed;
+        _subscribeForServiceWorker(param);
+    } else {
+        _subscribeFromClient();
     }
 };

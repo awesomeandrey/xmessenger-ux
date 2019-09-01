@@ -4,9 +4,9 @@ import ChatterPanel from "./components/chatter-container/ChatterPanel";
 import ProfileInfoPanel from "./components/profile-container/ProfileInfoPanel";
 import AppContextProvider from "../../../model/services/context/AppContextProvider";
 import ThemingContainer from "../../common/components/theming/components/ThemingContainer";
+import subscribeToEvents from "../../../model/api/streaming/services/TopicsManager";
 
 import {Utility} from "../../../model/services/utility/UtilityService";
-import {subscribeFromClient} from "../../../model/api/streaming/services/TopicsManager";
 
 import "./styles/styles.css";
 
@@ -14,7 +14,7 @@ const Home = props => {
 
     useEffect(_ => {
         // Subscribe to server events via Websocket API;
-        subscribeFromClient();
+        subscribeToEvents();
     }, []);
 
     const commonClass = "slds-col slds-size_1-of-1 slds-p-around_xxx-small height-screen";
