@@ -5,7 +5,7 @@ import ProxyPage from "./components/views/authorization/components/oauth.gmail/P
 import Home from "./components/views/home/Home";
 import Error from "./components/views/error/Error";
 import ModalsContainer from "./components/common/components/modals/ModalsContainer";
-import ToastContainer from "./components/common/components/toasts/ToastContainer";
+import NotificationsContainer from "./components/common/components/notifications/NotificationsContainer";
 import BrandBand from "@salesforce/design-system-react/module/components/brand-band";
 import IconSettings from "@salesforce/design-system-react/module/components/icon-settings";
 import ApplicationEvents from "./model/application-events";
@@ -33,13 +33,13 @@ const AppContainer = props => {
         <PageTitleManager>
             <IconSettings iconPath="/assets/icons">
                 <ModalsContainer>
-                    <ToastContainer>
+                    <NotificationsContainer>
                         <BrandBand theme="lightning-blue">
                             {loading && <Spinner variant="brand"
                                                  containerClassName="slds-is-fixed slds-spinner_container_overridden slds-spinner_with-text"/>}
                             {props.children}
                         </BrandBand>
-                    </ToastContainer>
+                    </NotificationsContainer>
                 </ModalsContainer>
             </IconSettings>
         </PageTitleManager>

@@ -1,7 +1,7 @@
 import React from "react";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
 import ApplicationEvents from "../../../../../../../../model/application-events";
-import ToastEvents from "../../../../../../../common/components/toasts/toasts-events";
+import NotificationEvents from "../../../../../../../common/components/notifications/notification-events";
 import RequestService from "../../../../../../../../model/services/core/RequestService";
 import RequestItem from "./RequestItem";
 
@@ -10,7 +10,7 @@ import {CustomEvents} from "../../../../../../../../model/services/utility/Event
 const NOTIFICATION_BLUEPRINTS = {
     onRespondToRequest: request => {
         CustomEvents.fire({
-            eventName: ToastEvents.SHOW,
+            eventName: NotificationEvents.SHOW,
             detail: {
                 level: "success",
                 message:
@@ -20,13 +20,13 @@ const NOTIFICATION_BLUEPRINTS = {
     },
     onRespondToRequestError: error => {
         CustomEvents.fire({
-            eventName: ToastEvents.SHOW,
+            eventName: NotificationEvents.SHOW,
             detail: {level: "warning", message: error.message}
         });
     },
     onProcessRequest: request => {
         CustomEvents.fire({
-            eventName: ToastEvents.SHOW,
+            eventName: NotificationEvents.SHOW,
             detail: {
                 message: <span><b>{request.recipient.name}</b> {request.approved ? "accepted" : "declined"} your friendship request.</span>
             }
@@ -34,7 +34,7 @@ const NOTIFICATION_BLUEPRINTS = {
     },
     onSendRequest: callback => {
         CustomEvents.fire({
-            eventName: ToastEvents.SHOW,
+            eventName: NotificationEvents.SHOW,
             detail: {message: "There is a new friendship request. Check it out!"},
             callback: callback
         });

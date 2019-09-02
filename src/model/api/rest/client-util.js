@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import FormData from "form-data";
-import ToastEvents from "../../../components/common/components/toasts/toasts-events";
+import NotificationEvents from "../../../components/common/components/notifications/notification-events";
 
 import {CustomEvents} from "../../services/utility/EventsService";
 
@@ -37,6 +37,6 @@ export const performRawRequest = endpoint => parameters => {
     return fetch(endpoint.concat(url), requestBody).catch(connectionError => {
         let errorText = "Couldn't perform request due to network issues.";
         console.warn(errorText, JSON.stringify(connectionError));
-        CustomEvents.fire({eventName: ToastEvents.SHOW, detail: {message: errorText}});
+        CustomEvents.fire({eventName: NotificationEvents.SHOW, detail: {message: errorText}});
     });
 };

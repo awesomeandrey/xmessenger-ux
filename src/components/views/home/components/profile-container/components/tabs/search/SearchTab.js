@@ -1,5 +1,5 @@
 import React from "react";
-import ToastEvents from "../../../../../../../common/components/toasts/toasts-events";
+import NotificationEvents from "../../../../../../../common/components/notifications/notification-events";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
 import RequestService from "../../../../../../../../model/services/core/RequestService";
 import Lookup from "@salesforce/design-system-react/module/components/lookup/lookup";
@@ -43,7 +43,7 @@ class SearchTab extends React.Component {
     sendFriendshipRequest = (targetUser) => {
         RequestService.sendRequest(targetUser)
             .then(_ => CustomEvents.fire({
-                eventName: ToastEvents.SHOW,
+                eventName: NotificationEvents.SHOW,
                 detail: {
                     level: "success",
                     message: <span>Sent request to <strong>{targetUser["name"]}</strong></span>
@@ -53,7 +53,7 @@ class SearchTab extends React.Component {
                 requestedUsers: this.state.requestedUsers.add(targetUser["username"]),
             }))
             .catch(error => CustomEvents.fire({
-                eventName: ToastEvents.SHOW,
+                eventName: NotificationEvents.SHOW,
                 detail: {level: "warning", message: error.message}
             }));
     };

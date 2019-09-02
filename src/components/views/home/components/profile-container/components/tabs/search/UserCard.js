@@ -16,7 +16,10 @@ export default props => {
                 <div className="slds-clearfix width-stretch">
                     <h3 className="slds-float_left">
                         {user["name"]}<br/>
-                        <small>{Utility.decorateUsername(user["username"])}</small>
+                        <small>
+                            {Utility.decorateUsername(user["username"])}
+                            {Utility.appendDateStamp(user["lastLogin"])}
+                        </small>
                     </h3>
                     <div className="slds-float_right">
                         {alreadySent && <Icon category="utility" name="check" size="medium"/>}

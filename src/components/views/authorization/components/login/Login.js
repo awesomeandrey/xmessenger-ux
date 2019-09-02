@@ -1,7 +1,7 @@
 import React from "react";
 import MaskedInput from "../../../../common/components/inputs/MaskedInput";
 import PasswordInput from "../../../../common/components/inputs/PasswordInput";
-import ToastEvents from "../../../../common/components/toasts/toasts-events";
+import NotificationEvents from "../../../../common/components/notifications/notification-events";
 import GmailService from "../../../../../model/services/core/GmailService";
 import Button from "@salesforce/design-system-react/module/components/button";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";
@@ -33,14 +33,14 @@ class Login extends React.Component {
                     inputs.password = "";
                     this.setState({loading: false, inputs, errorText: error.message}, _ => {
                         CustomEvents.fire({
-                            eventName: ToastEvents.SHOW, detail: {level: "error", message: error.message}
+                            eventName: NotificationEvents.SHOW, detail: {level: "error", message: error.message}
                         });
                     });
                 });
             });
         } else {
             CustomEvents.fire({
-                eventName: ToastEvents.SHOW,
+                eventName: NotificationEvents.SHOW,
                 detail: {level: "warning", message: "Credentials required."}
             });
         }

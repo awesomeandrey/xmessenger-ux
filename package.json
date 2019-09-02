@@ -20,7 +20,7 @@
   "author": "Andrii Melnichuk",
   "license": "ISC",
   "dependencies": {
-    "@salesforce-ux/design-system": "^2.8.3",
+    "@salesforce-ux/design-system": "^2.9.4",
     "@salesforce/design-system-react": "^0.9.6",
     "esm": "^3.2.22",
     "express": "^4.14.1",

@@ -1,6 +1,6 @@
 import React from "react";
 import ApplicationEvents from "../../../../../../../../model/application-events";
-import ToastEvents from "../../../../../../../common/components/toasts/toasts-events";
+import NotificationEvents from "../../../../../../../common/components/notifications/notification-events";
 import EmptyArea from "../../../../../../../common/components/utils/EmptyArea";
 import ChatItem from "./ChatItem";
 import Button from "@salesforce/design-system-react/module/components/button";
@@ -33,7 +33,7 @@ class ChatsTab extends React.Component {
                 const lastUpdatedBy = clearedChat["lastUpdatedBy"];
                 if (lastUpdatedBy && lastUpdatedBy["id"] !== currentUser["id"]) {
                     CustomEvents.fire({
-                        eventName: ToastEvents.SHOW,
+                        eventName: NotificationEvents.SHOW,
                         detail: {message: <span><b>{lastUpdatedBy["name"]}</b> has just cleared chat history.</span>}
                     });
                 }
@@ -46,7 +46,7 @@ class ChatsTab extends React.Component {
                 if (chatsMap.delete(removedChat["chatId"])) {
                     if (lastUpdatedBy && lastUpdatedBy["id"] !== currentUser["id"]) {
                         CustomEvents.fire({
-                            eventName: ToastEvents.SHOW,
+                            eventName: NotificationEvents.SHOW,
                             detail: {
                                 level: "error",
                                 message: <span><b>{lastUpdatedBy["name"]}</b> removed chat with you.</span>

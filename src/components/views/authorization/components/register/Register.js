@@ -3,7 +3,7 @@ import MaskedInput from "../../../../common/components/inputs/MaskedInput";
 import PasswordInput from "../../../../common/components/inputs/PasswordInput";
 import StatefulInput from "../../../../common/components/inputs/StatefulInput";
 import EmailInput from "../../../../common/components/inputs/EmailInput";
-import ToastEvents from "../../../../common/components/toasts/toasts-events";
+import NotificationEvents from "../../../../common/components/notifications/NotificationsContainer";
 import Button from "@salesforce/design-system-react/module/components/button";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";
 import InputIcon from "@salesforce/design-system-react/module/components/icon/input-icon";
@@ -53,7 +53,7 @@ class Register extends React.Component {
             inputs.repeatedPassword = "";
             this.setState({inputs, error: INVALID_INPUT}, _ => {
                 CustomEvents.fire({
-                    eventName: ToastEvents.SHOW, detail: {level: "error", message: INVALID_INPUT}
+                    eventName: NotificationEvents.SHOW, detail: {level: "error", message: INVALID_INPUT}
                 });
             });
         }
