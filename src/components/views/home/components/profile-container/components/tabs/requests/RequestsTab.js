@@ -12,9 +12,8 @@ const NOTIFICATION_BLUEPRINTS = {
         CustomEvents.fire({
             eventName: NotificationEvents.SHOW,
             detail: {
-                level: "success",
-                message:
-                    <span>Friendship request from <b>{request.sender.name}</b> was <b>{request.approved ? "accepted" : "declined"}</b>.</span>
+                level: "info",
+                message: <span>Friendship request from <b>{request.sender.name}</b> was <b>{request.approved ? "accepted" : "declined"}</b>.</span>
             }
         });
     },

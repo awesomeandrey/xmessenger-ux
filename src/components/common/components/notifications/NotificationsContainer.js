@@ -8,8 +8,6 @@ import Icon from "@salesforce/design-system-react/module/components/icon";
 import {CustomEvents} from "../../../../model/services/utility/EventsService";
 import {Utility} from "../../../../model/services/utility/UtilityService";
 
-import "./styles.css";
-
 class NotificationsContainer extends React.Component {
     constructor(props) {
         super(props);
@@ -24,7 +22,7 @@ class NotificationsContainer extends React.Component {
             eventName: NotificationEvents.SHOW,
             callback: event => {
                 const notificationData = event.detail, {notificationsMap} = this.state;
-                const notificationKey = Utility.hashString(notificationData.message);
+                const notificationKey = Utility.generateUniqueId();
                 if (!notificationsMap.has(notificationKey)) {
                     const notificationDetails = Object.assign({
                         key: notificationKey,
@@ -42,13 +40,9 @@ class NotificationsContainer extends React.Component {
     }
 
     hideNotification(notificationKeyToRemove) {
-        const {notificationsMap, lastNotification} = this.state;
+        const {notificationsMap} = this.state;
         if (notificationsMap.delete(notificationKeyToRemove)) {
-            const lastNotificationKey = !!lastNotification && Utility.hashString(lastNotification.message);
-            this.setState({
-                notificationsMap,
-                lastNotification: notificationKeyToRemove === lastNotificationKey ? null : lastNotification
-            });
+            this.setState({notificationsMap});
         }
     }
 
@@ -72,7 +66,7 @@ const MobileNotification = props => {
     const variant = level === "success" ? "info" : level;
     return (
         <AlertContainer className="mobile-visible-only">
-            <Alert variant={variant}
+            <Alert variant={variant} // ['error', 'info', 'offline', 'warning']
                    dismissible={dismissible}
                    labels={{heading: message}}
                    onRequestClose={onHide}/>
@@ -85,15 +79,19 @@ const Notification = props => {
 
     useEffect(_ => {
         if (dismissible) {
-            // setTimeout(onHide, 5000);
+            setTimeout(onHide, 3500);
         }
     }, []);
 
+    const colorVariant = ["success", "info"].includes(level) ? "light" : level;
     return (
         <section className="slds-notification" role="dialog">
             <div className="slds-notification__body">
                 <a className="slds-notification__target slds-media" href="javascript:void(0);">
-                    <Icon category="utility" colorVariant="light" name={level}/>
+                    <Icon category="utility"
+                          colorVariant={colorVariant} // ['base', 'default', 'warning', 'error', 'light']
+                          name={level} // ['success', 'info', 'warning', 'error']
+                    />
                     <div className="slds-media__body slds-p-left--medium">
                         <h2 className="slds-text-heading_small slds-m-bottom_xx-small">{message}</h2>
                     </div>
@@ -111,5 +109,3 @@ const Notification = props => {
 };
 
 export default NotificationsContainer;
-
-export const SHOW_NOTIFICATION = "showNotification";

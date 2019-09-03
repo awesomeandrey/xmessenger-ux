@@ -6,8 +6,8 @@ import {Utility} from "../../../../model/services/utility/UtilityService";
 import "./styles.css";
 
 const _isOnline = (user, indicatorsMap) => {
-    if (!!user && indicatorsMap.has(user.id)) {
-        return indicatorsMap.get(user.id).active;
+    if (!!user && indicatorsMap.has(user["id"])) {
+        return indicatorsMap.get(user["id"])["active"];
     } else {
         return false;
     }

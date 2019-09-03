@@ -1,4 +1,0 @@
-.toast-item:after {
-    content: '\A';
-    white-space: pre;
-}
