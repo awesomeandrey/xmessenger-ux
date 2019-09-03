@@ -12,8 +12,7 @@ class NotificationsContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            notificationsMap: new Map(),
-            lastNotification: null
+            notificationsMap: new Map()
         };
     }
 
@@ -31,8 +30,7 @@ class NotificationsContainer extends React.Component {
                         onHide: _ => this.hideNotification(notificationKey)
                     }, notificationData);
                     this.setState({
-                        notificationsMap: notificationsMap.set(notificationKey, notificationDetails),
-                        lastNotification: notificationDetails
+                        notificationsMap: notificationsMap.set(notificationKey, notificationDetails)
                     });
                 }
             }
@@ -47,12 +45,14 @@ class NotificationsContainer extends React.Component {
     }
 
     render() {
-        const {notificationsMap, lastNotification} = this.state, notificationElements = [...notificationsMap.values()]
-            .map(notificationDetails => <Notification {...notificationDetails}/>);
+        const {notificationsMap} = this.state, notificationsArray = [...notificationsMap.values()];
+        const notificationElements = notificationsArray.map(_ => <Notification {..._}/>);
+        const amount = notificationsArray.length, lastNotification = amount ? notificationsArray[amount - 1] : {};
         return (
             <div className="notifications__container">
-                <div className="slds-notification-container mobile-hidden">{notificationElements}</div>
-                <MobileNotification {...lastNotification}/>
+                {Utility.isMobileDevice()
+                    ? <MobileNotification {...lastNotification}/>
+                    : <div className="slds-notification-container mobile-hidden">{notificationElements}</div>}
                 {this.props.children}
             </div>
         );
