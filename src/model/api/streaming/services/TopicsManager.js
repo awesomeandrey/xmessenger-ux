@@ -25,7 +25,7 @@ const _subscribeFromClient = () => {
  *
  * @param pushFunc - function responsible for sending push notifications.
  */
-const _subscribeForServiceWorker = pushFunc => {
+const _subscribeFromServer = pushFunc => {
     if (!!pushFunc && typeof pushFunc === "function") {
         const registrations = TopicsToEvents
             .filter(topicToEventEntity => {
@@ -49,7 +49,7 @@ const _subscribeForServiceWorker = pushFunc => {
 export default param => {
     if (!!param && typeof param === "function") {
         // push function passed;
-        _subscribeForServiceWorker(param);
+        _subscribeFromServer(param);
     } else {
         _subscribeFromClient();
     }
