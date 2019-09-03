@@ -50,5 +50,6 @@ export const LocalStorage = Storage(localStorage);
 
 export const LocalEntities = {
     ACTIVE_THEME: "activeTheme",
-    RICH_NOTIFICATIONS: "richNotifications"
+    RICH_NOTIFICATIONS: "richNotifications",
+    APP_NEWS_ACKNOWLEDGED: "appNewsAcknowledged"
 };

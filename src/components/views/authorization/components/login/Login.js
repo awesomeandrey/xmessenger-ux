@@ -2,7 +2,7 @@ import React from "react";
 import MaskedInput from "../../../../common/components/inputs/MaskedInput";
 import PasswordInput from "../../../../common/components/inputs/PasswordInput";
 import NotificationEvents from "../../../../common/components/notifications/notification-events";
-import GmailService from "../../../../../model/services/core/GmailService";
+import GmailService from "../../../../../model/services/core/integration/google/GmailService";
 import Button from "@salesforce/design-system-react/module/components/button";
 import Spinner from "@salesforce/design-system-react/module/components/spinner";
 import InputIcon from "@salesforce/design-system-react/module/components/icon/input-icon";

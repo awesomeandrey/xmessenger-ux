@@ -75,7 +75,7 @@ const MobileNotification = props => {
 };
 
 const Notification = props => {
-    const {level, message, dismissible, onHide} = props;
+    const {level, message, dismissible, onHide, onClick} = props;
 
     useEffect(_ => {
         if (dismissible) {
@@ -87,7 +87,7 @@ const Notification = props => {
     return (
         <section className="slds-notification" role="dialog">
             <div className="slds-notification__body">
-                <a className="slds-notification__target slds-media" href="javascript:void(0);">
+                <a className="slds-notification__target slds-media" href="javascript:void(0);" onClick={onClick}>
                     <Icon category="utility"
                           colorVariant={colorVariant} // ['base', 'default', 'warning', 'error', 'light']
                           name={level} // ['success', 'info', 'warning', 'error']

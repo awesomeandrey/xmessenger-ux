@@ -1,5 +1,5 @@
-import {authenticateClient} from "../../api/rest/secureApi";
-import {performRequest, API_BASE_PATH} from "../../api/rest/openApi";
+import {authenticateClient} from "../../../../api/rest/secureApi";
+import {performRequest, API_BASE_PATH} from "../../../../api/rest/openApi";
 
 const SERVICE_PATH = "/oauth/gmail";
 

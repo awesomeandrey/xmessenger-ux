@@ -1,7 +1,7 @@
 import React from "react";
 import Countdown from "react-countdown-now";
 import NotificationEvents from "../../../../common/components/notifications/notification-events";
-import GmailService from "../../../../../model/services/core/GmailService";
+import GmailService from "../../../../../model/services/core/integration/google/GmailService";
 import Button from "@salesforce/design-system-react/module/components/button";
 import Modal from "@salesforce/design-system-react/module/components/modal";
 

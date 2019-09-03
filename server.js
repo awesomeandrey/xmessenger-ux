@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import subscribe from "./src/model/api/streaming/services/TopicsManager";
 
 import {getPushNotificationFunc} from "./src/model/api/streaming/core/web-push-manager";
-import {getAppNews} from "./src/model/services/salesforce/AppNewsService";
+import {getAppNews} from "./src/model/services/core/integration/salesforce/server/AppNewsService";
 
 const app = express(), isProduction = process.env.NODE_ENV === "production",
     cacheControl = isProduction ? {maxAge: "1h"} : {}, PORT = process.env.PORT || 80;
@@ -18,14 +18,8 @@ app.get("/service-worker.js", (req, res) => {
 
 app.get("/news", (req, res) => {
     getAppNews().then(data => {
-        const parsedData = data.map(sfPayloadItem => ({
-            sfId: sfPayloadItem["Id"],
-            title: sfPayloadItem["Title__c"],
-            details: sfPayloadItem["Details__c"],
-            level: sfPayloadItem["Level__c"]
-        }));
         res.setHeader("Cache-Control", "public, max-age=3600"); // 1 hour;
-        res.send(parsedData);
+        res.send(data);
     }).catch(error => {
         console.log(">>> Error when requesting app news", JSON.stringify(error));
         res.sendStatus(500);

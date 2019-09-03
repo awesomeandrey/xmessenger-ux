@@ -3,9 +3,9 @@ import {performRequest} from "../../api/rest/openApi";
 import {SessionStorage} from "../utility/StorageService";
 import {Navigation} from "../utility/NavigationService";
 import {CustomEvents} from "../utility/EventsService";
+import {dropServiceWorkerState} from "../../api/streaming/services/ServiceWorkerRegistrator";
 
 import ApplicationEvents from "../../application-events";
-import {dropServiceWorkerState} from "../../api/streaming/services/ServiceWorkerRegistrator";
 
 export const LoginService = {
     loginUser: rawCredentials => authenticateClient({url: `${API_BASE_PATH}/login`, body: rawCredentials}),
