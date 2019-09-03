@@ -35,6 +35,8 @@ describe("Common utility methods.", () => {
     test("Hash string.", () => {
         expect(Utility.hashString("hello"))
             .toBe(Utility.hashString('h' + 'e' + 'l' + 'l' + 'o'));
+        expect(Utility.hashString({}))
+            .toBe(Utility.hashString(0));
     });
     test("Checking whether object is empty.", () => {
         expect(Utility.isObjectEmpty(null)).toBeTruthy();
