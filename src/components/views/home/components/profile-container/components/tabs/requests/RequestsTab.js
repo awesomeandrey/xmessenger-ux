@@ -9,11 +9,16 @@ import {CustomEvents} from "../../../../../../../../model/services/utility/Event
 
 const NOTIFICATION_BLUEPRINTS = {
     onRespondToRequest: request => {
+        const {sender, approved} = request;
         CustomEvents.fire({
             eventName: NotificationEvents.SHOW,
             detail: {
-                level: "info",
-                message: <span>Friendship request from <b>{request.sender.name}</b> was <b>{request.approved ? "accepted" : "declined"}</b>.</span>
+                level: "success",
+                message: (
+                    <span>
+                        Friendship request from <b>{sender["name"]}</b> was <b>{approved ? "accepted" : "declined"}</b>.
+                    </span>
+                )
             }
         });
     },
@@ -34,8 +39,7 @@ const NOTIFICATION_BLUEPRINTS = {
     onSendRequest: callback => {
         CustomEvents.fire({
             eventName: NotificationEvents.SHOW,
-            detail: {message: "There is a new friendship request. Check it out!"},
-            callback: callback
+            detail: {message: "There is a new friendship request. Check it out!"}, callback
         });
     }
 };
