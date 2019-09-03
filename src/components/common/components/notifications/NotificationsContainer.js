@@ -61,6 +61,13 @@ class NotificationsContainer extends React.Component {
 
 const MobileNotification = props => {
     const {level, message, dismissible, onHide} = props;
+
+    useEffect(_ => {
+        if (dismissible) {
+            setTimeout(onHide, 3500);
+        }
+    }, []);
+
     if (Utility.isObjectEmpty(message)) return <span/>;
     // "success" option is not supported by 'Alert' component;
     const variant = level === "success" ? "info" : level;
