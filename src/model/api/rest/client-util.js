@@ -4,7 +4,9 @@ import NotificationEvents from "../../../components/common/components/notificati
 
 import {CustomEvents} from "../../services/utility/EventsService";
 
-const _parseJSON = response => response.text().then(rawText => rawText ? JSON.parse(rawText) : {});
+const _parseJSON = response => response.text()
+    .then(rawText => rawText ? JSON.parse(rawText) : {})
+    .catch(e => ({error: JSON.stringify(e)}));
 
 export const DEFAULT_HEADERS = {"Content-Type": "application/json;charset=UTF-8"};
 
